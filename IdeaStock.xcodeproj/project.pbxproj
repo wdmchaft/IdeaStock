@@ -1,0 +1,448 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D7A53CF11522F39500183CB6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF01522F39500183CB6 /* UIKit.framework */; };
+		D7A53CF31522F39500183CB6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF21522F39500183CB6 /* Foundation.framework */; };
+		D7A53CF51522F39500183CB6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF41522F39500183CB6 /* CoreGraphics.framework */; };
+		D7A53CFB1522F39500183CB6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D7A53CF91522F39500183CB6 /* InfoPlist.strings */; };
+		D7A53CFD1522F39500183CB6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A53CFC1522F39500183CB6 /* main.m */; };
+		D7A53D011522F39500183CB6 /* IdeaStockAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A53D001522F39500183CB6 /* IdeaStockAppDelegate.m */; };
+		D7A53D041522F39500183CB6 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7A53D021522F39500183CB6 /* MainStoryboard.storyboard */; };
+		D7A53D071522F39500183CB6 /* IdeaStockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A53D061522F39500183CB6 /* IdeaStockViewController.m */; };
+		D7A53D0F1522F39500183CB6 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D0E1522F39500183CB6 /* SenTestingKit.framework */; };
+		D7A53D101522F39500183CB6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF01522F39500183CB6 /* UIKit.framework */; };
+		D7A53D111522F39500183CB6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF21522F39500183CB6 /* Foundation.framework */; };
+		D7A53D191522F39500183CB6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D7A53D171522F39500183CB6 /* InfoPlist.strings */; };
+		D7A53D1C1522F39500183CB6 /* IdeaStockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A53D1B1522F39500183CB6 /* IdeaStockTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D7A53D121522F39500183CB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D7A53CE31522F39400183CB6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D7A53CEB1522F39500183CB6;
+			remoteInfo = IdeaStock;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D7A53CEC1522F39500183CB6 /* IdeaStock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IdeaStock.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7A53CF01522F39500183CB6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		D7A53CF21522F39500183CB6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D7A53CF41522F39500183CB6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		D7A53CF81522F39500183CB6 /* IdeaStock-Info.plist */ = {isa = PBXFileReference; path = "IdeaStock-Info.plist"; sourceTree = "<group>"; };
+		D7A53CFA1522F39500183CB6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D7A53CFC1522F39500183CB6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D7A53CFE1522F39500183CB6 /* IdeaStock-Prefix.pch */ = {isa = PBXFileReference; path = "IdeaStock-Prefix.pch"; sourceTree = "<group>"; };
+		D7A53CFF1522F39500183CB6 /* IdeaStockAppDelegate.h */ = {isa = PBXFileReference; path = IdeaStockAppDelegate.h; sourceTree = "<group>"; };
+		D7A53D001522F39500183CB6 /* IdeaStockAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IdeaStockAppDelegate.m; sourceTree = "<group>"; };
+		D7A53D031522F39500183CB6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		D7A53D051522F39500183CB6 /* IdeaStockViewController.h */ = {isa = PBXFileReference; path = IdeaStockViewController.h; sourceTree = "<group>"; };
+		D7A53D061522F39500183CB6 /* IdeaStockViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IdeaStockViewController.m; sourceTree = "<group>"; };
+		D7A53D0D1522F39500183CB6 /* IdeaStockTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IdeaStockTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7A53D0E1522F39500183CB6 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		D7A53D161522F39500183CB6 /* IdeaStockTests-Info.plist */ = {isa = PBXFileReference; path = "IdeaStockTests-Info.plist"; sourceTree = "<group>"; };
+		D7A53D181522F39500183CB6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D7A53D1A1522F39500183CB6 /* IdeaStockTests.h */ = {isa = PBXFileReference; path = IdeaStockTests.h; sourceTree = "<group>"; };
+		D7A53D1B1522F39500183CB6 /* IdeaStockTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IdeaStockTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D7A53CE91522F39500183CB6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7A53CF11522F39500183CB6 /* UIKit.framework in Frameworks */,
+				D7A53CF31522F39500183CB6 /* Foundation.framework in Frameworks */,
+				D7A53CF51522F39500183CB6 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7A53D091522F39500183CB6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7A53D0F1522F39500183CB6 /* SenTestingKit.framework in Frameworks */,
+				D7A53D101522F39500183CB6 /* UIKit.framework in Frameworks */,
+				D7A53D111522F39500183CB6 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D7A53CE11522F39400183CB6 = {
+			isa = PBXGroup;
+			children = (
+				D7A53CF61522F39500183CB6 /* IdeaStock */,
+				D7A53D141522F39500183CB6 /* IdeaStockTests */,
+				D7A53CEF1522F39500183CB6 /* Frameworks */,
+				D7A53CED1522F39500183CB6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D7A53CED1522F39500183CB6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D7A53CEC1522F39500183CB6 /* IdeaStock.app */,
+				D7A53D0D1522F39500183CB6 /* IdeaStockTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D7A53CEF1522F39500183CB6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D7A53CF01522F39500183CB6 /* UIKit.framework */,
+				D7A53CF21522F39500183CB6 /* Foundation.framework */,
+				D7A53CF41522F39500183CB6 /* CoreGraphics.framework */,
+				D7A53D0E1522F39500183CB6 /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D7A53CF61522F39500183CB6 /* IdeaStock */ = {
+			isa = PBXGroup;
+			children = (
+				D7A53CFF1522F39500183CB6 /* IdeaStockAppDelegate.h */,
+				D7A53D001522F39500183CB6 /* IdeaStockAppDelegate.m */,
+				D7A53D021522F39500183CB6 /* MainStoryboard.storyboard */,
+				D7A53D051522F39500183CB6 /* IdeaStockViewController.h */,
+				D7A53D061522F39500183CB6 /* IdeaStockViewController.m */,
+				D7A53CF71522F39500183CB6 /* Supporting Files */,
+			);
+			path = IdeaStock;
+			sourceTree = "<group>";
+		};
+		D7A53CF71522F39500183CB6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D7A53CF81522F39500183CB6 /* IdeaStock-Info.plist */,
+				D7A53CF91522F39500183CB6 /* InfoPlist.strings */,
+				D7A53CFC1522F39500183CB6 /* main.m */,
+				D7A53CFE1522F39500183CB6 /* IdeaStock-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D7A53D141522F39500183CB6 /* IdeaStockTests */ = {
+			isa = PBXGroup;
+			children = (
+				D7A53D1A1522F39500183CB6 /* IdeaStockTests.h */,
+				D7A53D1B1522F39500183CB6 /* IdeaStockTests.m */,
+				D7A53D151522F39500183CB6 /* Supporting Files */,
+			);
+			path = IdeaStockTests;
+			sourceTree = "<group>";
+		};
+		D7A53D151522F39500183CB6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D7A53D161522F39500183CB6 /* IdeaStockTests-Info.plist */,
+				D7A53D171522F39500183CB6 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D7A53CEB1522F39500183CB6 /* IdeaStock */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D7A53D1F1522F39500183CB6 /* Build configuration list for PBXNativeTarget "IdeaStock" */;
+			buildPhases = (
+				D7A53CE81522F39500183CB6 /* Sources */,
+				D7A53CE91522F39500183CB6 /* Frameworks */,
+				D7A53CEA1522F39500183CB6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IdeaStock;
+			productName = IdeaStock;
+			productReference = D7A53CEC1522F39500183CB6 /* IdeaStock.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D7A53D0C1522F39500183CB6 /* IdeaStockTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D7A53D221522F39500183CB6 /* Build configuration list for PBXNativeTarget "IdeaStockTests" */;
+			buildPhases = (
+				D7A53D081522F39500183CB6 /* Sources */,
+				D7A53D091522F39500183CB6 /* Frameworks */,
+				D7A53D0A1522F39500183CB6 /* Resources */,
+				D7A53D0B1522F39500183CB6 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D7A53D131522F39500183CB6 /* PBXTargetDependency */,
+			);
+			name = IdeaStockTests;
+			productName = IdeaStockTests;
+			productReference = D7A53D0D1522F39500183CB6 /* IdeaStockTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D7A53CE31522F39400183CB6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = IdeaStock;
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = "University of Washington";
+			};
+			buildConfigurationList = D7A53CE61522F39400183CB6 /* Build configuration list for PBXProject "IdeaStock" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D7A53CE11522F39400183CB6;
+			productRefGroup = D7A53CED1522F39500183CB6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D7A53CEB1522F39500183CB6 /* IdeaStock */,
+				D7A53D0C1522F39500183CB6 /* IdeaStockTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D7A53CEA1522F39500183CB6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7A53CFB1522F39500183CB6 /* InfoPlist.strings in Resources */,
+				D7A53D041522F39500183CB6 /* MainStoryboard.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7A53D0A1522F39500183CB6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7A53D191522F39500183CB6 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D7A53D0B1522F39500183CB6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D7A53CE81522F39500183CB6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7A53CFD1522F39500183CB6 /* main.m in Sources */,
+				D7A53D011522F39500183CB6 /* IdeaStockAppDelegate.m in Sources */,
+				D7A53D071522F39500183CB6 /* IdeaStockViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7A53D081522F39500183CB6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7A53D1C1522F39500183CB6 /* IdeaStockTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D7A53D131522F39500183CB6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D7A53CEB1522F39500183CB6 /* IdeaStock */;
+			targetProxy = D7A53D121522F39500183CB6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D7A53CF91522F39500183CB6 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D7A53CFA1522F39500183CB6 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D7A53D021522F39500183CB6 /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D7A53D031522F39500183CB6 /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+		D7A53D171522F39500183CB6 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D7A53D181522F39500183CB6 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D7A53D1D1522F39500183CB6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		D7A53D1E1522F39500183CB6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D7A53D201522F39500183CB6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "IdeaStock/IdeaStock-Prefix.pch";
+				INFOPLIST_FILE = "IdeaStock/IdeaStock-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		D7A53D211522F39500183CB6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "IdeaStock/IdeaStock-Prefix.pch";
+				INFOPLIST_FILE = "IdeaStock/IdeaStock-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		D7A53D231522F39500183CB6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/IdeaStock.app/IdeaStock";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "IdeaStock/IdeaStock-Prefix.pch";
+				INFOPLIST_FILE = "IdeaStockTests/IdeaStockTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		D7A53D241522F39500183CB6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/IdeaStock.app/IdeaStock";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "IdeaStock/IdeaStock-Prefix.pch";
+				INFOPLIST_FILE = "IdeaStockTests/IdeaStockTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D7A53CE61522F39400183CB6 /* Build configuration list for PBXProject "IdeaStock" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7A53D1D1522F39500183CB6 /* Debug */,
+				D7A53D1E1522F39500183CB6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D7A53D1F1522F39500183CB6 /* Build configuration list for PBXNativeTarget "IdeaStock" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7A53D201522F39500183CB6 /* Debug */,
+				D7A53D211522F39500183CB6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D7A53D221522F39500183CB6 /* Build configuration list for PBXNativeTarget "IdeaStockTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7A53D231522F39500183CB6 /* Debug */,
+				D7A53D241522F39500183CB6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D7A53CE31522F39400183CB6 /* Project object */;
+}
