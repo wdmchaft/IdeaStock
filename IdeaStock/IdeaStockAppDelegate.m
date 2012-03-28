@@ -13,10 +13,12 @@
 
 @synthesize window = _window;
 
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
     
+
     //setup Dropbox
     DBSession* dbSession =
     [[DBSession alloc]
