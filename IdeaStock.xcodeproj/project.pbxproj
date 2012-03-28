@@ -20,6 +20,8 @@
 		D7A53D111522F39500183CB6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF21522F39500183CB6 /* Foundation.framework */; };
 		D7A53D191522F39500183CB6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D7A53D171522F39500183CB6 /* InfoPlist.strings */; };
 		D7A53D1C1522F39500183CB6 /* IdeaStockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A53D1B1522F39500183CB6 /* IdeaStockTests.m */; };
+		D7A53D261522F4C700183CB6 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D251522F4C700183CB6 /* DropboxSDK.framework */; };
+		D7A53D281522F4E100183CB6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D271522F4E100183CB6 /* Security.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,21 +39,23 @@
 		D7A53CF01522F39500183CB6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D7A53CF21522F39500183CB6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D7A53CF41522F39500183CB6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		D7A53CF81522F39500183CB6 /* IdeaStock-Info.plist */ = {isa = PBXFileReference; path = "IdeaStock-Info.plist"; sourceTree = "<group>"; };
+		D7A53CF81522F39500183CB6 /* IdeaStock-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "IdeaStock-Info.plist"; sourceTree = "<group>"; };
 		D7A53CFA1522F39500183CB6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D7A53CFC1522F39500183CB6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		D7A53CFE1522F39500183CB6 /* IdeaStock-Prefix.pch */ = {isa = PBXFileReference; path = "IdeaStock-Prefix.pch"; sourceTree = "<group>"; };
-		D7A53CFF1522F39500183CB6 /* IdeaStockAppDelegate.h */ = {isa = PBXFileReference; path = IdeaStockAppDelegate.h; sourceTree = "<group>"; };
+		D7A53CFE1522F39500183CB6 /* IdeaStock-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "IdeaStock-Prefix.pch"; sourceTree = "<group>"; };
+		D7A53CFF1522F39500183CB6 /* IdeaStockAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdeaStockAppDelegate.h; sourceTree = "<group>"; };
 		D7A53D001522F39500183CB6 /* IdeaStockAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IdeaStockAppDelegate.m; sourceTree = "<group>"; };
 		D7A53D031522F39500183CB6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		D7A53D051522F39500183CB6 /* IdeaStockViewController.h */ = {isa = PBXFileReference; path = IdeaStockViewController.h; sourceTree = "<group>"; };
+		D7A53D051522F39500183CB6 /* IdeaStockViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdeaStockViewController.h; sourceTree = "<group>"; };
 		D7A53D061522F39500183CB6 /* IdeaStockViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IdeaStockViewController.m; sourceTree = "<group>"; };
 		D7A53D0D1522F39500183CB6 /* IdeaStockTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IdeaStockTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7A53D0E1522F39500183CB6 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		D7A53D161522F39500183CB6 /* IdeaStockTests-Info.plist */ = {isa = PBXFileReference; path = "IdeaStockTests-Info.plist"; sourceTree = "<group>"; };
+		D7A53D161522F39500183CB6 /* IdeaStockTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "IdeaStockTests-Info.plist"; sourceTree = "<group>"; };
 		D7A53D181522F39500183CB6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D7A53D1A1522F39500183CB6 /* IdeaStockTests.h */ = {isa = PBXFileReference; path = IdeaStockTests.h; sourceTree = "<group>"; };
+		D7A53D1A1522F39500183CB6 /* IdeaStockTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdeaStockTests.h; sourceTree = "<group>"; };
 		D7A53D1B1522F39500183CB6 /* IdeaStockTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IdeaStockTests.m; sourceTree = "<group>"; };
+		D7A53D251522F4C700183CB6 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
+		D7A53D271522F4E100183CB6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,9 +63,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7A53D281522F4E100183CB6 /* Security.framework in Frameworks */,
 				D7A53CF11522F39500183CB6 /* UIKit.framework in Frameworks */,
 				D7A53CF31522F39500183CB6 /* Foundation.framework in Frameworks */,
 				D7A53CF51522F39500183CB6 /* CoreGraphics.framework in Frameworks */,
+				D7A53D261522F4C700183CB6 /* DropboxSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +87,8 @@
 		D7A53CE11522F39400183CB6 = {
 			isa = PBXGroup;
 			children = (
+				D7A53D271522F4E100183CB6 /* Security.framework */,
+				D7A53D251522F4C700183CB6 /* DropboxSDK.framework */,
 				D7A53CF61522F39500183CB6 /* IdeaStock */,
 				D7A53D141522F39500183CB6 /* IdeaStockTests */,
 				D7A53CEF1522F39500183CB6 /* Frameworks */,
@@ -361,6 +369,10 @@
 		D7A53D201522F39500183CB6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IdeaStock/IdeaStock-Prefix.pch";
 				INFOPLIST_FILE = "IdeaStock/IdeaStock-Info.plist";
@@ -372,6 +384,10 @@
 		D7A53D211522F39500183CB6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IdeaStock/IdeaStock-Prefix.pch";
 				INFOPLIST_FILE = "IdeaStock/IdeaStock-Info.plist";

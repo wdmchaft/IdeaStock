@@ -7,6 +7,7 @@
 //
 
 #import "IdeaStockAppDelegate.h"
+#import <DropboxSDK/DropboxSDK.h>
 
 @implementation IdeaStockAppDelegate
 
@@ -15,7 +16,29 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    //setup Dropbox
+    DBSession* dbSession =
+    [[DBSession alloc]
+      initWithAppKey:@"h7f38af0ewivq6s"
+      appSecret:@"iiq8oz2lae46mwp"
+      root:kDBRootAppFolder]; // either kDBRootAppFolder or kDBRootDropbox
+    
+    [DBSession setSharedSession:dbSession];
+
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    if ([[DBSession sharedSession] handleOpenURL:url]) {
+        if ([[DBSession sharedSession] isLinked]) {
+            NSLog(@"App linked successfully!");
+            // At this point you can start making API calls
+        }
+        return YES;
+    }
+    // Add whatever other url handling code your app requires here
+    return NO;
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application

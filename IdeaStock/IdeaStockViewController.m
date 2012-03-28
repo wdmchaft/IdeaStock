@@ -7,6 +7,7 @@
 //
 
 #import "IdeaStockViewController.h"
+#import <DropboxSDK/DropboxSDK.h>
 
 @interface IdeaStockViewController ()
 
@@ -17,7 +18,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    //setup dropbox
+    if (![[DBSession sharedSession] isLinked]) {
+        [[DBSession sharedSession] link];
+    }
 }
 
 - (void)viewDidUnload
