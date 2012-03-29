@@ -29,7 +29,7 @@
     }
     
     //get the note fragment using xpath
-    NSString * xPath = @"./xooml:association";
+    NSString * xPath = @"//xooml:association";
     NSArray *notes = [document nodesForXPath: xPath error: &err];
     if (notes == nil){
         NSLog(@"Error reading the content from XML");

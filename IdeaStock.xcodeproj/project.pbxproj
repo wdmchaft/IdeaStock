@@ -14,6 +14,8 @@
 		D70947261523DC27008E4AD9 /* DDXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = D709471E1523DC27008E4AD9 /* DDXMLElement.m */; };
 		D70947271523DC27008E4AD9 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D70947201523DC27008E4AD9 /* DDXMLNode.m */; };
 		D709472A15242AC3008E4AD9 /* XoomlNoteParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D709472915242AC3008E4AD9 /* XoomlNoteParser.m */; };
+		D709473115244557008E4AD9 /* IdeaStockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D709473015244557008E4AD9 /* IdeaStockTests.m */; };
+		D709473715245416008E4AD9 /* XoomlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D709473615245416008E4AD9 /* XoomlTests.m */; };
 		D71D934E15230A930043E573 /* DropboxDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D71D934D15230A930043E573 /* DropboxDataModel.m */; };
 		D7A53CF11522F39500183CB6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF01522F39500183CB6 /* UIKit.framework */; };
 		D7A53CF31522F39500183CB6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF21522F39500183CB6 /* Foundation.framework */; };
@@ -27,7 +29,6 @@
 		D7A53D101522F39500183CB6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF01522F39500183CB6 /* UIKit.framework */; };
 		D7A53D111522F39500183CB6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF21522F39500183CB6 /* Foundation.framework */; };
 		D7A53D191522F39500183CB6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D7A53D171522F39500183CB6 /* InfoPlist.strings */; };
-		D7A53D1C1522F39500183CB6 /* IdeaStockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A53D1B1522F39500183CB6 /* IdeaStockTests.m */; };
 		D7A53D261522F4C700183CB6 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D251522F4C700183CB6 /* DropboxSDK.framework */; };
 		D7A53D281522F4E100183CB6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D271522F4E100183CB6 /* Security.framework */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,10 @@
 		D70947221523DC27008E4AD9 /* DDXMLPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLPrivate.h; sourceTree = "<group>"; };
 		D709472815242AC3008E4AD9 /* XoomlNoteParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XoomlNoteParser.h; sourceTree = "<group>"; };
 		D709472915242AC3008E4AD9 /* XoomlNoteParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XoomlNoteParser.m; sourceTree = "<group>"; };
+		D709472F1524454A008E4AD9 /* IdeaStockTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdeaStockTests.h; sourceTree = "<group>"; };
+		D709473015244557008E4AD9 /* IdeaStockTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdeaStockTests.m; sourceTree = "<group>"; };
+		D709473515245416008E4AD9 /* XoomlTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XoomlTests.h; sourceTree = "<group>"; };
+		D709473615245416008E4AD9 /* XoomlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XoomlTests.m; sourceTree = "<group>"; };
 		D71D934B152301F10043E573 /* DataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModel.h; sourceTree = "<group>"; };
 		D71D934C15230A930043E573 /* DropboxDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxDataModel.h; sourceTree = "<group>"; };
 		D71D934D15230A930043E573 /* DropboxDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxDataModel.m; sourceTree = "<group>"; };
@@ -81,8 +86,6 @@
 		D7A53D0E1522F39500183CB6 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		D7A53D161522F39500183CB6 /* IdeaStockTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "IdeaStockTests-Info.plist"; sourceTree = "<group>"; };
 		D7A53D181522F39500183CB6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D7A53D1A1522F39500183CB6 /* IdeaStockTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdeaStockTests.h; sourceTree = "<group>"; };
-		D7A53D1B1522F39500183CB6 /* IdeaStockTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IdeaStockTests.m; sourceTree = "<group>"; };
 		D7A53D251522F4C700183CB6 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
 		D7A53D271522F4E100183CB6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -234,9 +237,11 @@
 		D7A53D141522F39500183CB6 /* IdeaStockTests */ = {
 			isa = PBXGroup;
 			children = (
-				D7A53D1A1522F39500183CB6 /* IdeaStockTests.h */,
-				D7A53D1B1522F39500183CB6 /* IdeaStockTests.m */,
+				D709473015244557008E4AD9 /* IdeaStockTests.m */,
+				D709472F1524454A008E4AD9 /* IdeaStockTests.h */,
 				D7A53D151522F39500183CB6 /* Supporting Files */,
+				D709473515245416008E4AD9 /* XoomlTests.h */,
+				D709473615245416008E4AD9 /* XoomlTests.m */,
 			);
 			path = IdeaStockTests;
 			sourceTree = "<group>";
@@ -376,7 +381,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7A53D1C1522F39500183CB6 /* IdeaStockTests.m in Sources */,
+				D709473115244557008E4AD9 /* IdeaStockTests.m in Sources */,
+				D709473715245416008E4AD9 /* XoomlTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
