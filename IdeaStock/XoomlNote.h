@@ -1,5 +1,5 @@
 //
-//  BulletinBoard.h
+//  XoomlNote.h
 //  IdeaStock
 //
 //  Created by Ali Fathalian on 3/28/12.
@@ -8,9 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Note.h"
-@protocol BulletinBoard <NSObject>
-
-@property (nonatomic,strong) NSArray <Note> * notes;
-
-
+@interface XoomlNote : NSObject <Note>
++ (XoomlNote *) XoomlNoteFromXML: (NSData *) xml;
+- (XoomlNote *) initWithCreationDate: (NSString *) date;
 @end

@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *Object for holding a single notes basic information.
+ */
 @protocol Note <NSObject>
+
+@required
+@property (nonatomic,strong) NSString * noteText;
+@property (nonatomic,strong) NSString * noteID;
+@property (nonatomic,strong) NSString * creationDate;
+@property (nonatomic,strong) NSString * modificationDate;
 
 @end
