@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "Note.h"
 @interface XoomlNote : NSObject <Note>
-+ (XoomlNote *) XoomlNoteFromXML: (NSData *) xml;
++ (XoomlNote *) xoomlNoteFromXML: (NSData *) xml;
 - (XoomlNote *) initWithCreationDate: (NSString *) date;
+- (NSData *) convertToXooml;
+- (NSString *) description;
 @end

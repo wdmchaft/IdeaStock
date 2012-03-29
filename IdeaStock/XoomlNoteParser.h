@@ -11,5 +11,7 @@
 
 @interface XoomlNoteParser : NSObject
 
-+ (XoomlNote *) XoomlNoteFromXML: (NSData *)data ;
++ (XoomlNote *) XoomlNoteFromXML: (NSData *)data;
++ (NSData *) convertNoteToXooml: (XoomlNote *) note;
+
 @end

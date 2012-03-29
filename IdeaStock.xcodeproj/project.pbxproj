@@ -17,6 +17,7 @@
 		D709473115244557008E4AD9 /* IdeaStockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D709473015244557008E4AD9 /* IdeaStockTests.m */; };
 		D709473715245416008E4AD9 /* XoomlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D709473615245416008E4AD9 /* XoomlTests.m */; };
 		D71D934E15230A930043E573 /* DropboxDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D71D934D15230A930043E573 /* DropboxDataModel.m */; };
+		D74E48201524F3DF00BC8B9D /* XoomlAttributeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D74E481F1524F3DF00BC8B9D /* XoomlAttributeHelper.m */; };
 		D7A53CF11522F39500183CB6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF01522F39500183CB6 /* UIKit.framework */; };
 		D7A53CF31522F39500183CB6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF21522F39500183CB6 /* Foundation.framework */; };
 		D7A53CF51522F39500183CB6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF41522F39500183CB6 /* CoreGraphics.framework */; };
@@ -69,6 +70,8 @@
 		D71D934D15230A930043E573 /* DropboxDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxDataModel.m; sourceTree = "<group>"; };
 		D71D934F15230B3D0043E573 /* BulletinBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoard.h; sourceTree = "<group>"; };
 		D71D935015230B820043E573 /* Note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Note.h; sourceTree = "<group>"; };
+		D74E481E1524F3DF00BC8B9D /* XoomlAttributeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XoomlAttributeHelper.h; sourceTree = "<group>"; };
+		D74E481F1524F3DF00BC8B9D /* XoomlAttributeHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XoomlAttributeHelper.m; sourceTree = "<group>"; };
 		D7A53CEC1522F39500183CB6 /* IdeaStock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IdeaStock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7A53CF01522F39500183CB6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D7A53CF21522F39500183CB6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -172,6 +175,8 @@
 				D709470A1523BDFE008E4AD9 /* XoomlNote.m */,
 				D71D934C15230A930043E573 /* DropboxDataModel.h */,
 				D71D934D15230A930043E573 /* DropboxDataModel.m */,
+				D74E481E1524F3DF00BC8B9D /* XoomlAttributeHelper.h */,
+				D74E481F1524F3DF00BC8B9D /* XoomlAttributeHelper.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -374,6 +379,7 @@
 				D70947261523DC27008E4AD9 /* DDXMLElement.m in Sources */,
 				D70947271523DC27008E4AD9 /* DDXMLNode.m in Sources */,
 				D709472A15242AC3008E4AD9 /* XoomlNoteParser.m in Sources */,
+				D74E48201524F3DF00BC8B9D /* XoomlAttributeHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

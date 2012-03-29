@@ -8,6 +8,7 @@
 
 #import "XoomlNoteParser.h"
 #import "DDXML.h"
+#import "XoomlAttributeHelper.h"
 
 @implementation XoomlNoteParser
 
@@ -54,4 +55,59 @@
     return note;
 
 }
+
+#define XML_HEADER @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+#define XSI_NAMESPACE @"http://www.w3.org/2001/XMLSchema-instance"
+#define XOOML_NAMESPACE @"http://kftf.ischool.washington.edu/xmlns/xooml"
+#define XOOML_SCHEMA_LOCATION @"http://kftf.ischool.washington.edu/xmlns/xooml http://kftf.ischool.washington.edu/XMLschema/0.41/XooML.xsd"
+#define XOOML_SCHEMA_VERSION @"0.41"
+
+#define XOOML_FRAGMENT @"xooml:fragment"
+#define XOOML_ASSOCIATION @"xooml:association"
+
+#define APP_NAME @"IdeaStock"
++ (NSData *) convertNoteToXooml: (XoomlNote *) note{
+    
+    //create the root element (xooml:fragment) and fill out its attributes
+    DDXMLElement * root = [[DDXMLElement alloc] initWithName: XOOML_FRAGMENT];
+    
+    [root addNamespace: [DDXMLNode namespaceWithName:@"xsi" stringValue: XSI_NAMESPACE]];
+    [root addNamespace: [DDXMLNode namespaceWithName:@"xooml" stringValue: XOOML_NAMESPACE]];
+    [root addAttribute: [DDXMLNode attributeWithName:@"xsi:schemaLocation" stringValue: XOOML_SCHEMA_LOCATION]];
+    [root addAttribute: [DDXMLNode attributeWithName:@"schemaVersion" stringValue: XOOML_SCHEMA_VERSION]];
+    [root addAttribute: [DDXMLNode attributeWithName:@"defaultApplication" stringValue:@""]];
+    [root addAttribute: [DDXMLNode attributeWithName:@"relatedItem" stringValue:@""]];
+    
+    //TODO Add tool specific child of the root here 
+    
+    //create the association note and its attributes
+    DDXMLElement * xoomlAssociation = [[DDXMLElement alloc] initWithName: XOOML_ASSOCIATION];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"ID" stringValue:note.noteID]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"associatedItem" stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"associatediIcon" stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"associatedXooMLFragment" stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"levelOfSynchronization" stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"displayText" stringValue:note.noteText]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"openWithDefault" stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"createdBy" stringValue:APP_NAME]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"createdOn" stringValue:note.creationDate]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"modifiedBy" stringValue:APP_NAME]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"modifiedOn"stringValue:note.modificationDate]];
+
+    //TODO Add tool specific child of the association here
+    
+    //Add association as a chile of root
+    [root addChild:xoomlAssociation];
+    
+    //create the xml string by appending standard xml headers
+    NSString *xmlString = [root description];
+    NSString *xmlHeader = XML_HEADER;
+    xmlString = [xmlHeader stringByAppendingString:xmlString];
+    
+    return [xmlString dataUsingEncoding:NSUTF8StringEncoding];
+
+    
+}
+
+
 @end
