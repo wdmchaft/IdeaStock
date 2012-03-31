@@ -34,6 +34,8 @@
 		D7A53D261522F4C700183CB6 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D251522F4C700183CB6 /* DropboxSDK.framework */; };
 		D7A53D281522F4E100183CB6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D271522F4E100183CB6 /* Security.framework */; };
 		D7B1431C152680B600DC7556 /* IdeaStockSchema.xsd in Resources */ = {isa = PBXBuildFile; fileRef = D7B1431B152680B500DC7556 /* IdeaStockSchema.xsd */; };
+		D7B1432115268B4C00DC7556 /* BulletinBoardAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B1432015268B4C00DC7556 /* BulletinBoardAttributes.m */; };
+		D7B1432D1526A50400DC7556 /* XoomlBulletinBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B1432C1526A50400DC7556 /* XoomlBulletinBoard.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +97,10 @@
 		D7A53D251522F4C700183CB6 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
 		D7A53D271522F4E100183CB6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		D7B1431B152680B500DC7556 /* IdeaStockSchema.xsd */ = {isa = PBXFileReference; explicitFileType = text.xml; fileEncoding = 4; path = IdeaStockSchema.xsd; sourceTree = "<group>"; };
+		D7B1431F15268B4C00DC7556 /* BulletinBoardAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoardAttributes.h; sourceTree = "<group>"; };
+		D7B1432015268B4C00DC7556 /* BulletinBoardAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletinBoardAttributes.m; sourceTree = "<group>"; };
+		D7B1432B1526A50400DC7556 /* XoomlBulletinBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XoomlBulletinBoard.h; sourceTree = "<group>"; };
+		D7B1432C1526A50400DC7556 /* XoomlBulletinBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XoomlBulletinBoard.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,7 +176,11 @@
 		D709472B15242BA4008E4AD9 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
+				D7B1431F15268B4C00DC7556 /* BulletinBoardAttributes.h */,
+				D7B1432015268B4C00DC7556 /* BulletinBoardAttributes.m */,
 				D709472815242AC3008E4AD9 /* XoomlNoteParser.h */,
+				D7B1432B1526A50400DC7556 /* XoomlBulletinBoard.h */,
+				D7B1432C1526A50400DC7556 /* XoomlBulletinBoard.m */,
 				D709472915242AC3008E4AD9 /* XoomlNoteParser.m */,
 				D71D934F15230B3D0043E573 /* BulletinBoard.h */,
 				D71D934B152301F10043E573 /* DataModel.h */,
@@ -388,6 +398,8 @@
 				D70947271523DC27008E4AD9 /* DDXMLNode.m in Sources */,
 				D709472A15242AC3008E4AD9 /* XoomlNoteParser.m in Sources */,
 				D74E48201524F3DF00BC8B9D /* XoomlAttributeHelper.m in Sources */,
+				D7B1432115268B4C00DC7556 /* BulletinBoardAttributes.m in Sources */,
+				D7B1432D1526A50400DC7556 /* XoomlBulletinBoard.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

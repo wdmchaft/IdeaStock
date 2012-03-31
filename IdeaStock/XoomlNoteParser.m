@@ -10,6 +10,11 @@
 #import "DDXML.h"
 #import "XoomlAttributeHelper.h"
 
+@interface XoomlNoteParser()
+
++ (NSData *) convertBulletinBoardAttributesToXooml: (BulletinBoardAttributes *) attributes;
++ (NSString *) convertBulletinBoardNoteAttributesToXooml: (BulletinBoardAttributes *) attributes;
+@end
 @implementation XoomlNoteParser
 
 

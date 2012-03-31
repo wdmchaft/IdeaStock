@@ -8,10 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "XoomlNote.h"
-
+#import "XoomlBulletinBoard.h"
+#import "BulletinBoardAttributes.h"
 @interface XoomlNoteParser : NSObject
 
 + (XoomlNote *) XoomlNoteFromXML: (NSData *)data;
 + (NSData *) convertNoteToXooml: (XoomlNote *) note;
++ (NSData *) convertBulletinBoardToXooml: (XoomlBulletinBoard *) board;
+
+
+
 
 @end
