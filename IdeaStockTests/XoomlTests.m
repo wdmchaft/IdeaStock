@@ -28,7 +28,7 @@ NSData * xml;
 {
     XoomlNote * note =  [XoomlNote xoomlNoteFromXML:xml];
     NSString * noteText = note.noteText;
-    NSString * noteID = note.noteID;
+    NSString * noteID = note.noteTextID;
     NSString * noteCreationDate = note.creationDate;
     NSString * noteModificationDate = note.modificationDate;
     STAssertEqualObjects(@"Note1Text1", noteText, @"Note Text Value does not match the note text in the XML file");
@@ -53,13 +53,13 @@ NSData * xml;
 {
     XoomlNote * actualNote = [[XoomlNote alloc] initWithCreationDate:[XoomlAttributeHelper generateCurrentTimeForXooml]];
     actualNote.noteText = @"Note1Text1";
-    actualNote.noteID = [XoomlAttributeHelper generateUUID];
+    actualNote.noteTextID = [XoomlAttributeHelper generateUUID];
     actualNote.modificationDate = [XoomlAttributeHelper generateCurrentTimeForXooml];
     NSData * createdXooml = [actualNote convertToXooml];
     XoomlNote * expectedNote = [XoomlNote xoomlNoteFromXML:createdXooml];
     
     STAssertEqualObjects(actualNote.noteText, expectedNote.noteText, @"Note Text Value did not get converted to xooml properly");
-    STAssertEqualObjects(actualNote.noteID, expectedNote.noteID, @"Note ID Value did not get converted to xooml properly");
+    STAssertEqualObjects(actualNote.noteTextID, expectedNote.noteTextID, @"Note ID Value did not get converted to xooml properly");
     STAssertEqualObjects(actualNote.creationDate, expectedNote.creationDate, @"Note creation date Value did not get converted to xooml properly");
     STAssertEqualObjects(actualNote.modificationDate, expectedNote.modificationDate, @"Note modification date Value did not get converted to xooml properly");
     

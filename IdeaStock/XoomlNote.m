@@ -11,7 +11,7 @@
 
 @implementation XoomlNote
 @synthesize noteText = _noteText;
-@synthesize noteID = _noteID;
+@synthesize noteTextID = _noteID;
 @synthesize  creationDate = _creationDate;
 @synthesize modificationDate = _modificationDate;
 

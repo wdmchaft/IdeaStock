@@ -10,7 +10,7 @@
 #import "Note.h"
 @protocol BulletinBoard <NSObject>
 
-@property (nonatomic,strong) NSArray <Note> * notes;
+@property (nonatomic,strong) NSDictionary <Note> * notes;
 
 
 @end

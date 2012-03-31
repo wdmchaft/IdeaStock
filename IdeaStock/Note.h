@@ -15,7 +15,7 @@
 
 @required
 @property (nonatomic,strong) NSString * noteText;
-@property (nonatomic,strong) NSString * noteID;
+@property (nonatomic,strong) NSString * noteTextID;
 @property (nonatomic,strong) NSString * creationDate;
 @property (nonatomic,strong) NSString * modificationDate;
 

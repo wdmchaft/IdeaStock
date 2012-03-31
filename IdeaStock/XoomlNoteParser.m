@@ -48,7 +48,7 @@
     //get note properties from the attributes
     XoomlNote * note = [[XoomlNote alloc] init];
     note.noteText = [[noteXML attributeForName: NOTE_TEXT] stringValue];
-    note.noteID = [[noteXML attributeForName: NOTE_ID] stringValue];
+    note.noteTextID = [[noteXML attributeForName: NOTE_ID] stringValue];
     note.creationDate = [[noteXML attributeForName: NOTE_CREATION_DATE] stringValue];
     note.modificationDate = [[noteXML attributeForName:NOTE_MODIFICATION_DATE] stringValue];
     
@@ -82,7 +82,7 @@
     
     //create the association note and its attributes
     DDXMLElement * xoomlAssociation = [[DDXMLElement alloc] initWithName: XOOML_ASSOCIATION];
-    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"ID" stringValue:note.noteID]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"ID" stringValue:note.noteTextID]];
     [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"associatedItem" stringValue:@""]];
     [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"associatediIcon" stringValue:@""]];
     [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"associatedXooMLFragment" stringValue:@""]];
