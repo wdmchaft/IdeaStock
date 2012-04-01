@@ -10,8 +10,14 @@
 #import "BulletinBoard.h"
 
 #import "DataModel.h"
+
+#define STACKING @"stacking"
+#define GROUPING @"grouping"
+#define LINKAGE @"linkage"
+
+
 @interface XoomlBulletinBoard : NSObject <BulletinBoard>
 
--(id)initWithDataModel: (id <DataModel>) dataModel;
+-(id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel;
 
 @end
