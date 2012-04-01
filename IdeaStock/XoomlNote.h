@@ -12,5 +12,5 @@
 + (XoomlNote *) xoomlNoteFromXML: (NSData *) xml;
 - (XoomlNote *) initWithCreationDate: (NSString *) date;
 - (NSData *) convertToXooml;
-- (NSString *) description;
+
 @end

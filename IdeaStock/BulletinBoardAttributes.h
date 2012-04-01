@@ -16,6 +16,9 @@
 
 @interface BulletinBoardAttributes : NSObject
 
+//Create empty dictionaries to hold attribute names . Each dictionary is keyed on
+//attribute type and is stored in attribtues
+- (id) initWithAttributes: (NSArray *)attributeTypes;
 //returns all the attributes of Type attributeType as an NSDictionary keyed on
 //attribute name
 - (NSDictionary *) getAllAttributesForAttributeType: (NSString *) attributeType;

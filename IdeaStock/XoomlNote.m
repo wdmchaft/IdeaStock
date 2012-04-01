@@ -18,7 +18,7 @@
 //Factory method for creating a note by reading an XML file
 //The returned note is a note with all the properties filled
 +(XoomlNote *) xoomlNoteFromXML:(NSData *)xml{
-    return [XoomlNoteParser XoomlNoteFromXML:xml];
+    return [XoomlNoteParser xoomlNoteFromXML:xml];
 }
 
 //Constructor for creating an empty note with the creationDate

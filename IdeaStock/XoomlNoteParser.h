@@ -12,11 +12,9 @@
 #import "BulletinBoardAttributes.h"
 @interface XoomlNoteParser : NSObject
 
-+ (XoomlNote *) XoomlNoteFromXML: (NSData *)data;
++ (XoomlNote *) xoomlNoteFromXML: (NSData *)data;
++ (XoomlBulletinBoard *) xoomlBulletinBoardFromXML: (NSData *)data;
 + (NSData *) convertNoteToXooml: (XoomlNote *) note;
 + (NSData *) convertBulletinBoardToXooml: (XoomlBulletinBoard *) board;
-
-
-
 
 @end

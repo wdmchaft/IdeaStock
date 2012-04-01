@@ -24,8 +24,7 @@
 
 @synthesize attributes = _attributes;
 
-//Create empty dictionaries to hold attribute names . Each dictionary is keyed on
-//attribute type and is stored in attribtues
+
 - (id) initWithAttributes: (NSArray *)attributeTypes{
     self = [super init];
     self.attributes = [NSMutableDictionary dictionary];

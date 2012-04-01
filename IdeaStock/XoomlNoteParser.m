@@ -23,7 +23,7 @@
 #define NOTE_CREATION_DATE @"createdOn"
 #define NOTE_MODIFICATION_DATE @"modifiedOn"
 
-+ (XoomlNote *) XoomlNoteFromXML:(NSData *)data{
++ (XoomlNote *) xoomlNoteFromXML:(NSData *)data{
     
     //open the XML document
     NSError *err = nil;

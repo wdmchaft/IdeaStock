@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "BulletinBoard.h"
+
+#import "DataModel.h"
 @interface XoomlBulletinBoard : NSObject <BulletinBoard>
+
+-(id)initWithDataModel: (id <DataModel>) dataModel;
 
 @end

@@ -19,4 +19,6 @@
 @property (nonatomic,strong) NSString * creationDate;
 @property (nonatomic,strong) NSString * modificationDate;
 
+- (NSString *) description;
+
 @end
