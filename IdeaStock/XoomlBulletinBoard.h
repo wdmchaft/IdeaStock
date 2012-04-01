@@ -13,11 +13,17 @@
 
 #define STACKING @"stacking"
 #define GROUPING @"grouping"
+
+
 #define LINKAGE @"linkage"
+#define POSITION @"position"
 
 
 @interface XoomlBulletinBoard : NSObject <BulletinBoard>
 
--(id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel;
+- (id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel;
+
+- (id)initBullrtinBoardFromXoomlWithDatamodel: (id <DataModel>) datamodel 
+                                      andName:(NSString *) bulletinBoardName;
 
 @end

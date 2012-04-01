@@ -10,12 +10,15 @@
 
 @interface BulletinBoardAttributes()
 
-//the main datastructure for holding the attributes. This is an NSDictionary of NSDictionary of NSArrays. 
-// attributes is keyed on attribute type.
-// attribute[attributeType] is keyed on attribute Name.
-// attribute[attributeType][attibuteName] is an array of noteIDs belonging to that 
-//attribute. 
-// for example. attribute["Stack"]["StackName1] returns and array of all the noteIDs that bleong to the attribute stackName1 of type Stack. 
+/*
+ the main datastructure for holding the attributes. This is an NSDictionary of NSDictionary of NSArrays. 
+ attributes is keyed on attribute type.
+ attribute[attributeType] is keyed on attribute Name.
+ attribute[attributeType][attibuteName] is an array of noteIDs belonging to
+ that attribute. 
+ 
+ for example. attribute["Stack"]["StackName1] returns and array of all the noteIDs that bleong to the attribute stackName1 of type Stack. 
+ */
 @property (nonatomic,strong) NSMutableDictionary * attributes;
 
 @end

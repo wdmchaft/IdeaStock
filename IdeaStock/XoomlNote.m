@@ -7,7 +7,7 @@
 //
 
 #import "XoomlNote.h"
-#import "XoomlNoteParser.h"
+#import "XoomlParser.h"
 
 @implementation XoomlNote
 @synthesize noteText = _noteText;
@@ -18,7 +18,7 @@
 //Factory method for creating a note by reading an XML file
 //The returned note is a note with all the properties filled
 +(XoomlNote *) xoomlNoteFromXML:(NSData *)xml{
-    return [XoomlNoteParser xoomlNoteFromXML:xml];
+    return [XoomlParser xoomlNoteFromXML:xml];
 }
 
 //Constructor for creating an empty note with the creationDate
@@ -29,7 +29,7 @@
 }
 
 -(NSData *) convertToXooml{
-    return [XoomlNoteParser convertNoteToXooml: self];
+    return [XoomlParser convertNoteToXooml: self];
     
 }
 
