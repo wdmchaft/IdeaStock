@@ -36,7 +36,6 @@
 		D7B1431C152680B600DC7556 /* IdeaStockSchema.xsd in Resources */ = {isa = PBXBuildFile; fileRef = D7B1431B152680B500DC7556 /* IdeaStockSchema.xsd */; };
 		D7B1432115268B4C00DC7556 /* BulletinBoardAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B1432015268B4C00DC7556 /* BulletinBoardAttributes.m */; };
 		D7B1432D1526A50400DC7556 /* XoomlBulletinBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B1432C1526A50400DC7556 /* XoomlBulletinBoard.m */; };
-		D7F85EAB15285FB400F16D25 /* XoomlBulletinBoardParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D7F85EAA15285FB400F16D25 /* XoomlBulletinBoardParser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,9 +101,8 @@
 		D7B1432015268B4C00DC7556 /* BulletinBoardAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletinBoardAttributes.m; sourceTree = "<group>"; };
 		D7B1432B1526A50400DC7556 /* XoomlBulletinBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XoomlBulletinBoard.h; sourceTree = "<group>"; };
 		D7B1432C1526A50400DC7556 /* XoomlBulletinBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XoomlBulletinBoard.m; sourceTree = "<group>"; };
-		D7F85EA8152850D300F16D25 /* XoomlBulletinBoardDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XoomlBulletinBoardDelegate.h; sourceTree = "<group>"; };
-		D7F85EA915285FB400F16D25 /* XoomlBulletinBoardParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XoomlBulletinBoardParser.h; path = ../XoomlBulletinBoardParser.h; sourceTree = "<group>"; };
-		D7F85EAA15285FB400F16D25 /* XoomlBulletinBoardParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XoomlBulletinBoardParser.m; path = ../XoomlBulletinBoardParser.m; sourceTree = "<group>"; };
+		D7F85EAD1528CF7800F16D25 /* BulletinBoardDatasource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoardDatasource.h; sourceTree = "<group>"; };
+		D7F85EAE1528D29E00F16D25 /* BulletinBoardDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoardDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,9 +178,6 @@
 		D709472B15242BA4008E4AD9 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
-				D7F85EA8152850D300F16D25 /* XoomlBulletinBoardDelegate.h */,
-				D7F85EA915285FB400F16D25 /* XoomlBulletinBoardParser.h */,
-				D7F85EAA15285FB400F16D25 /* XoomlBulletinBoardParser.m */,
 				D7B1431F15268B4C00DC7556 /* BulletinBoardAttributes.h */,
 				D7B1432015268B4C00DC7556 /* BulletinBoardAttributes.m */,
 				D709472815242AC3008E4AD9 /* XoomlParser.h */,
@@ -198,6 +193,8 @@
 				D71D934D15230A930043E573 /* DropboxDataModel.m */,
 				D74E481E1524F3DF00BC8B9D /* XoomlAttributeHelper.h */,
 				D74E481F1524F3DF00BC8B9D /* XoomlAttributeHelper.m */,
+				D7F85EAD1528CF7800F16D25 /* BulletinBoardDatasource.h */,
+				D7F85EAE1528D29E00F16D25 /* BulletinBoardDelegate.h */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -407,7 +404,6 @@
 				D74E48201524F3DF00BC8B9D /* XoomlAttributeHelper.m in Sources */,
 				D7B1432115268B4C00DC7556 /* BulletinBoardAttributes.m in Sources */,
 				D7B1432D1526A50400DC7556 /* XoomlBulletinBoard.m in Sources */,
-				D7F85EAB15285FB400F16D25 /* XoomlBulletinBoardParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

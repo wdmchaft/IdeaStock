@@ -8,7 +8,8 @@
 
 #import "XoomlBulletinBoard.h"
 #import "XoomlParser.h"
-#import "XoomlBulletinBoardParser.h"
+#import "BulletinBoardDelegate.h"
+#import "BulletinBoardDatasource.h"
 
 @interface XoomlBulletinBoard()
 
@@ -34,20 +35,30 @@
  */
 @property (nonatomic,strong) NSMutableDictionary * noteAttributes;
 
+
+
 /*
  This is the datamodel that the bulletin board uses for retrieval and storage of itself. 
  */
 @property (nonatomic,strong) id<DataModel> dataModel;
 
-//TODO this smells of bad design. 
-@property (nonatomic,strong) XoomlBulletinBoardParser <XoomlBulletinBoardDelegate>  *bulletinBoardParser;
+/*
+ This delegate object provides information for all of the data specific 
+ questions that the bulletin baord may ask. 
+ 
+ Properties of the bulletin board are among these data specific questions. 
+ */
+@property (nonatomic,strong) id <BulletinBoardDelegate> delegate;
+
+
+@property (nonatomic,strong) id <BulletinBoardDatasource> dataSource;
 
 @end
 @implementation XoomlBulletinBoard
 
 @synthesize dataModel = _dataModel;
 
-@synthesize bulletinBoardParser = _bulletinBoardParser;
+
 
 -(id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel{
     self = [super init];
@@ -67,7 +78,7 @@
     
 }
 
--(id) initBullrtinBoardFromXoomlWithDatamodel:(id<DataModel>)datamodel andName:(NSString *)bulletinBoardName{
+-(id) initBullrtinBoardFromXoomlDatamodel:(id<DataModel>)datamodel andName:(NSString *)bulletinBoardName{
     self = [self initEmptyBulletinBoardWithDataModel:datamodel];
     NSData * bulletinBoardData = [datamodel getBulletinBoard:bulletinBoardName];    
     //TODO init the delegate

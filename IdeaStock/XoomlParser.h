@@ -14,6 +14,6 @@
 
 + (XoomlNote *) xoomlNoteFromXML: (NSData *)data;
 + (NSData *) convertNoteToXooml: (XoomlNote *) note;
-+ (NSData *) convertBulletinBoardToXooml: (XoomlBulletinBoard *) board;
+
 
 @end
