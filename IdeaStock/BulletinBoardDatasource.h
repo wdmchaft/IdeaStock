@@ -30,6 +30,7 @@
  */
 -(id) initWithData: (NSData *) data;
 
+-(id) initAsEmpty;
 /*
  Serializes the bulletin board into raw data that is ready for serialization.
  
