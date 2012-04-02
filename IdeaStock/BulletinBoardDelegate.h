@@ -261,9 +261,11 @@ WithReferenceToNote: (NSString *) refNoteID;
  
  For example;
  {noteID1 = {name = "Note1", PositionX = 200 , PositionY = 200, isVisible = true"}
+ 
+ This method does not gurauntee that all the keys are present in the dictionary. 
  */
 @required
-- (NSDictionary *) getNoteAllNoteBasicInfo;
+- (NSDictionary *) getAllNoteBasicInfo;
 
 /*
  Returns all the linkage info for the note with noteID.

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "XoomlNote.h"
-#import "XoomlBulletinBoard.h"
+#import "AssociativeBulletinBoard.h"
 #import "BulletinBoardAttributes.h"
 @interface XoomlParser : NSObject
 

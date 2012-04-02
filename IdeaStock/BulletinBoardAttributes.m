@@ -38,7 +38,21 @@
     return self;
 }
 
-- (NSDictionary *) getAllAttributesForAttributeType: (NSString *) attributeType{
+- (void) createAttributeWithName: (NSString *) attributeName
+                forAttributeType:(NSString *) attributeType
+                       andValues: (NSArray *)values{
+    
+    [[self.attributes objectForKey:attributeType] setObject:values forKey:attributeName];
+}
+
+-(void) addValues:(NSArray *)values
+      ToAttribute:(NSString *)attributeName
+ forAttributeType:(NSString *)attributeType{
+    
+    [[[self.attributes objectForKey:attributeType] objectForKey:attributeName] addObjectsFromArray:values];
+}
+
+- (NSDictionary *) getAllAttributeNamesForAttributeType: (NSString *) attributeType{
     return [[self.attributes objectForKey:attributeType] copy];
 }
 
@@ -48,22 +62,13 @@
     
 }
 
-- (void) createEmptyAttributeWithName: (NSString *) attributeName
-                     forAttributeType:(NSString *) attributeType{
-    NSMutableArray * noteIDs = [NSMutableArray array];
-    [[self.attributes objectForKey:attributeType] setObject:noteIDs forKey:attributeName];
-}
 
-- (void) addNoteID: (NSString *) noteID 
-       ToAttribute: (NSString *)attributeName
-  forAttributeType: (NSString *) attributeType{
-    [[[self.attributes objectForKey:attributeType] objectForKey:attributeName] addObject:noteID];
-}
 
-- (void) removeNoteID: (NSString *) noteID
+
+- (void) removeValues: (NSArray *) values
         fromAttribute: (NSString *) attributeName
      forAttributeType: (NSString *) attributeType{
-        [[[self.attributes objectForKey:attributeType] objectForKey:attributeName] removeObject:noteID];
+    [[[self.attributes objectForKey:attributeType] objectForKey:attributeName] removeObjectsInArray:values];
 }
 
 - (void) removeAttribute: (NSString *) attributeName
@@ -71,5 +76,25 @@
     
     [[self.attributes objectForKey:AttributeType] removeObjectForKey:attributeName];
 }
+
+- (void) updateAttributeName : (NSString *) attributeName 
+                       ofType: (NSString *) attributeType 
+                  withNewName: (NSString *) newAttributeName{
+    NSArray * values = [self getAttributeWithName:attributeName forAttributeType:attributeType];
+    [self removeAttribute:attributeName forAttributeType:attributeType];
+    [self createAttributeWithName:newAttributeName forAttributeType:attributeType andValues:values];
+    
+}
+
+- (void) updateValue: (NSString *) value 
+          ofAttribue: (NSString *) attributeName 
+              ofType: (NSString *) attributeType 
+        withNewValue: (NSString *) newValue{
+    [self removeValues:[NSArray arrayWithObject:value] fromAttribute:attributeName forAttributeType:attributeType];
+    [self addValues:[NSArray arrayWithObject:newValue] ToAttribute: attributeName forAttributeType:attributeType];
+    
+}
+
+
 
 @end

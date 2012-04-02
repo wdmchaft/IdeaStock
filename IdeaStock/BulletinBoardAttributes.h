@@ -10,42 +10,128 @@
 
 /**
  * This is a class for holding all the attributes belonging to a bulletin board.
- * This attributes can belong to a single note or the whole bulletinBoard
+ * These attributes can belong to a single note or the whole bulletinBoard. 
+ * 
+ * This class can be thought of as a data structure that holds values for different attribute names and types. 
+ * Attributes are the same if they have the same name and type. 
+ *
+ * The attribute types that this container can handle should be specified in initilization 
+ * After initializiation its not possible to remove or rename attribute Types. 
+ * Attribute names and values however can be changed. 
+ *
+ *Each attribute can have multiple values but it has at least one value. 
  */
 
 
 @interface BulletinBoardAttributes : NSObject
 
-//Create empty dictionaries to hold attribute names . Each dictionary is keyed on
-//attribute type and is stored in attribtues
+/*------------
+ Creation
+ -------------- */
+/*
+ Create empty dictionaries to hold attribute names . Each dictionary is keyed on
+ attribute type and is stored in attribtues.
+ */
 - (id) initWithAttributes: (NSArray *)attributeTypes;
-//returns all the attributes of Type attributeType as an NSDictionary keyed on
-//attribute name
-- (NSDictionary *) getAllAttributesForAttributeType: (NSString *) attributeType;
 
-//returns an attribute with name of type attributetype. The return type is 
-//an NSArray of noteIDs which are NSStrings
-- (NSArray *) getAttributeWithName: (NSString *) attributeName
-                  forAttributeType: (NSString *) attributeType;
+/*
+ Creates an attribute with Name attributeName and attributeType and stores all the values
+ in the values array. 
+ 
+ The values array is an array of NSStrings. 
+ 
+ If the attributeType is not valid the method returns without doing anything.
+ */
+- (void) createAttributeWithName: (NSString *) attributeName
+                forAttributeType:(NSString *) attributeType
+                       andValues: (NSArray *)values;
 
-//Creates and an empty attribute container for attribtue type of attribute type
-- (void) createEmptyAttributeWithName: (NSString *) attributeName
-                     forAttributeType:(NSString *) attributeType;
-
-//adds a noteID to an attribute with the specified attribtueName and type
-- (void) addNoteID: (NSString *) noteID 
+/*
+ Adds the values specified in the values array ( which is an array of strings) to
+ the attribtue with name and type of attributeName and attributeType 
+ 
+ If attributeName and attributeType are invalid the method returns without doing anything. 
+ */
+- (void) addValues: (NSArray *) values
        ToAttribute: (NSString *)attributeName
   forAttributeType: (NSString *) attributeType;
 
-//removes a noteID from the attribute with name and type of attributeName and 
-//attributeType
-- (void) removeNoteID: (NSString *) noteID
+/*------------
+ Query
+ -------------- */
+
+/*
+ returns all the attributes of Type attributeType as an NSArray of
+ NSString containing attribute names.
+ 
+ If attributeType is not valid the method returns nil. 
+ */
+- (NSArray *) getAllAttributeNamesForAttributeType: (NSString *) attributeType;
+
+/*
+ Returns an array of NSString containing all the values of that attribtue name 
+ and type. 
+ 
+ If the array is empty there is no value for that attribute. 
+ 
+ If attributeNAme and attributeType are not valid, the method returns nil. 
+ */
+- (NSArray *) getAttributeWithName: (NSString *) attributeName
+                  forAttributeType: (NSString *) attributeType;
+
+/*-----------
+ Deletion
+ *-----------*/
+ 
+/*
+ Removes all the values specified in the values array (which is an array of NSString)
+ from the attribute with name attributeNAme and type attributeType. 
+ 
+ If the attributeNAme and attributeType are not valid the method returns without
+ doing anything. 
+ 
+ If any value specified in the values array does not belong to the list of 
+ values for the attribute specified with attributeName and attributeType , then
+ the method ignores that value. 
+ */
+- (void) reomveValues: (NSArray *) values
         fromAttribute: (NSString *) attributeName
      forAttributeType: (NSString *) attributeType;
 
-//removes the attribtue with name and type of attributeName and AttribtueType. Any noteID for that attribute name is also deleted
+/*
+ removes an attribute specified by attributeName and attributeType. 
+ 
+ Removing the attribtue will cause all of its values to be deleted. 
+ 
+ If attributeName and attributeType are not valid. The method returns without
+ doing anything
+ */
 - (void) removeAttribute: (NSString *) attributeName
         forAttributeType: (NSString *)AttributeType;
 
+/*------------
+ Updating
+ ------------*/
 
+/*
+ Updates the name of the attribue with attributeName and the type attributeType 
+ With newAttributeName
+ 
+ If attributeName and attributeType are invalid the method returns without doing
+ anything. 
+ */
+- (void) updateAttributeName : (NSString *) attributeName 
+                       ofType: (NSString *) attributeType 
+                  withNewName: (NSString *) newAttributeName;
+
+/*
+ Updates a single value of attributeName and attributeType to newValue
+ 
+ If attributeName and attributeType are invalid the method returns without 
+ doing anything. 
+ */
+- (void) updateValue: (NSString *) value 
+          ofAttribue: (NSString *) attributeName 
+              ofType: (NSString *) attributeType 
+        withNewValue: (NSString *) newValue;
 @end
