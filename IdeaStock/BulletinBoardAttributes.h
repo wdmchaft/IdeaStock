@@ -50,7 +50,10 @@
  Adds the values specified in the values array ( which is an array of strings) to
  the attribtue with name and type of attributeName and attributeType 
  
- If attributeName and attributeType are invalid the method returns without doing anything. 
+ If attributeName doees not exist in the attribute lists, the method creates
+ an attribtue with attributeName and puts the values in it.
+ 
+ If attributeType is invalid the method returns without doing anything. 
  */
 - (void) addValues: (NSArray *) values
        ToAttribute: (NSString *)attributeName

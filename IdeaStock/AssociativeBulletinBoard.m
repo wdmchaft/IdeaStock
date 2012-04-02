@@ -60,6 +60,8 @@
 @synthesize dataModel = _dataModel;
 @synthesize delegate = _delegate;
 @synthesize dataSource = _dataSource;
+@synthesize noteAttributes = _noteAttributes;
+@synthesize bulletinBoardAttributes = _bulletinBoardAttributes;
 
 
 -(id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel{
@@ -74,7 +76,7 @@
     
     //initialize the note attributes dictionary as an empty dictionary
     self.noteAttributes = [NSMutableDictionary dictionary];
-
+    
     //TODO init the delegate and dataSource
     return self;
     
@@ -92,15 +94,28 @@
  These are the default attributes for note
  Add new ones here. 
  */
-#define LINKAGE @"linkage"
+
 #define POSITION_X @"positionX"
 #define POSITION_Y @"positionY"
 #define IS_VISIBLE @"isVisible"
+
+#define POSITION_TYPE @"position"
+#define VISIBILITY_TYPE @"visibility"
+#define LINKAGE_TYPE @"linkage"
+#define STACKING_TYPE @"stacking"
+#define GROUPING_TYPE @"grouping"
+
 
 #define DEFAULT_X_POSITION @"0"
 #define DEFAULT_Y_POSITION @"0"
 #define DEFAULT_VISIBILITY  @"true"
 #define NOTE_NAME @"name"
+
+#define LINKAGE_NAME @"name"
+#define STACKING_NAME @"name"
+#define REF_IDS @"refIDs"
+
+
 -(id) initBullrtinBoardFromXoomlDatamodel:(id<DataModel>)datamodel andName:(NSString *)bulletinBoardName{
     self = [self initEmptyBulletinBoardWithDataModel:datamodel];
     NSData * bulletinBoardData = [datamodel getBulletinBoard:bulletinBoardName];  
@@ -115,7 +130,7 @@
         NSData * noteData = [self.dataModel getNoteForTheBulletinBoard:bulletinBoardName WithName:noteName];
         id <Note> noteObj = [XoomlParser xoomlNoteFromXML:noteData];
         [self.noteContents setObject:noteObj forKey:noteID];
-        BulletinBoardAttributes * noteAttribute = [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:LINKAGE,POSITION_X,POSITION_Y,IS_VISIBLE, nil]];
+        BulletinBoardAttributes * noteAttribute = [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:LINKAGE_TYPE,POSITION_TYPE, VISIBILITY_TYPE, nil]];
         NSString * positionX = [noteInfo objectForKey: POSITION_X];
         if (!positionX ) positionX = DEFAULT_X_POSITION;
         NSString * positionY = [noteInfo objectForKey: POSITION_Y];
@@ -123,7 +138,47 @@
         NSString * isVisible = [noteInfo objectForKey:IS_VISIBLE];
         if (! isVisible) isVisible = DEFAULT_VISIBILITY;
         
+        [noteAttribute createAttributeWithName:POSITION_X forAttributeType: POSITION_TYPE andValues:[NSArray arrayWithObject: positionX ]];
+        [noteAttribute createAttributeWithName:POSITION_Y forAttributeType:POSITION_TYPE andValues:[NSArray arrayWithObject:positionY]];
+        [noteAttribute createAttributeWithName:IS_VISIBLE forAttributeType:VISIBILITY_TYPE andValues:[NSArray arrayWithObject:isVisible]];
     }
+    
+    for (NSString * noteID in self.noteContents){
+        NSDictionary *linkageInfo = [self.delegate getLinkageInfoForNote:noteID];
+        NSArray * refIDs = [linkageInfo objectForKey:REF_IDS];
+        NSString * linkageName = [linkageInfo objectForKey:LINKAGE_NAME];
+        
+        for (NSString * refID in refIDs){
+            if (![self.noteContents objectForKey:refID]){
+                [[self.noteAttributes objectForKey:noteID] addValues:[NSArray arrayWithObject:refID] ToAttribute:linkageName forAttributeType:LINKAGE_TYPE];
+                
+            }
+        }
+        
+    }
+    
+    self.bulletinBoardAttributes = [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:STACKING_TYPE, GROUPING_TYPE,nil]];
+    NSDictionary *stackingInfo = [self.delegate getStackingInfo];
+    for (NSString * stackingName in stackingInfo){
+        NSArray * refIDs = [stackingInfo objectForKey:REF_IDS];
+        for (NSString * refID in refIDs){
+            if(![self.noteContents objectForKey:refIDs]){
+                [self.bulletinBoardAttributes addValues:[NSArray arrayWithObject:refID] ToAttribute:stackingName forAttributeType:STACKING_TYPE];
+            }
+        }
+    }
+    
+    
+    NSDictionary *groupingInfo = [self.delegate getGroupingInfo];
+    for (NSString * groupingName in groupingInfo){
+        NSArray * refIDs = [groupingInfo objectForKey:REF_IDS];
+        for (NSString * refID in refIDs){
+            if(![self.noteContents objectForKey:refIDs]){
+                [self.bulletinBoardAttributes addValues:[NSArray arrayWithObject:refID] ToAttribute:groupingName forAttributeType:GROUPING_TYPE];
+            }
+        }
+    }
+    
     
     
     

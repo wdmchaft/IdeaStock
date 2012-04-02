@@ -42,14 +42,20 @@
                 forAttributeType:(NSString *) attributeType
                        andValues: (NSArray *)values{
     
-    [[self.attributes objectForKey:attributeType] setObject:values forKey:attributeName];
+    [[self.attributes objectForKey:attributeType] setObject:[values mutableCopy] forKey:attributeName];
 }
 
 -(void) addValues:(NSArray *)values
       ToAttribute:(NSString *)attributeName
  forAttributeType:(NSString *)attributeType{
+    NSMutableArray * oldValues = [[self.attributes objectForKey:attributeType] objectForKey:attributeName];
+    if (!oldValues){
+        [self createAttributeWithName:attributeName forAttributeType:attributeType andValues:values];
+        return;
+    }
     
-    [[[self.attributes objectForKey:attributeType] objectForKey:attributeName] addObjectsFromArray:values];
+    [oldValues addObjectsFromArray:values];
+    
 }
 
 - (NSDictionary *) getAllAttributeNamesForAttributeType: (NSString *) attributeType{
