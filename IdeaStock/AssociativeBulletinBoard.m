@@ -310,4 +310,20 @@
         
 }
 
+- (void) addNote: (NSString *) targetNoteID
+ toAttributeName: (NSString *) attributeName
+forAttributeType: (NSString *) attributeType
+          ofNote: (NSString *) sourceNoteId{
+
+    //if the targetNoteID and sourceNoteID are invalid return
+    if (![self.noteContents objectForKey:targetNoteID] || ![self.noteContents objectForKey:sourceNoteId]) return;
+    
+    // add the target noteValue to the source notes attribute list
+    [[self.noteAttributes objectForKey:sourceNoteId] addValues:[NSArray arrayWithObject:targetNoteID] ToAttribute:attributeName forAttributeType:attributeType];
+    
+    //have the delegate reflect the changes in its struture
+    [self.delegate addNoteAttribute:attributeName forType:attributeType forNote:sourceNoteId withValues:[NSArray arrayWithObject:targetNoteID]];
+}
+
+
 @end

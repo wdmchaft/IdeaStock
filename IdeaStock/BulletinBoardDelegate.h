@@ -64,6 +64,9 @@
  
  This method just checks to see if attributeType is valid and based 
  on that calls an associated add method. 
+ 
+ If the attributeName is invalid the method creates the attribute and then adds 
+ the note to it. 
  */
 - (void) addNoteAttribute: (NSString *) attributeName
                   forType: (NSString *) attributeType 
