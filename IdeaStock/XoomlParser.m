@@ -12,9 +12,8 @@
 
 @interface XoomlParser()
 
-+ (NSData *) convertBulletinBoardAttributesToXooml: (BulletinBoardAttributes *) attributes;
-+ (NSString *) convertBulletinBoardNoteAttributesToXooml: (BulletinBoardAttributes *) attributes;
 @end
+
 @implementation XoomlParser
 
 
@@ -29,6 +28,8 @@
     NSError *err = nil;
     DDXMLDocument * document = [[DDXMLDocument alloc] initWithData:data options:0 error:&err];
     
+    //TODO right now im ignoring err. I should use it 
+    //to determine the error
     if (document == nil){
         NSLog(@"Error reading the note XML File");
         return nil;
@@ -64,6 +65,7 @@
 #define XML_HEADER @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 #define XSI_NAMESPACE @"http://www.w3.org/2001/XMLSchema-instance"
 #define XOOML_NAMESPACE @"http://kftf.ischool.washington.edu/xmlns/xooml"
+#define IDEA_STOCK_NAMESPACE @"http://ischool.uw.edu/xmlns/ideastock"
 #define XOOML_SCHEMA_LOCATION @"http://kftf.ischool.washington.edu/xmlns/xooml http://kftf.ischool.washington.edu/XMLschema/0.41/XooML.xsd"
 #define XOOML_SCHEMA_VERSION @"0.41"
 
@@ -112,6 +114,31 @@
     return [xmlString dataUsingEncoding:NSUTF8StringEncoding];
 
     
+}
+
++ (NSData *) getEmptyBulletinBoardXooml{
+    //create the root element (xooml:fragment) and fill out its attributes
+    DDXMLElement * root = 
+    [[DDXMLElement alloc] initWithName: XOOML_FRAGMENT];
+    
+    [root addNamespace: [DDXMLNode namespaceWithName:@"xsi" stringValue: XSI_NAMESPACE]];
+    [root addNamespace: [DDXMLNode namespaceWithName:@"xooml" stringValue: XOOML_NAMESPACE]];
+    [root addNamespace: [DDXMLNode namespaceWithName:@"is" stringValue:IDEA_STOCK_NAMESPACE]];
+    
+    [root addAttribute: [DDXMLNode attributeWithName:@"xsi:schemaLocation" stringValue: XOOML_SCHEMA_LOCATION]];
+    [root addAttribute: [DDXMLNode attributeWithName:@"schemaVersion" stringValue: XOOML_SCHEMA_VERSION]];
+    [root addAttribute: [DDXMLNode attributeWithName:@"defaultApplication" stringValue:@""]];
+    [root addAttribute: [DDXMLNode attributeWithName:@"relatedItem" stringValue:@""]];
+    
+    //because I can't use the method [[DDXMLDocument alloc] initWithRootElement:] 
+    //since its not available in KissXML , I have to provide this hack
+    //Make a string from the root element add XML headers to it, convert it to
+    //data and initialize the document with that NSData
+    NSString *xmlString = [root description];
+    NSString *xmlHeader = XML_HEADER;
+    xmlString = [xmlHeader stringByAppendingString:xmlString];
+    
+    return [xmlString dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 

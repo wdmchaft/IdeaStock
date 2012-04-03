@@ -64,7 +64,7 @@
 		D709471F1523DC27008E4AD9 /* DDXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLNode.h; sourceTree = "<group>"; };
 		D70947201523DC27008E4AD9 /* DDXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLNode.m; sourceTree = "<group>"; };
 		D70947221523DC27008E4AD9 /* DDXMLPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLPrivate.h; sourceTree = "<group>"; };
-		D709472815242AC3008E4AD9 /* XoomlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XoomlParser.h; sourceTree = "<group>"; };
+		D709472815242AC3008E4AD9 /* XoomlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; path = XoomlParser.h; sourceTree = "<group>"; };
 		D709472915242AC3008E4AD9 /* XoomlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XoomlParser.m; sourceTree = "<group>"; };
 		D709472F1524454A008E4AD9 /* IdeaStockTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdeaStockTests.h; sourceTree = "<group>"; };
 		D709473015244557008E4AD9 /* IdeaStockTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdeaStockTests.m; sourceTree = "<group>"; };
