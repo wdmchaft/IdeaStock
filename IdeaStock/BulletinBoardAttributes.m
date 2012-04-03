@@ -122,7 +122,17 @@
     
 }
 
+- (void) updateAttribute: (NSString *) attributeName 
+                  ofType: (NSString *) attributeType 
+            withNewValue: (NSArray *) newValues{
 
+    //remove all objects for the attribute name
+    [[[self.attributes objectForKey:attributeType] objectForKey:attributeName] removeAllObjects];
+    
+    //replace the new objects
+    [[[self.attributes objectForKey:attributeType] objectForKey:attributeName] addObjectsFromArray:newValues];
+    
+}
 
 
 

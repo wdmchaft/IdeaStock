@@ -101,7 +101,7 @@
  values for the attribute specified with attributeName and attributeType , then
  the method ignores that value. 
  */
-- (void) reomveValues: (NSArray *) values
+- (void) removeValues: (NSArray *) values
         fromAttribute: (NSString *) attributeName
      forAttributeType: (NSString *) attributeType;
 
@@ -142,7 +142,7 @@
  If attributeName and attributeType are invalid the method returns without 
  doing anything. 
  */
-- (void) updateAttribue: (NSString *) attributeName 
+- (void) updateAttribute: (NSString *) attributeName 
                  ofType: (NSString *) attributeType 
            withNewValue: (NSArray *) newValues;
 @end

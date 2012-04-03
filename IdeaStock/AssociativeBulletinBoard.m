@@ -63,6 +63,8 @@
 @synthesize noteAttributes = _noteAttributes;
 @synthesize bulletinBoardAttributes = _bulletinBoardAttributes;
 @synthesize noteContents = _noteContents;
+@synthesize bulletinBoardName = _bulletinBoardName;
+
 
 /*
  These are the default attributes for note
@@ -104,9 +106,11 @@
 -(BulletinBoardAttributes *) createBulletinBoardAttributeForNotes{
     return [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:LINKAGE_TYPE,POSITION_TYPE, VISIBILITY_TYPE, nil]];
 }
--(id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel{
+-(id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel                                  andName:(NSString *) bulletinBoardName{
     
     self = [super init];
+    
+    self.bulletinBoardName = bulletinBoardName;
     
     self.dataModel = dataModel;
     
@@ -135,11 +139,13 @@
  created bulletinboard. 
  */
 
+
 //TODO this initializer is getting to heavy weight
--(id) initBullrtinBoardFromXoomlDatamodel:(id<DataModel>)datamodel andName:(NSString *)bulletinBoardName{
+-(id) initBulletinBoardFromXoomlWithDatamodel:(id<DataModel>)datamodel
+                                  andName:(NSString *)bulletinBoardName{
     
     //initialize as an empty bulletin board
-    self = [self initEmptyBulletinBoardWithDataModel:datamodel];
+    self = [self initEmptyBulletinBoardWithDataModel:datamodel andName:(NSString *) bulletinBoardName];
     
     //Now we will initialize the innards of the class one by one
     
@@ -289,6 +295,8 @@
 
 }
 
+
+
 - (void) addNoteAttribute: (NSString *) attributeName
          forAttributeType: (NSString *) attributeType
                   forNote: (NSString *) noteID 
@@ -405,7 +413,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     if (![self.noteContents objectForKey:noteID]) return;
     
     //remove the note reference from the bulletin board attribute
-    [self.bulletinBoardAttributes reomveValues: [NSArray arrayWithObject:noteID]
+    [self.bulletinBoardAttributes removeValues: [NSArray arrayWithObject:noteID]
                                         fromAttribute: attributeName
                                      forAttributeType: attributeType];
     
@@ -464,7 +472,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     if (![self.noteContents objectForKey:noteID]) return;
     
     //update the note attribute values
-    [[self.noteAttributes objectForKey:noteID] updateAttribue:attributeName ofType:attributeType withNewValue:newValues];
+    [[self.noteAttributes objectForKey:noteID] updateAttribute:attributeName ofType:attributeType withNewValue:newValues];
     
     //reflect the changes in the xooml data model
     [self.delegate updateNoteAttribute:attributeName ofType:attributeType withValues:newValues];
@@ -480,5 +488,44 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     //reflect the changes in the xooml data model
     [self.delegate updateBulletinBoardAttributeName:oldAttributeNAme ofType:attributeType withNewName:newAttributeName];
 }
+
+- (NSDictionary *) getAllNotes{
+    return [self.noteContents copy];
+}
+
+- (NSArray *) getAllBulletinBoardAttributeNamesOfType: (NSString *) attributeType{
+    return [self.bulletinBoardAttributes getAllAttributeNamesForAttributeType:attributeType];
+}
+
+- (NSArray *) getAllNoteAttributeNamesOfType: (NSString *) attributeType
+                                     forNote: (NSString *) noteID{
+
+    //if the noteID is invalid return
+    if (![self.noteContents objectForKey:noteID]) return nil;
+    
+    return [[self.noteAttributes objectForKey:noteID] getAllAttributeNamesForAttributeType:attributeType];
+}
+
+- (id <Note>) getNoteContent: (NSString *) noteID{
+    return [self.noteContents objectForKey:noteID];
+}
+
+- (NSArray *) getAllNotesBelongingToBulletinBoardAttribute: (NSString *) attributeName 
+                                          forAttributeType: (NSString *) attributeType{
+    return [self.bulletinBoardAttributes getAttributeWithName:attributeName forAttributeType:attributeType];
+}
+
+- (NSArray *) getAllNotesBelongtingToNoteAttribute: (NSString *) attributeName
+                                   ofAttributeType: (NSString *) attributeType
+                                           forNote: (NSString *) noteID{
+    
+    //if the noteID is invalid return 
+    if (![self.noteContents objectForKey:noteID]) return nil;
+    
+    return [[self.noteAttributes objectForKey:noteID] getAttributeWithName:attributeName forAttributeType:attributeType];
+         
+}
+
+
 
 @end

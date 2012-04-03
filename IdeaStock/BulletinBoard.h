@@ -54,7 +54,7 @@
 - (void) addNoteAttribute: (NSString *) attributeName
          forAttributeType: (NSString *) attributeType
                   forNote: (NSString *) noteID 
-                andVaules:(NSArray *)values;
+                andValues:(NSArray *)values;
 /*
  Adds note with targetNoteID to an attribute of note with sourceNoteID. The attribute has attributeName and is of type attributeType. 
  
@@ -198,12 +198,11 @@ fromBulletinBoardAttribute: (NSString *) attributeName
 
 /*
  Returns a copy of all the note contents in the bulletin board. 
- The returned Array is an array of objects that follow the Note protocol. 
+ The returned dictionary is a dictionary of objects that is keyed on
+ noteIds. The values for these keys are objects that follow the note
+ protocol.
  */
-- (NSArray *) getAllNotes;
-
-
-
+- (NSDictionary *) getAllNotes;
 
 /*
  Returns an array of strings containing the name of all the attributes of type attributeType in the bulletin board. 
@@ -213,7 +212,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
 /*
  Returns an array of strings containing the name of all the attributes of type attributeType in the attribute list of note with noteID. 
  */
-- (NSArray *) getAllNoteAttributesOfType: (NSString *) attributeType
+- (NSArray *) getAllNoteAttributeNamesOfType: (NSString *) attributeType
                             forNote: (NSString *) noteID;
 
 /*
@@ -225,7 +224,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
  Returns an array of noteIDs belonging to the attribute with attributeName and the type attributeType for the bulletin board. 
  */
 - (NSArray *) getAllNotesBelongingToBulletinBoardAttribute: (NSString *) attributeName 
-                                     forAttributeType: (NSString *) attributeType;
+                                          forAttributeType: (NSString *) attributeType;
 
 /*
  Returns an array of NoteIDs belonging to the attribute with attribueName and the type attributeType for the note with noteID. 

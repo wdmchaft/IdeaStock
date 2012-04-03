@@ -21,9 +21,12 @@
 
 @interface AssociativeBulletinBoard : NSObject <BulletinBoard>
 
-- (id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel;
+@property (nonatomic,strong) NSString * bulletinBoardName;
 
-- (id)initBullrtinBoardFromXoomlWithDatamodel: (id <DataModel>) datamodel 
-                                      andName:(NSString *) bulletinBoardName;
+- (id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel
+                                  andName:(NSString *) bulletinBoardName;
+
+- (id)initBulletinBoardFromXoomlWithDatamodel: (id <DataModel>) datamodel 
+                                      andName: (NSString *) bulletinBoardName;
 
 @end
