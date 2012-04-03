@@ -208,7 +208,7 @@
     //add them to the note attributes only if that referenced notes
     //in that linkage are exisiting in the note contents. 
     for (NSString * noteID in self.noteContents){
-        NSDictionary *linkageInfo = [self.delegate getLinkageInfoForNote:noteID];
+        NSDictionary *linkageInfo = [self.delegate getNoteAttributeInfo:LINKAGE_TYPE forNote:noteID];
         NSArray * refIDs = [linkageInfo objectForKey:REF_IDS];
         NSString * linkageName = [linkageInfo objectForKey:LINKAGE_NAME];
         
@@ -227,7 +227,7 @@
     //Setup bulletinboard attributes
     
     //get the stacking information and fill out the stacking attributes
-    NSDictionary *stackingInfo = [self.delegate getStackingInfo];
+    NSDictionary *stackingInfo = [self.delegate getBulletinBoardAttributeInfo:STACKING_TYPE];
     for (NSString * stackingName in stackingInfo){
         NSArray * refIDs = [stackingInfo objectForKey:REF_IDS];
         for (NSString * refID in refIDs){
@@ -238,7 +238,7 @@
     }
     
     //get the grouping information and fill out the grouping info
-    NSDictionary *groupingInfo = [self.delegate getGroupingInfo];
+    NSDictionary *groupingInfo = [self.delegate getBulletinBoardAttributeInfo:GROUPING_TYPE];
     for (NSString * groupingName in groupingInfo){
         NSArray * refIDs = [groupingInfo objectForKey:REF_IDS];
         for (NSString * refID in refIDs){
