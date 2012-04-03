@@ -26,7 +26,7 @@
 /*
  Adds a note with properties specified in the properties dictioanry. 
  
- The required keys in this dictionary are "name" and "ID" each with the value
+ The required keys in this dictionary is "name" with the value
  of a string and "positionX" and "positionY" each with the value of String 
  that is an integer and "isVisible" with the value of a string that is true or
  false.
@@ -40,9 +40,12 @@
  This method assumes that the noteIDs that may be passed in the linkage
  property are valid. 
  */
+//TODO maybe the required properties should be passed as explicit attributes
+//It is easy for the user of the API to make mistakes and not pass implicit
+//properties
 
 @required
-- (void) addNoteWithProperties: (NSDictionary *)properties;
+- (void) addNoteWithID: (NSString *) id andProperties: (NSDictionary *)properties;
 
 /*
  Adds a linkage to note with noteID to note with note refID

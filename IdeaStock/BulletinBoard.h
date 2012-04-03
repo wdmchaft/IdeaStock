@@ -19,8 +19,27 @@
 /*
  Adds a note content to the bulletin board with a unique noteID. This noteID
  is external and differs from the ID inside the Note protocol. 
+ 
+ The properties is a list of the properties for the note. 
+ 
+ The required keys in this dictionary is "name" and "ID" with the value
+ of a string.
+ 
+ The optional keys in this dictionary are "positionX" and "positionY" each with the value of String 
+ 
+ that is an integer and "isVisible" with the value of a string that is true or
+ false.
+ 
+ For example: 
+ {name="Note4", ID="NoteID4", positionX= "100", positionY = "150", isVisible="true"}
+
+ The method raises an exception if any of these info is miising. 
  */
-- (void) addNoteContent: (id <Note>) note withNoteID: (NSString *) noteID;
+//TODO maybe the required properties should be passed as explicit attributes
+//It is easy for the user of the API to make mistakes and not pass implicit
+//properties
+- (void) addNoteContent: (id <Note>) note 
+          andProperties: (NSDictionary *) properties;
 
 /*
  Adds an attribute with AttributeName and AttributeType for a particular note specified by note ID. 
@@ -145,6 +164,18 @@ fromBulletinBoardAttribute: (NSString *) attributeName
                       ofType: (NSString *) attributeType
                      forNote: (NSString *) noteID 
                     withName: (NSString *) newAttributeName;
+
+/*
+ Updates the value of the of a note attribute with name and type attributeName and attributeType
+ for the note with noteID with an array of newValues. 
+ 
+ This is just a convinience method and acts as a replacement that is done by removing the attribute
+ with name and type and adding it again with new values. 
+ */
+-(void) updateNoteAttribute: (NSString *) attributeName
+                     ofType:(NSString *) attributeType 
+                    forNote: (NSString *) noteID 
+              withNewValues: (NSArray *) newValues;
 
 /*
  Changes the name of a bulletin board attribute with type attributeType from oldAttributeName to newAttributeName. 

@@ -75,17 +75,24 @@
 #define LINKAGE_TYPE @"linkage"
 #define STACKING_TYPE @"stacking"
 #define GROUPING_TYPE @"grouping"
-
+#define NOTE_NAME_TYPE @"name"
 
 #define DEFAULT_X_POSITION @"0"
 #define DEFAULT_Y_POSITION @"0"
 #define DEFAULT_VISIBILITY  @"true"
 #define NOTE_NAME @"name"
+#define NOTE_ID @"ID"
 
 #define LINKAGE_NAME @"name"
 #define STACKING_NAME @"name"
 #define REF_IDS @"refIDs"
 
+-(BulletinBoardAttributes *) createBulletinBoardAttributeForBulletinBoard{
+        return [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:STACKING_TYPE,GROUPING_TYPE, nil]];
+}
+-(BulletinBoardAttributes *) createBulletinBoardAttributeForNotes{
+    return [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:LINKAGE_TYPE,POSITION_TYPE, VISIBILITY_TYPE, nil]];
+}
 -(id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel{
     
     self = [super init];
@@ -103,7 +110,7 @@
     //initialize the bulletin board attributes with stacking and grouping
     //to add new attributes first define them in the header file and the
     //initilize the bulletinBoardAttributes with an array of them
-    self.bulletinBoardAttributes = [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:STACKING_TYPE,GROUPING_TYPE, nil]];
+    self.bulletinBoardAttributes = [self createBulletinBoardAttributeForBulletinBoard];
     
     //initialize the note attributes dictionary as an empty dictionary
     self.noteAttributes = [NSMutableDictionary dictionary];
@@ -170,8 +177,7 @@
         
         //now initialize the bulletinBoard attributes to hold all the 
         //note specific attributes for that note
-        BulletinBoardAttributes * noteAttribute = [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:LINKAGE_TYPE,POSITION_TYPE, VISIBILITY_TYPE, nil]];
-        
+        BulletinBoardAttributes * noteAttribute = [self createBulletinBoardAttributeForNotes];
         //get the note specific info from the note basic info
         NSString * positionX = [noteInfo objectForKey: POSITION_X];
         if (!positionX ) positionX = DEFAULT_X_POSITION;
@@ -185,6 +191,9 @@
         [noteAttribute createAttributeWithName:POSITION_X forAttributeType: POSITION_TYPE andValues:[NSArray arrayWithObject: positionX ]];
         [noteAttribute createAttributeWithName:POSITION_Y forAttributeType:POSITION_TYPE andValues:[NSArray arrayWithObject:positionY]];
         [noteAttribute createAttributeWithName:IS_VISIBLE forAttributeType:VISIBILITY_TYPE andValues:[NSArray arrayWithObject:isVisible]];
+        [noteAttribute createAttributeWithName:NOTE_NAME forAttributeType: NOTE_NAME_TYPE andValues:[NSArray arrayWithObject: noteName ]];
+        
+        [self.noteAttributes setObject:noteAttribute forKey:noteID];
     }
     //now we have note contents set up 
     
@@ -204,6 +213,7 @@
         }
         
     }
+
     //Now we have all the note specific attributes stored
     
     
@@ -231,10 +241,51 @@
         }
     }
     
+    return self;    
+}
+
+- (void) addNoteContent: (id <Note>) note 
+          andProperties: (NSDictionary *) properties{
     
+    //get note Name and note ID if they are not present throw an exception
+    NSString * noteID = [properties objectForKey:NOTE_ID];
+    NSString * noteName = [properties  objectForKey:NOTE_NAME];
+    if (!noteID || !noteName) [NSException raise:NSInvalidArgumentException
+                             format:@"A Values is missing from the required properties dictionary"];
     
+    //set the note content for the noteID
+    [self.noteContents setObject:note forKey:noteID];
     
+    //get other optional properties for the note. 
+    //If they are not present use default values
+    NSString * positionX = [properties objectForKey:POSITION_X];
+    if (!positionX) positionX = DEFAULT_X_POSITION;
+    NSString * positionY = [properties objectForKey:POSITION_Y];
+    if (!positionY) positionY = DEFAULT_Y_POSITION;
+    NSString * isVisible = [properties objectForKey:IS_VISIBLE];
+    if(!isVisible) isVisible = DEFAULT_VISIBILITY;
     
+    //create a dictionary of note properties
+    NSDictionary *noteProperties = [NSDictionary dictionaryWithObjectsAndKeys:noteName,NOTE_NAME,
+                                               noteID,NOTE_ID,
+                                               positionX,POSITION_X,
+                                               positionY, POSITION_Y,
+                                               isVisible,IS_VISIBLE,
+                                               nil];
+    
+    //have the delegate hold the structural information about the note
+    [self.delegate addNoteWithID:noteID andProperties:noteProperties];
+    
+    //have the notes bulletin board attribute list for the note hold the note
+    //properties
+    BulletinBoardAttributes * noteAttribute = [self createBulletinBoardAttributeForNotes];
+    [noteAttribute createAttributeWithName:NOTE_NAME forAttributeType: NOTE_NAME_TYPE andValues:[NSArray arrayWithObject: noteName ]];
+    [noteAttribute createAttributeWithName:POSITION_X forAttributeType: POSITION_TYPE andValues:[NSArray arrayWithObject: positionX ]];
+    [noteAttribute createAttributeWithName:POSITION_Y forAttributeType:POSITION_TYPE andValues:[NSArray arrayWithObject:positionY]];
+    [noteAttribute createAttributeWithName:IS_VISIBLE forAttributeType:VISIBILITY_TYPE andValues:[NSArray arrayWithObject:isVisible]];
+    
+    [self.noteAttributes setObject:noteAttribute forKey:noteID];
+
 }
 
 @end
