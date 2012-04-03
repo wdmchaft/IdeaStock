@@ -334,4 +334,19 @@ forAttributeType: (NSString *) attributeType
     [self.delegate addBulletinBoardAttribute:attributeName forType:attributeType withValues:[NSArray array]];
 }
 
+-(void) addNoteWithID:(NSString *)noteID 
+toBulletinBoardAttribute:(NSString *)attributeName 
+     forAttributeType:(NSString *)attributeType{
+    
+    //if the noteID is invalid return
+    if (![self.noteContents objectForKey:noteID]) return;
+    
+    //add the noteID to the bulletinboard attribute
+    [self.bulletinBoardAttributes addValues:[NSArray arrayWithObject:noteID] ToAttribute:attributeName forAttributeType:attributeType];
+        
+    //have the delegate reflect the change in its structure
+    [self.delegate addBulletinBoardAttribute:attributeName forType:attributeType withValues:[NSArray arrayWithObject:noteID]];
+    
+}
+
 @end

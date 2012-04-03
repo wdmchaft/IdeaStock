@@ -47,7 +47,7 @@
  A note attribute defines a particular relationship that a note has with a number of other notes.
  
  If the noteID is not a valid noteID whose its noteContent has been stored; this method simply returns without doing anything. 
- 
+
  It is up to the implementation to only allow a fixed set of attribute type or allow variable dynamic attribute types.
  */
 
@@ -58,7 +58,10 @@
 /*
  Adds note with targetNoteID to an attribute of note with sourceNoteID. The attribute has attributeName and is of type attributeType. 
  
- If the note attribute with the given name and type does not exist or the any of the noteIDs are not a valid noteID whose noteContents have been stored; this method simply returns without doing anything.
+ If the note attribute type does not exist or the any of the noteIDs are not a valid noteID whose noteContents have been stored; this method simply returns without doing anything.
+ 
+ If the note Attribute with the given attributeName does not exist then the method
+ creates the attributeName for the noteID and adds sourceNoteID to it
  */
 
 - (void) addNote: (NSString *) targetNoteID
