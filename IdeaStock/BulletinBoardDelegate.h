@@ -18,6 +18,9 @@
  feel free to add it here.
  
  */
+
+//TODO the notes named with linkage, stacking, and grouping should be made private
+//a function selector should be used in the public functions to select are run them
 @protocol BulletinBoardDelegate <NSObject>
 
 /*---------------------------------
@@ -64,7 +67,7 @@
 - (void) addNoteAttribute: (NSString *) attributeName
                   forType: (NSString *) attributeType 
                   forNote: (NSString *)noteID 
-            withValues:(NSArray *) values;
+               withValues:(NSArray *) values;
 
 /*
  Creates an  attribute of the type attributeType for the note 
@@ -171,6 +174,62 @@ WithReferenceToNote: (NSString *) refNoteID;
 - (void) deleteNote: (NSString *) noteID;
 
 /*
+ Deletes the note specified by the target Note ID from the list of attributes with name
+ and type attributeName and attributeType from sourceNoteID. 
+ 
+ This method simply checks for the validity of attributeType and invokes the right delete
+ method. 
+ 
+ If the specified parameters are invalid the method returns without doing anything.
+ */
+@optional
+- (void) deleteNote:(NSString *) targetNoteID 
+  fromNoteAttribute: (NSString *) attributeName 
+             ofType: (NSString *) attributeType 
+            forNote: (NSString *) sourceNoteID;
+
+/*
+ Deletes the note specified by the noteID from the list of attributes with name
+ and type attributeName and attributeType. 
+ 
+ This method simply checks for the validity of attributeType and invokes the right delete
+ method. 
+ 
+ If the specified parameters are invalid the method returns without doing anything.
+ */
+@optional
+-(void) deleteNote: (NSString *) noteID 
+fromBulletinBoardAttribute: (NSString *) 
+attributeName ofType:(NSString *) attributeType;
+
+/*
+ Deletes the note attribute with attributeName and attributeType from the 
+ attributes of note with noteID
+ 
+ This method simply checks for the validity of attributeType and invokes the right delete
+ method. 
+ 
+ If the specified parameters are invalid the method returns without doing anything.
+ */
+@optional
+- (void) deleteNoteAttribute: (NSString *) attributeName
+                      ofType: (NSString *) attributeType 
+                    fromNote: (NSString *) noteID;
+
+/*
+ Deletes the bulletin board attribute with attributeName and attributeType from the 
+ attributes of the bulletin board. 
+ 
+ This method simply checks for the validity of attributeType and invokes the right delete
+ method. 
+ 
+ If the specified parameters are invalid the method returns without doing anything.
+ */
+@optional
+- (void) deleteBulletinBoardAttribute:(NSString *) attributeName 
+                               ofType: (NSString *) attributeType;
+
+/*
  Deletes the linkage with linkageName for the note with NoteID. 
  
  Deleting the linkage removes all the notes whose refIDs appear in the linakge.
@@ -178,7 +237,6 @@ WithReferenceToNote: (NSString *) refNoteID;
  If the noteID or the linkageName are invalid. This method returns without
  doing anything. 
  */
-
 @optional
 - (void) deleteLinkage: (NSString *) linkageName 
                forNote: (NSString *)noteID;
@@ -221,6 +279,7 @@ WithReferenceToNote: (NSString *) refNoteID;
  
  If the groupingName is invalid this method returns without doing anything.
  */
+
 @optional
 - (void) deleteGrouping: (NSString *) groupingName;
 

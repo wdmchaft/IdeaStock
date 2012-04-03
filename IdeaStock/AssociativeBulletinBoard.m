@@ -369,4 +369,61 @@ toBulletinBoardAttribute:(NSString *)attributeName
     
 }
 
+- (void) removeNote: (NSString *) targetNoteID
+      fromAttribute: (NSString *) attributeName
+             ofType: (NSString *) attributeType
+   fromAttributesOf: (NSString *) sourceNoteID{
+
+    //if the targetNoteID and sourceNoteID do not exist return
+    if (![self.noteContents objectForKey:targetNoteID] || ![self.noteContents objectForKey:sourceNoteID]) return;
+    
+    //remove the note from note attributes
+    [[self.noteAttributes objectForKey:sourceNoteID] removeNote:targetNoteID fromAttribute:attributeName ofType:attributeType fromAttributesOf:sourceNoteID];
+    
+    //reflect the changes in the xooml structure
+    [self.delegate deleteNote:targetNoteID fromNoteAttribute:attributeName ofType:attributeType forNote:sourceNoteID];
+}
+
+- (void) removeNoteAttribute: (NSString *) attributeName
+                      ofType: (NSString *) attributeType
+                    FromNote: (NSString *) noteID{
+    //if the noteID is not valid return
+    if (![self.noteContents objectForKey:noteID]) return;
+    
+    //remove the note attribute from the note attribute list
+    [[self.noteAttributes objectForKey:noteID] removeAttribute:attributeName forAttributeType:attributeType];
+    
+    //reflect the change in the xooml structure
+    [self.delegate deleteNoteAttribute:attributeName ofType:attributeType fromNote:noteID];
+}
+
+- (void) removeNote: (NSString *) noteID
+fromBulletinBoardAttribute: (NSString *) attributeName 
+             ofType: (NSString *) attributeType{
+    
+    //if the noteId is not valid return
+    if (![self.noteContents objectForKey:noteID]) return;
+    
+    //remove the note reference from the bulletin board attribute
+    [self.bulletinBoardAttributes reomveValues: [NSArray arrayWithObject:noteID]
+                                        fromAttribute: attributeName
+                                     forAttributeType: attributeType];
+    
+    //reflect the change in the xooml structure
+    [self.delegate deleteNote:noteID fromBulletinBoardAttribute:attributeName ofType:attributeType];
+}
+
+- (void) removeBulletinBoardAttribute:(NSString *)attributeName 
+                               ofType:(NSString *)attributeType{
+    
+    //remove the attribtue from bulletin board attributes
+    [self.bulletinBoardAttributes removeAttribute:attributeName forAttributeType:attributeType];
+    
+    
+    //reflect the change in the xooml structure
+    [self.delegate deleteBulletinBoardAttribute:attributeName ofType:attributeType];
+    
+}
+
+
 @end
