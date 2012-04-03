@@ -64,6 +64,10 @@
 @synthesize bulletinBoardAttributes = _bulletinBoardAttributes;
 @synthesize noteContents = _noteContents;
 
+/*
+ These are the default attributes for note
+ Add new ones here. 
+ */
 //TODO  some of these definition may need to go to a higher level header
 // or even inside a definitions file
 #define POSITION_X @"positionX"
@@ -87,9 +91,16 @@
 #define STACKING_NAME @"name"
 #define REF_IDS @"refIDs"
 
+/*
+ Factory method for the bulletin board attributes
+ */
 -(BulletinBoardAttributes *) createBulletinBoardAttributeForBulletinBoard{
         return [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:STACKING_TYPE,GROUPING_TYPE, nil]];
 }
+
+/*
+ Factory method for the note bulletin board attributes
+ */
 -(BulletinBoardAttributes *) createBulletinBoardAttributeForNotes{
     return [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:LINKAGE_TYPE,POSITION_TYPE, VISIBILITY_TYPE, nil]];
 }
@@ -125,16 +136,6 @@
  */
 
 //TODO this initializer is getting to heavy weight
-
-
-/*
- These are the default attributes for note
- Add new ones here. 
- */
-
-
-
-
 -(id) initBullrtinBoardFromXoomlDatamodel:(id<DataModel>)datamodel andName:(NSString *)bulletinBoardName{
     
     //initialize as an empty bulletin board
@@ -286,6 +287,27 @@
     
     [self.noteAttributes setObject:noteAttribute forKey:noteID];
 
+}
+
+- (void) addNoteAttribute: (NSString *) attributeName
+         forAttributeType: (NSString *) attributeType
+                  forNote: (NSString *) noteID 
+                andValues: (NSArray *) values{
+    
+    //if the noteID is invalid return
+    if(![self.noteContents objectForKey:noteID]) return;
+    
+    //get the noteattributes for the specified note. If there are no attributes for that
+    //note create a new bulletinboard attribute list.
+    BulletinBoardAttributes * noteAttributes = [self.noteAttributes objectForKey:noteID];
+    if(!noteAttributes) noteAttributes = [self createBulletinBoardAttributeForNotes];
+    
+    //add the note attribute to the attribute list of the notes
+    [noteAttributes createAttributeWithName:attributeName forAttributeType:attributeType andValues:values];
+    
+    //have the delegate reflect the changes in its struture
+    [self.delegate addNoteAttribute:attributeName forType:attributeType forNote:noteID withValues:values];
+        
 }
 
 @end

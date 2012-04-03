@@ -42,7 +42,7 @@
           andProperties: (NSDictionary *) properties;
 
 /*
- Adds an attribute with AttributeName and AttributeType for a particular note specified by note ID. 
+ Adds an attribute with AttributeName and AttributeType for a particular note specified by note ID. The values specified in the values array will be avalues of this attribute.
  
  A note attribute defines a particular relationship that a note has with a number of other notes.
  
@@ -53,7 +53,8 @@
 
 - (void) addNoteAttribute: (NSString *) attributeName
          forAttributeType: (NSString *) attributeType
-                  forNote: (NSString *) noteID;
+                  forNote: (NSString *) noteID 
+                andVaules:(NSArray *)values;
 /*
  Adds note with targetNoteID to an attribute of note with sourceNoteID. The attribute has attributeName and is of type attributeType. 
  

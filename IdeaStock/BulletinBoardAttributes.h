@@ -47,6 +47,10 @@
                        andValues: (NSArray *)values;
 
 /*
+ Creates an empty attribute with attributeName and attributeType. 
+ */
+-(void) createAttributeWithName:(NSString *)attributeName forAttributeType:(NSString *)attributeType;
+/*
  Adds the values specified in the values array ( which is an array of strings) to
  the attribtue with name and type of attributeName and attributeType 
  

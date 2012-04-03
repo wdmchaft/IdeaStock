@@ -55,7 +55,21 @@
  This method assumes that refNoteID is a valid refID. 
  */
 
+
 @optional
+
+/*
+ Creates an empty attribute of the type attributeType for the note 
+ with attributeName and noteID.
+ 
+ This method just checks to see if attributeType is valid and based 
+ on that calls an associated add method. 
+ */
+- (void) addNoteAttribute: (NSString *) attributeName
+                  forType: (NSString *) attributeType 
+                  forNote: (NSString *)noteID 
+            withValues:(NSArray *) values;
+
 - (void) addLinkage: (NSString *) linkageName
              ToNote: (NSString *) noteID
 WithReferenceToNote: (NSString *) refNoteID;

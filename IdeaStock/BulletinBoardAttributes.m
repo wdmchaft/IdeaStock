@@ -38,12 +38,21 @@
     return self;
 }
 
+
 - (void) createAttributeWithName: (NSString *) attributeName
                 forAttributeType:(NSString *) attributeType
                        andValues: (NSArray *)values{
     
     [[self.attributes objectForKey:attributeType] setObject:[values mutableCopy] forKey:attributeName];
 }
+
+-(void) createAttributeWithName:(NSString *)attributeName
+               forAttributeType:(NSString *)attributeType{
+    [self createAttributeWithName:attributeName
+                 forAttributeType:attributeType
+                        andValues:[NSArray array]];
+}
+
 
 -(void) addValues:(NSArray *)values
       ToAttribute:(NSString *)attributeName
