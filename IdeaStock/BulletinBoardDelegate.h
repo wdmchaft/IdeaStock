@@ -313,6 +313,54 @@ attributeName ofType:(NSString *) attributeType;
      withProperties: (NSDictionary *)  newProperties;
 
 /*
+ Update the name of an attribute of type attributeType from old attributeName 
+ to newAttributeName fot the note attribute of the note with noteID.
+ 
+ This method just check the attributeType and calls the corresponding method 
+ for it. 
+ 
+ If noteID, attributeType, and oldAttributeName are invalid the method returns
+ without doing anything. 
+ */
+@optional
+- (void) updateNoteAttribute: (NSString *) oldAttributeName
+                      ofType:(NSString *) attributeType 
+                     forNote: (NSString *) noteID 
+                 withNewName: (NSString *) newAttributeName;
+
+/*
+ Update the name of an attribute of type attributeType from old attributeName 
+ to newAttributeName fot the bulletinboard.
+ 
+ This method just checks the attributeType and calls the corresponding method 
+ for it. 
+ 
+ If attributeType, and oldAttributeName are invalid the method returns
+ without doing anything. 
+ */
+@optional
+- (void) updateBulletinBoardAttributeName: (NSString *) oldAttributeName
+                                   ofType: (NSString *) attributeType 
+                              withNewName: (NSString *) newAttributeName;
+
+/*
+ Update the the values of a note attribtue with the name attributeName and the
+ type attributeType with newValues. 
+ 
+ After this call the newValues will replace the oldValues. 
+ 
+ This method just checks the attributeType and calls the corresponding method 
+ for it. 
+ 
+ If attributeType, and oldAttributeName are invalid the method returns
+ without doing anything. 
+ */
+@optional
+-(void) updateNoteAttribute: (NSString *) attributeName
+                     ofType: (NSString *) attributeType 
+                 withValues: (NSArray *) values;
+
+/*
  updates the name of linkage for note with noteID from linkageName
  to newLinkageName. 
  

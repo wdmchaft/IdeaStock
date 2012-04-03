@@ -202,15 +202,8 @@ fromBulletinBoardAttribute: (NSString *) attributeName
  */
 - (NSArray *) getAllNotes;
 
-/*
- Returns an array of strings containing the name of all the attribute types used in the bulletinBoard
- */
-- (NSArray *) getAllBulletinBoardAttributeTypes;
 
-/*
- Returns an array of strings containing the name of all the attribute types used in the noteAttributes of Note with noteID
- */
-- (NSArray *) getAllNoteAttributeTypesOfNote: (NSString *) noteID;
+
 
 /*
  Returns an array of strings containing the name of all the attributes of type attributeType in the bulletin board. 

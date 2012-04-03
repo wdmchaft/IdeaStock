@@ -425,5 +425,60 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     
 }
 
+- (void) updateNoteContentOf:(NSString *)noteID 
+              withContentsOf:(id<Note>)newNote{
+
+    //if noteID is inavlid return
+    id <Note> oldNote = [self.noteContents objectForKey:noteID];
+    if (!oldNote) return;
+
+    //for attributes in newNote that a value is specified
+    //update to old note to those values
+    if (newNote.noteText) oldNote.noteText = newNote.noteText;
+    if (newNote.noteTextID) oldNote.noteTextID = newNote.noteTextID;
+    if (newNote.creationDate) oldNote.creationDate = newNote.creationDate;
+    if (newNote.modificationDate) oldNote.modificationDate = newNote.modificationDate;
+}
+
+//TODO There may be performance penalities for this way of doing an update
+- (void) renameNoteAttribute: (NSString *) oldAttributeName 
+                      ofType: (NSString *) attributeType
+                     forNote: (NSString *) noteID 
+                    withName: (NSString *) newAttributeName{
+    //if the note does not exist return
+    if (![self.noteContents objectForKey:noteID]) return;
+    
+    //update the note bulletin board
+    [[self.noteAttributes objectForKey:noteID] updateAttributeName:oldAttributeName ofType:attributeType withNewName:newAttributeName];
+    
+    //reflect the changes in the xooml data model
+    [self.delegate updateNoteAttribute:oldAttributeName ofType:attributeType forNote:noteID withNewName:newAttributeName];
+}
+
+-(void) updateNoteAttribute: (NSString *) attributeName
+                     ofType:(NSString *) attributeType 
+                    forNote: (NSString *) noteID 
+              withNewValues: (NSArray *) newValues{
+
+    //iif the noteID is not valid return
+    if (![self.noteContents objectForKey:noteID]) return;
+    
+    //update the note attribute values
+    [[self.noteAttributes objectForKey:noteID] updateAttribue:attributeName ofType:attributeType withNewValue:newValues];
+    
+    //reflect the changes in the xooml data model
+    [self.delegate updateNoteAttribute:attributeName ofType:attributeType withValues:newValues];
+}
+
+- (void) renameBulletinBoardAttribute: (NSString *) oldAttributeNAme 
+                               ofType: (NSString *) attributeType 
+                             withName: (NSString *) newAttributeName{
+    
+    //update the bulletin board attributes
+    [self.bulletinBoardAttributes updateAttributeName: oldAttributeNAme ofType:attributeType withNewName:newAttributeName];
+    
+    //reflect the changes in the xooml data model
+    [self.delegate updateBulletinBoardAttributeName:oldAttributeNAme ofType:attributeType withNewName:newAttributeName];
+}
 
 @end

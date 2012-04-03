@@ -89,7 +89,7 @@
 /*-----------
  Deletion
  *-----------*/
- 
+
 /*
  Removes all the values specified in the values array (which is an array of NSString)
  from the attribute with name attributeNAme and type attributeType. 
@@ -142,8 +142,7 @@
  If attributeName and attributeType are invalid the method returns without 
  doing anything. 
  */
-- (void) updateValue: (NSString *) value 
-          ofAttribue: (NSString *) attributeName 
-              ofType: (NSString *) attributeType 
-        withNewValue: (NSString *) newValue;
+- (void) updateAttribue: (NSString *) attributeName 
+                 ofType: (NSString *) attributeType 
+           withNewValue: (NSArray *) newValues;
 @end
