@@ -47,19 +47,10 @@
 @required
 - (void) addNoteWithID: (NSString *) id andProperties: (NSDictionary *)properties;
 
-/*
- Adds a linkage to note with noteID to note with note refID
- 
- If the noteID is not valid this method returns without doing anything. 
- 
- This method assumes that refNoteID is a valid refID. 
- */
-
-
 @optional
 
 /*
- Creates an empty attribute of the type attributeType for the note 
+ Creates an  attribute of the type attributeType for the note 
  with attributeName and noteID.
  
  This method just checks to see if attributeType is valid and based 
@@ -67,12 +58,36 @@
  
  If the attributeName is invalid the method creates the attribute and then adds 
  the note to it. 
+ 
+ If the values is an empty array, this method only creates and empty attribute. 
  */
 - (void) addNoteAttribute: (NSString *) attributeName
                   forType: (NSString *) attributeType 
                   forNote: (NSString *)noteID 
             withValues:(NSArray *) values;
 
+/*
+ Creates an  attribute of the type attributeType for the note 
+ with attributeName for the bulletinBoard.
+ 
+ This method just checks to see if attributeType is valid and based 
+ on that calls an associated add method. 
+ 
+ If the attributeName is invalid the method creates the attribute. 
+ 
+ If the values is an empty array, this method only creates and empty attribute. 
+ */
+- (void) addBulletinBoardAttribute: (NSString *) attributeName 
+                           forType: (NSString *) attributeType 
+                        withValues: (NSArray *) values;
+
+/*
+ Adds a linkage to note with noteID to note with note refID
+ 
+ If the noteID is not valid this method returns without doing anything. 
+ 
+ This method assumes that refNoteID is a valid refID. 
+ */
 - (void) addLinkage: (NSString *) linkageName
              ToNote: (NSString *) noteID
 WithReferenceToNote: (NSString *) refNoteID;

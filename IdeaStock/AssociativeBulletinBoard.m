@@ -325,5 +325,13 @@ forAttributeType: (NSString *) attributeType
     [self.delegate addNoteAttribute:attributeName forType:attributeType forNote:sourceNoteId withValues:[NSArray arrayWithObject:targetNoteID]];
 }
 
+- (void) addBulletinBoardAttribute: (NSString *) attributeName
+                  forAttributeType: (NSString *) attributeType{
+    //add the attribtue to the bulletinBoard attribute list
+    [self.bulletinBoardAttributes createAttributeWithName:attributeName forAttributeType:attributeType];
+    
+    //have the delegate reflect the change in its structure
+    [self.delegate addBulletinBoardAttribute:attributeName forType:attributeType withValues:[NSArray array]];
+}
 
 @end

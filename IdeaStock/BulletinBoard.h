@@ -79,7 +79,9 @@ forAttributeType: (NSString *) attributeType
 /*
  Adds a note with noteID to the bulletin board attribute with attributeName and of type attributeType. 
  
- If the note attribute with the given name and type does not exist or the noteID is not a valid noteID whose noteContent has been stored; this method simply returns without doing anything.
+ If the attribute with the given type does not exist or the noteID is not a valid noteID whose noteContent has been stored; this method simply returns without doing anything.
+ 
+ If the attributeName does not exist. The method creates it and addes the noteID to it. 
  */
 - (void) addNoteWithID: (NSString *) noteID
 toBulletinBoardAttribute: (NSString *) attributeName
