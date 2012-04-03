@@ -116,6 +116,11 @@
 - (void) removeAttribute: (NSString *) attributeName
         forAttributeType: (NSString *)AttributeType;
 
+/*
+ Removes all the occurances of the value specified by value as the value
+ of any attribute with any name and type.
+ */
+-(void) removeAllOccurancesOfValue: (NSString *) value;
 /*------------
  Updating
  ------------*/

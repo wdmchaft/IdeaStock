@@ -178,6 +178,7 @@ WithReferenceToNote: (NSString *) refNoteID;
  If the noteID or the linkageName are invalid. This method returns without
  doing anything. 
  */
+
 @optional
 - (void) deleteLinkage: (NSString *) linkageName 
                forNote: (NSString *)noteID;
@@ -232,6 +233,8 @@ WithReferenceToNote: (NSString *) refNoteID;
 @optional
 - (void) deleteNote: (NSString *) noteID
         fromGroupin: (NSString *) groupingName;
+
+
 /*---------------------------------
  * Updating behavior
  *--------------------------------**/

@@ -92,6 +92,18 @@
     [[self.attributes objectForKey:AttributeType] removeObjectForKey:attributeName];
 }
 
+-(void) removeAllOccurancesOfValue:(NSString *) delValue{
+    for (NSString * attributeType in self.attributes){
+        for (NSString * attributeName in [self.attributes objectForKey:attributeType]){
+            for (NSString * value in [[self.attributes objectForKey:attributeType] objectForKey:attributeName]){
+                if ([value isEqualToString:delValue]){
+                    [[[self.attributes objectForKey:attributeType] objectForKey:attributeName] removeObject:value];
+                }
+            }
+            
+        }
+    }
+}
 - (void) updateAttributeName : (NSString *) attributeName 
                        ofType: (NSString *) attributeType 
                   withNewName: (NSString *) newAttributeName{
@@ -109,6 +121,8 @@
     [self addValues:[NSArray arrayWithObject:newValue] ToAttribute: attributeName forAttributeType:attributeType];
     
 }
+
+
 
 
 

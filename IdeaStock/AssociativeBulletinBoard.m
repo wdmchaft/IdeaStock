@@ -334,7 +334,7 @@ forAttributeType: (NSString *) attributeType
     [self.delegate addBulletinBoardAttribute:attributeName forType:attributeType withValues:[NSArray array]];
 }
 
--(void) addNoteWithID:(NSString *)noteID 
+- (void) addNoteWithID:(NSString *)noteID 
 toBulletinBoardAttribute:(NSString *)attributeName 
      forAttributeType:(NSString *)attributeType{
     
@@ -346,6 +346,26 @@ toBulletinBoardAttribute:(NSString *)attributeName
         
     //have the delegate reflect the change in its structure
     [self.delegate addBulletinBoardAttribute:attributeName forType:attributeType withValues:[NSArray arrayWithObject:noteID]];
+}
+
+- (void) removeNoteWithID:(NSString *)delNoteID{
+
+    //if the note does not exist return
+    if (![self.noteContents objectForKey:delNoteID]) return;
+    
+    //remove the note content
+    [self.noteContents removeObjectForKey:delNoteID];
+    
+    //remove All the references in the note attributes
+    for (NSString * noteID in self.noteAttributes){
+        [[self.noteAttributes objectForKey:noteID] removeAllOccurancesOfValue:delNoteID];
+    }
+    
+    //remove all the references in the bulletinboard attributes
+    [self.bulletinBoardAttributes removeAllOccurancesOfValue:delNoteID];
+    
+    //remove all the occurances in the xooml file
+    [self.delegate deleteNote:delNoteID];
     
 }
 
