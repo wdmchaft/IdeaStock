@@ -211,5 +211,9 @@ toolVersion="0.1">*/
                                          andType: (NSString *) attributeType{
     return [NSString stringWithFormat:@"//xooml:fragmentToolAttributes[@type = \"%@\" and @name=\"%@\"]", attributeType, attributeName];
 }
+////xooml:fragmentToolAttributes[@type = "stacking"]
++ (NSString *) xPathForBulletinBoardAttribute: (NSString *) attributeType{
+    return [NSString stringWithFormat:@"//xooml:fragmentToolAttributes[@type = \"%@\"]", attributeType];
+}
 
 @end

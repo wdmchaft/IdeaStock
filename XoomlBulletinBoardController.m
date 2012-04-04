@@ -522,18 +522,62 @@ WithReferenceToNote: (NSString *) refNoteID{
     
 }
 
+/*
+ Returns a dictionary of all the linkage info for the note with noteID. 
+ The dictionary is keyed on the linkage name and contains an array of refNoteIds
+ that the linkage refers to . 
+ 
+ For example : 
+ {linkageName1 = {refID1, refID2}, linkageName2 = {refID3}}
+ 
+ if no linkage note exists the dictionary will be empty
+ 
+ if the noteID is invalid the method returns nil
+ 
+ The dictionary assumes that the lnkage is uniquely identified by its name
+ */
+
 - (NSDictionary *) getLinkageInfoForNote: (NSString *) noteID{
+    
+    DDXMLElement * noteNode = [self getNoteElementFor:noteID];
+    
+    //if the note is not found delete
+    if (!noteNode) return nil;
+    
+    //make the result dictionary
+    NSMutableDictionary * result = [NSMutableDictionary dictionary];
+    //for every child of the note see if it is the linkage
+    //if it is get its name and then put all of its refNote childs in an array
+    //put the resulting array as the value for the key with the name of the 
+    //linkage into the result dictionary.
+    for (DDXMLElement * noteChild in [noteNode children]){
+        if ([[noteChild name] isEqualToString:XOOML_NOTE_TOOL_ATTRIBUTE] &&
+            [[[noteChild attributeForName:ATTRIBUTE_TYPE] stringValue] isEqualToString:LINKAGE_TYPE]){
+            NSString * name = [[noteChild attributeForName:ATTRIBUTE_NAME] stringValue];
+            NSMutableArray * refNotesArray = [NSMutableArray array];
+            for (DDXMLElement * refChild in [noteChild children]){
+                NSString * refID = [[refChild attributeForName:REF_ID] stringValue];
+                [refNotesArray addObject:refID]
+                ;
+            }
+            
+            [result setObject:[refNotesArray copy] forKey:name];
+            
+        }
+        
+    }
+    return [result copy];
     
 }
 
 /*
  Returns all the stacking info for the bulletin board.
- 
- A stacking info contain name of the stacking and an array of noteIDs that
- belong to that stacking. These are expressed as two keys name and refIDs.
+ The return type is an NSDictionary keyed on the stackingName and array of 
+ reference noteIDs
  
  For Example: 
- {name="Stacking1", refIDs = {"NoteID2", "NoteID3"}}
+{stackingName1 = {refID1} , stackingName2 = {refID3,refID4}}
+ 
  
  If no stacking infos exist the dictionary will be empty. 
  
@@ -543,17 +587,47 @@ WithReferenceToNote: (NSString *) refNoteID{
  */
 
 - (NSDictionary *) getStackingInfo{
+    //get All the stackings
+    NSString * xPath = [XoomlParser xPathForBulletinBoardAttribute:STACKING_TYPE];
+    
+    
+    NSError * err;
+    NSArray *attribtues = [self.document nodesForXPath: xPath error: &err];
+    
+    //if the stacking attribute does not exist return
+    if (attribtues == nil) return nil; 
+    
+    //create a result dictionary
+    NSMutableDictionary * result = [NSMutableDictionary dictionary];
+    
+    //for every child of the bulletinboard stacking attributes,
+    //get its name and then put all of its refNote childs in an array
+    //put the resulting array as the value for the key with the name of the 
+    //stacking into the result dictionary.
+    for (DDXMLElement * item in attribtues){
+        NSString * name = [[item attributeForName:ATTRIBUTE_NAME] stringValue];
+        
+        NSMutableArray * refNotesArray = [NSMutableArray array];
+        for (DDXMLElement *refID in [item children]){
+            NSString * refID = [[item attributeForName:REF_ID] stringValue];
+            [refNotesArray addObject:refID];
+        }
+        [result setObject:[refNotesArray copy] forKey:name];
+    }
+    
+    return [result copy];
+    
+
     
 }
 
 /*
  Returns all the grouping info for the bulletin board.
- 
- A grouping info contain name of the grouping and an array of noteIDs that
- belong to that grouping. These are expressed as two keys name and refIDs.
+ The return type is an NSDictionary keyed on the groupingName and array of 
+ reference noteIDs
  
  For Example: 
- {name="Grouping1", refIDs = {"NoteID2", "NoteID3"}}
+ {groupingName1 = {refID1} , groupingName2 = {refID3,refID4}}
  
  If no grouping infos exist the dictionary will be empty. 
  
@@ -563,6 +637,39 @@ WithReferenceToNote: (NSString *) refNoteID{
  */
 
 - (NSDictionary *) getGroupingInfo{
+    
+    //get All the grouping
+    NSString * xPath = [XoomlParser xPathForBulletinBoardAttribute:GROUPING_TYPE];
+    
+    
+    NSError * err;
+    NSArray *attribtues = [self.document nodesForXPath: xPath error: &err];
+    
+    //if the grouping attribute does not exist return
+    if (attribtues == nil) return nil; 
+    
+    //create a result dictionary
+    NSMutableDictionary * result = [NSMutableDictionary dictionary];
+    
+    //for every child of the bulletinboard grouping attributes,
+    //get its name and then put all of its refNote childs in an array
+    //put the resulting array as the value for the key with the name of the 
+    //grouping into the result dictionary.
+    for (DDXMLElement * item in attribtues){
+        NSString * name = [[item attributeForName:ATTRIBUTE_NAME] stringValue];
+        
+        NSMutableArray * refNotesArray = [NSMutableArray array];
+        for (DDXMLElement *refID in [item children]){
+            NSString * refID = [[item attributeForName:REF_ID] stringValue];
+            [refNotesArray addObject:refID];
+        }
+        [result setObject:[refNotesArray copy] forKey:name];
+    }
+    
+    return [result copy];
+    
+    
+
     
 }
 @end

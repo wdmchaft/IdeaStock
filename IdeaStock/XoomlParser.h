@@ -61,6 +61,7 @@
  */
 + (NSString *) xPathforNote: (NSString *) noteID;
 
++ (NSString *) xPathForBulletinBoardAttribute: (NSString *) attributeType;
 /*
  Returns the xPath for accessing a framgment attribute with name and type
  specified. 
