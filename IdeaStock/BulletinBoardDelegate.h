@@ -63,6 +63,10 @@
  If the attributeName is invalid the method creates the attribute and then adds 
  the note to it. 
  
+ If the attribute is position the values passed shuold be : 
+
+ {positionX,positionY,isVisible}
+ 
  If the values is an empty array, this method only creates and empty attribute. 
  */
 

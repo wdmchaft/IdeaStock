@@ -713,16 +713,56 @@ WithReferenceToNote: (NSString *) refNoteID{
 
     
 }
+
+//TODO maybe I should do these with selectors later
 - (void) addNoteAttribute: (NSString *) attributeName
                   forType: (NSString *) attributeType 
                   forNote: (NSString *)noteID 
                withValues:(NSArray *) values{
+    if ([attributeType isEqualToString:LINKAGE_TYPE]){
+        for (NSString * value in values){
+            [self addLinkage:attributeName ToNote:noteID WithReferenceToNote:value];
+        }
+        return;
+    }
+    else if ([attributeType isEqualToString:POSITION_TYPE]){
+        
+        //not all the required information for position 
+        //are available so return
+        if ( [values count] < 3) return;
+        
+        //get the position attributes
+        NSString * positionX = [values objectAtIndex:0];
+        NSString * positionY = [values objectAtIndex:1];
+        NSString * isVisible = [values objectAtIndex:2];
+
+        //get the note to add the position to
+        DDXMLElement * note = [self getNoteElementFor:noteID];
+        
+        //create the position attribute
+        DDXMLElement * associationAttribute = [XoomlParser xoomlForAssociationToolAttributeWithType:POSITION_TYPE];
+        DDXMLNode * noteProperty = [XoomlParser xoomlForNotePositionX:positionX andPositionY:positionY withVisibility:isVisible];
+        //put the nodes into the hierarchy
+        [associationAttribute addChild:noteProperty];
+        [note addChild: associationAttribute];
+        return;
+        
+    }
+   
     
 }
 
 - (void) addBulletinBoardAttribute: (NSString *) attributeName 
                            forType: (NSString *) attributeType 
                         withValues: (NSArray *) values{
+    if ([attributeType isEqualToString:STACKING_TYPE]){
+        [self addStackingWithName:attributeName withNotes:values];
+        return;
+        
+    }
+    if ([attributeType isEqualToString:GROUPING_TYPE]){
+        [self addStackingWithName:attributeName withNotes:values];
+    }
     
 }
 
