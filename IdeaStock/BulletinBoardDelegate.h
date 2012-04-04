@@ -34,11 +34,12 @@
  that is an integer and "isVisible" with the value of a string that is true or
  false.
  
- The optional keys in this dictionary are linkage with the value of an NSArray
+ The optional keys in this dictionary are linkage with the value of an NSDictionary
+ with linkage names as the keys and an array of RefIds as the value.
  of RefIds which are strings each refrencing another note ID. 
  
  For example: 
- {name="Note4", ID="NoteID4", positionX= "100", positionY = "150", isVisible="true", Linkage = {"NoteID1", "NoteID2"}}
+ {name="Note4", ID="NoteID4", positionX= "100", positionY = "150", isVisible="true", linkage = {name="linkageName", refIDs = {NoteID1", "NoteID2"} , name=LinkageName2 = {NOTEDID3}}
  
  This method assumes that the noteIDs that may be passed in the linkage
  property are valid. 

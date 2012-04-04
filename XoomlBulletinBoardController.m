@@ -227,7 +227,7 @@ WithReferenceToNote: (NSString *) refNoteID{
         NSLog(@"Fragment attribute is no avail :D");
         return;
     }
-
+    
     DDXMLElement * bulletinBoardAttribute = [attribtues lastObject];
     DDXMLNode * noteRef = [XoomlParser xoomlForNoteRef:noteID];
     [bulletinBoardAttribute addChild:noteRef];
@@ -358,7 +358,7 @@ WithReferenceToNote: (NSString *) refNoteID{
     DDXMLElement * bulletinBoardAttribute = [attribtues lastObject];
     DDXMLElement * attributeParent = (DDXMLElement *)[bulletinBoardAttribute parent];
     [attributeParent removeChildAtIndex:[bulletinBoardAttribute index]];
-
+    
     
 }
 
@@ -413,7 +413,7 @@ WithReferenceToNote: (NSString *) refNoteID{
     DDXMLElement * bulletinBoardAttribute = [attribtues lastObject];
     DDXMLElement * attributeParent = (DDXMLElement *)[bulletinBoardAttribute parent];
     [attributeParent removeChildAtIndex:[bulletinBoardAttribute index]];
-
+    
     
 }
 
@@ -475,7 +475,7 @@ WithReferenceToNote: (NSString *) refNoteID{
         }
         
     }
-
+    
     
 }
 
@@ -576,7 +576,7 @@ WithReferenceToNote: (NSString *) refNoteID{
  reference noteIDs
  
  For Example: 
-{stackingName1 = {refID1} , stackingName2 = {refID3,refID4}}
+ {stackingName1 = {refID1} , stackingName2 = {refID3,refID4}}
  
  
  If no stacking infos exist the dictionary will be empty. 
@@ -617,7 +617,7 @@ WithReferenceToNote: (NSString *) refNoteID{
     
     return [result copy];
     
-
+    
     
 }
 
@@ -669,7 +669,126 @@ WithReferenceToNote: (NSString *) refNoteID{
     return [result copy];
     
     
+}
 
+
+#define NOTE_NAME_KEY @"name"
+#define NOTE_POSITION_X_KEY @"positionX"
+#define NOTE_POSITION_Y_KEY @"positionY"
+#define NOTE_IS_VISIBLE @"isVisbile"
+#define NOTE_LINKAGE_KEY @"linkage"
+#define POSITION_TYPE @"position"
+- (void) addNoteWithID: (NSString *) noteId 
+         andProperties: (NSDictionary *)properties{
+    
+    //get the required attributes from the properties dictionary
+    //if they are missing return
+    NSString * noteName = [properties objectForKey:NOTE_NAME_KEY];
+    NSString * positionX = [properties objectForKey:NOTE_POSITION_X_KEY];
+    NSString * positionY = [properties objectForKey:NOTE_POSITION_Y_KEY];
+    NSString * isVisible = [properties objectForKey:NOTE_IS_VISIBLE];
+    if (!noteName || !positionX || !positionY || !isVisible) return;
+    
+    //create the note node
+    DDXMLElement * noteNode = [XoomlParser xoomlForBulletinBoardNote:noteId andName:noteName];
+    
+    //create the position attribute
+    DDXMLElement * associationAttribute = [XoomlParser xoomlForAssociationToolAttributeWithType:POSITION_TYPE];
+    //create the position property itself
+    DDXMLNode * noteProperty = [XoomlParser xoomlForNotePositionX:positionX andPositionY:positionY withVisibility:isVisible];
+    //put the nodes into the hierarchy
+    [associationAttribute addChild:noteProperty];
+    [noteNode addChild: associationAttribute];
+    
+    //add the linkage information if there are any
+    NSDictionary * linkageRefs = [properties objectForKey:LINKAGE_TYPE];
+    if (!linkageRefs) return;
+    for (NSString * linkageName in linkageRefs){
+        NSArray * refIDs = [linkageRefs objectForKey:linkageName];
+        for (NSString * refID in refIDs){
+            [self addLinkage:linkageName ToNote:noteId WithReferenceToNote:refID];
+        }
+
+    }
+
+    
+}
+- (void) addNoteAttribute: (NSString *) attributeName
+                  forType: (NSString *) attributeType 
+                  forNote: (NSString *)noteID 
+               withValues:(NSArray *) values{
+    
+}
+
+- (void) addBulletinBoardAttribute: (NSString *) attributeName 
+                           forType: (NSString *) attributeType 
+                        withValues: (NSArray *) values{
+    
+}
+
+- (void) deleteNote: (NSString *) noteID{
+    
+    
+}
+
+- (void) deleteNote:(NSString *) targetNoteID 
+  fromNoteAttribute: (NSString *) attributeName 
+             ofType: (NSString *) attributeType 
+            forNote: (NSString *) sourceNoteID{
+    
+}
+
+-(void) deleteNote: (NSString *) noteID 
+fromBulletinBoardAttribute: (NSString *) 
+attributeName ofType:(NSString *) attributeType{
+    
+}
+
+- (void) deleteNoteAttribute: (NSString *) attributeName
+                      ofType: (NSString *) attributeType 
+                    fromNote: (NSString *) noteID{
+    
+}
+
+- (void) deleteBulletinBoardAttribute:(NSString *) attributeName 
+                               ofType: (NSString *) attributeType{
+    
+}
+
+- (void) updateNote: (NSString *) noteID 
+     withProperties: (NSDictionary *)  newProperties{
+    
+}
+
+- (void) updateNoteAttribute: (NSString *) oldAttributeName
+                      ofType:(NSString *) attributeType 
+                     forNote: (NSString *) noteID 
+                 withNewName: (NSString *) newAttributeName{
+    
+}
+
+- (void) updateBulletinBoardAttributeName: (NSString *) oldAttributeName
+                                   ofType: (NSString *) attributeType 
+                              withNewName: (NSString *) newAttributeName{
+    
+}
+
+-(void) updateNoteAttribute: (NSString *) attributeName
+                     ofType: (NSString *) attributeType 
+                 withValues: (NSArray *) values{
+    
+}
+
+- (NSDictionary *) getAllNoteBasicInfo{
+    
+}
+
+- (NSDictionary *) getNoteAttributeInfo: (NSString *) attributeType
+                                forNote: (NSString *)noteID{
+    
+}
+
+- (NSDictionary *) getBulletinBoardAttributeInfo: (NSString *) attributeType{
     
 }
 @end

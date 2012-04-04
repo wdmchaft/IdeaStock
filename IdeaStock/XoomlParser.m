@@ -78,6 +78,19 @@
 #define ATTRIBUTE_TOOL @"toolName"
 #define ATTRIBUTE_TOOL_VERSION @"toolVersion"
 
+#define ASSOCIATED_ITEM @"associatedItem"
+#define ASSOCIATED_ICON @"associatedIcon"
+#define ASSOCIATED_XOOML_FRAGMENT @"associatedXooMLFragment"
+#define LEVEL_OF_SYNCHRONIZATION @"levelOfSynchronization"
+#define DISPLAY_TEXT @"displayText"
+#define OPEM_WITH_DEFAULT @"openWithDefault"
+#define CREATED_BY @"createdBy"
+#define CREATED_ON @"createdOn"
+#define MODIFIED_BY @"modifiedBy"
+#define MODIFIED_ON @"modifiedOn"
+#define POSITION_X @"positionX"
+#define POSITION_Y @"positionY"
+#define IS_VISIBLE @"isVisible"
 
 
 #define APP_NAME @"IdeaStock"
@@ -87,6 +100,7 @@
 #define XOOML_BULLETINBOARD_TOOL_ATTRIBUTE @"xooml:fragmentToolAttributes"
 #define ATTRIBUTE_NAME @"name"
 #define NOTE_REF_ELEMENT_NAME @"is:note"
+#define NOTE_POSITION_ELEMENT_NAME @"is:position"
 #define REF_ID @"refID"
 
 + (NSData *) convertNoteToXooml: (XoomlNote *) note{
@@ -105,17 +119,17 @@
     
     //create the association note and its attributes
     DDXMLElement * xoomlAssociation = [[DDXMLElement alloc] initWithName: XOOML_ASSOCIATION];
-    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"ID" stringValue:note.noteTextID]];
-    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"associatedItem" stringValue:@""]];
-    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"associatediIcon" stringValue:@""]];
-    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"associatedXooMLFragment" stringValue:@""]];
-    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"levelOfSynchronization" stringValue:@""]];
-    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"displayText" stringValue:note.noteText]];
-    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"openWithDefault" stringValue:@""]];
-    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"createdBy" stringValue:APP_NAME]];
-    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"createdOn" stringValue:note.creationDate]];
-    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"modifiedBy" stringValue:APP_NAME]];
-    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:@"modifiedOn"stringValue:note.modificationDate]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:NOTE_ID stringValue:note.noteTextID]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:ASSOCIATED_ITEM stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:ASSOCIATED_ICON stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:ASSOCIATED_XOOML_FRAGMENT stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:LEVEL_OF_SYNCHRONIZATION stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:DISPLAY_TEXT stringValue:note.noteText]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:OPEM_WITH_DEFAULT stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:CREATED_BY stringValue:APP_NAME]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:CREATED_ON stringValue:note.creationDate]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:MODIFIED_BY stringValue:APP_NAME]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:MODIFIED_ON stringValue:note.modificationDate]];
 
     //TODO Add tool specific child of the association here
     
@@ -177,7 +191,17 @@ toolVersion="0.1">*/
     return  element;
 }
 
-
++ (DDXMLElement *) xoomlForAssociationToolAttributeWithType: (NSString *) attributeType{
+    DDXMLElement *element = [DDXMLNode elementWithName:XOOML_NOTE_TOOL_ATTRIBUTE];
+    
+    [element addAttribute:[DDXMLNode attributeWithName:@"xmlns" stringValue:IDEA_STOCK_NAMESPACE]];
+    [element addAttribute:[DDXMLNode attributeWithName:ATTRIBUTE_ID stringValue: [XoomlAttributeHelper generateUUID]]];
+    [element addAttribute: [DDXMLNode attributeWithName:ATTRIBUTE_TYPE stringValue:attributeType]];
+    [element addAttribute: [DDXMLNode attributeWithName:ATTRIBUTE_TOOL stringValue:APP_NAME]];
+    [element addAttribute: [DDXMLNode attributeWithName:ATTRIBUTE_TOOL_VERSION stringValue:APP_VERSION]];
+    
+    return  element;
+}
 
 + (DDXMLElement *) xoomlForFragmentToolAttributeWithName: (NSString *) attributeName 
                                                  andType: (NSString *) attributeType{
@@ -193,6 +217,29 @@ toolVersion="0.1">*/
     
     return  element;
 
+    
+}
+
++ (DDXMLElement *) xoomlForBulletinBoardNote: (NSString *) noteID 
+                                 andName: (NSString *) name{
+    
+    //create the association note and its attributes
+    DDXMLElement * xoomlAssociation = [[DDXMLElement alloc] initWithName: XOOML_ASSOCIATION];
+    
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:NOTE_ID stringValue:noteID]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:ASSOCIATED_ITEM stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:ASSOCIATED_ICON stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:ASSOCIATED_XOOML_FRAGMENT stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:LEVEL_OF_SYNCHRONIZATION stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:DISPLAY_TEXT stringValue:name]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:OPEM_WITH_DEFAULT stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:CREATED_BY stringValue:APP_NAME]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:CREATED_ON stringValue:[XoomlAttributeHelper generateCurrentTimeForXooml]]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:MODIFIED_BY stringValue:APP_NAME]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:MODIFIED_ON stringValue:[XoomlAttributeHelper generateCurrentTimeForXooml]]];
+
+    return xoomlAssociation;
+    
 }
 + (DDXMLNode *) xoomlForNoteRef: (NSString *) refID{
     //make the note reference element
@@ -201,6 +248,21 @@ toolVersion="0.1">*/
     [noteRef addAttribute: attribute];  
     return noteRef;
 }
+
++ (DDXMLNode *) xoomlForNotePositionX: (NSString *) positionX
+                         andPositionY: (NSString *) positionY
+                       withVisibility: (NSString *) isVisible{
+    //make the note property element
+    //TODO maybe I need to add an ID to the is:position
+    DDXMLElement * noteProperty = [DDXMLElement elementWithName:NOTE_POSITION_ELEMENT_NAME];
+    [noteProperty addAttribute:[DDXMLElement attributeWithName:POSITION_X stringValue:positionX]];
+    [noteProperty addAttribute:[DDXMLElement attributeWithName:POSITION_Y stringValue:positionY]];
+    [noteProperty addAttribute:[DDXMLElement attributeWithName:IS_VISIBLE stringValue:isVisible]];
+
+    return noteProperty;
+    
+}
+
 
 + (NSString *) xPathforNote: (NSString *) noteID{
     return [NSString stringWithFormat:@"//xooml:association[@ID = \"%@\"]",noteID];
@@ -215,5 +277,6 @@ toolVersion="0.1">*/
 + (NSString *) xPathForBulletinBoardAttribute: (NSString *) attributeType{
     return [NSString stringWithFormat:@"//xooml:fragmentToolAttributes[@type = \"%@\"]", attributeType];
 }
+
 
 @end

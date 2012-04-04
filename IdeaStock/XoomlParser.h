@@ -46,21 +46,39 @@
                                                     andType: (NSString *) attributeType; 
 
 /*
+ Creates an empty xoomlAssociationToolAttribute without a name and 
+ only a type for holding a note attribute
+ */
++ (DDXMLElement *) xoomlForAssociationToolAttributeWithType: (NSString *) attributeType; 
+/*
  Creates an empty xooml:fragmentToolAttributes for holding
  an attribute
  */
 + (DDXMLElement *) xoomlForFragmentToolAttributeWithName: (NSString *) attributeName 
                                                  andType: (NSString *) attributeType;
+
+/*
+ Creates a xooml association snippet for the note with noteID
+ */
++ (DDXMLElement *) xoomlForBulletinBoardNote: (NSString *) noteID 
+                                     andName: (NSString *) name;
 /*
  Creates an note reference element. 
  */
 + (DDXMLNode *) xoomlForNoteRef: (NSString *) refID;
 
++ (DDXMLNode *) xoomlForNotePositionX: (NSString *) positionX
+                         andPositionY: (NSString *) positionY
+                       withVisibility: (NSString *) isVisible;
 /*
  Returns the xPath for accessing a note with noteID
  */
 + (NSString *) xPathforNote: (NSString *) noteID;
 
+
+/*
+ Returns the xpath for accessing a bulletin board attribute of specified type
+ */
 + (NSString *) xPathForBulletinBoardAttribute: (NSString *) attributeType;
 /*
  Returns the xPath for accessing a framgment attribute with name and type
