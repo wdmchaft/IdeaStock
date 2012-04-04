@@ -111,6 +111,7 @@
 
 #define XOOML_NOTE_TOOL_ATTRIBUTE @"xooml:associationToolAttributes"
 #define ATTRIBUTE_NAME @"name"
+#define ATTRIBUTE_TYPE @"type"
 #define LINKAGE_TYPE @"linkage"
 
 - (void) addLinkage: (NSString *) linkageName
@@ -126,7 +127,8 @@ WithReferenceToNote: (NSString *) refNoteID{
     //add the noteRef to that element
     for (DDXMLElement * noteChild in [noteNode children]){
         if ([[noteChild name] isEqualToString:XOOML_NOTE_TOOL_ATTRIBUTE] &&
-            [[[noteChild attributeForName:ATTRIBUTE_NAME] stringValue] isEqualToString:linkageName]){
+            [[[noteChild attributeForName:ATTRIBUTE_NAME] stringValue] isEqualToString:linkageName] && 
+            [[[noteChild attributeForName:ATTRIBUTE_TYPE] stringValue] isEqualToString:LINKAGE_TYPE]){
             [noteChild addChild:noteRef];
             return;
             
@@ -278,7 +280,25 @@ WithReferenceToNote: (NSString *) refNoteID{
 - (void) deleteLinkage: (NSString *) linkageName 
                forNote: (NSString *)noteID{
     
+    DDXMLElement * noteNode = [self getNoteElementFor:noteID];
+    
+    //if the note is not found delete
+    if (!noteNode) return;
+    
+    for (DDXMLElement * noteChild in [noteNode children]){
+        if ([[noteChild name] isEqualToString:XOOML_NOTE_TOOL_ATTRIBUTE] &&
+            [[[noteChild attributeForName:ATTRIBUTE_NAME] stringValue] isEqualToString:linkageName] && 
+            [[[noteChild attributeForName:ATTRIBUTE_TYPE] stringValue] isEqualToString:LINKAGE_TYPE]){
+            
+            [noteNode removeChildAtIndex:[noteChild index]];
+            return;
+        }
+        
+    }
+    
 }
+
+
 /*
  Delete the note with noteRefID from the linkage with linkageName belonging
  to the note with noteID.
@@ -287,9 +307,33 @@ WithReferenceToNote: (NSString *) refNoteID{
  without doing anything. 
  */
 
+#define REF_ID @"refID"
 - (void) deleteNote: (NSString *) noteRefID
         fromLinkage: (NSString *)linkageName
             forNote: (NSString *) noteID{
+    DDXMLElement * noteNode = [self getNoteElementFor:noteID];
+    
+    //if the note is not found delete
+    if (!noteNode) return;
+    
+    //for every child of the note see if it has the queried linkage
+    //atribute. Then loop over all the children of the attribute to 
+    //find the note to delete and then delete it. 
+    for (DDXMLElement * noteChild in [noteNode children]){
+        if ([[noteChild name] isEqualToString:XOOML_NOTE_TOOL_ATTRIBUTE] &&
+            [[[noteChild attributeForName:ATTRIBUTE_NAME] stringValue] isEqualToString:linkageName] && 
+            [[[noteChild attributeForName:ATTRIBUTE_TYPE] stringValue] isEqualToString:LINKAGE_TYPE]){
+            
+            for (DDXMLElement * noteRef in [noteChild children]){
+                if ([[[noteRef attributeForName:REF_ID] stringValue] isEqualToString:noteRefID]){
+                    [noteRef removeChildAtIndex:[noteRef index]];
+                }
+            }
+            return;
+        }
+        
+    }
+    
     
 }
 /*
@@ -303,6 +347,19 @@ WithReferenceToNote: (NSString *) refNoteID{
 
 - (void) deleteStacking: (NSString *) stackingName{
     
+    NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:stackingName andType:STACKING_TYPE];
+    
+    NSError * err;
+    NSArray *attribtues = [self.document nodesForXPath: xPath error: &err];
+    
+    //if the stacking attribute does not exist return
+    if (attribtues == nil || [attribtues count] == 0) return;
+    
+    DDXMLElement * bulletinBoardAttribute = [attribtues lastObject];
+    DDXMLElement * attributeParent = (DDXMLElement *)[bulletinBoardAttribute parent];
+    [attributeParent removeChildAtIndex:[bulletinBoardAttribute index]];
+
+    
 }
 
 /*
@@ -314,6 +371,23 @@ WithReferenceToNote: (NSString *) refNoteID{
 
 - (void) deleteNote: (NSString *) noteID
        fromStacking: (NSString *) stackingName{
+    
+    NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:stackingName andType:STACKING_TYPE];
+    
+    NSError * err;
+    NSArray *attribtues = [self.document nodesForXPath: xPath error: &err];
+    
+    //if the stacking attribute does not exist return
+    if (attribtues == nil || [attribtues count] == 0) return;
+    
+    DDXMLElement * bulletinBoardAttribute = [attribtues lastObject];
+    
+    for (DDXMLElement * element in [bulletinBoardAttribute children]){
+        if ( [[[element attributeForName:REF_ID] stringValue] isEqualToString:noteID]){
+            [bulletinBoardAttribute removeChildAtIndex:[element index]];
+            return;
+        }
+    }
     
 }
 /*
@@ -328,6 +402,19 @@ WithReferenceToNote: (NSString *) refNoteID{
 
 - (void) deleteGrouping: (NSString *) groupingName{
     
+    NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:groupingName andType:GROUPING_TYPE];
+    
+    NSError * err;
+    NSArray *attribtues = [self.document nodesForXPath: xPath error: &err];
+    
+    //if the stacking attribute does not exist return
+    if (attribtues == nil || [attribtues count] == 0) return;
+    
+    DDXMLElement * bulletinBoardAttribute = [attribtues lastObject];
+    DDXMLElement * attributeParent = (DDXMLElement *)[bulletinBoardAttribute parent];
+    [attributeParent removeChildAtIndex:[bulletinBoardAttribute index]];
+
+    
 }
 
 /*
@@ -339,6 +426,24 @@ WithReferenceToNote: (NSString *) refNoteID{
 
 - (void) deleteNote: (NSString *) noteID
         fromGroupin: (NSString *) groupingName{
+    
+    NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:groupingName andType:GROUPING_TYPE];
+    
+    NSError * err;
+    NSArray *attribtues = [self.document nodesForXPath: xPath error: &err];
+    
+    //if the stacking attribute does not exist return
+    if (attribtues == nil || [attribtues count] == 0) return;
+    
+    DDXMLElement * bulletinBoardAttribute = [attribtues lastObject];
+    
+    for (DDXMLElement * element in [bulletinBoardAttribute children]){
+        if ( [[[element attributeForName:REF_ID] stringValue] isEqualToString:noteID]){
+            [bulletinBoardAttribute removeChildAtIndex:[element index]];
+            return;
+        }
+    }
+    
     
 }
 
