@@ -708,9 +708,9 @@ WithReferenceToNote: (NSString *) refNoteID{
         for (NSString * refID in refIDs){
             [self addLinkage:linkageName ToNote:noteId WithReferenceToNote:refID];
         }
-
+        
     }
-
+    
     
 }
 
@@ -735,7 +735,7 @@ WithReferenceToNote: (NSString *) refNoteID{
         NSString * positionX = [values objectAtIndex:0];
         NSString * positionY = [values objectAtIndex:1];
         NSString * isVisible = [values objectAtIndex:2];
-
+        
         //get the note to add the position to
         DDXMLElement * note = [self getNoteElementFor:noteID];
         
@@ -748,7 +748,7 @@ WithReferenceToNote: (NSString *) refNoteID{
         return;
         
     }
-   
+    
     
 }
 
@@ -768,6 +768,39 @@ WithReferenceToNote: (NSString *) refNoteID{
 
 - (void) deleteNote: (NSString *) noteID{
     
+    DDXMLElement * note = [self getNoteElementFor:noteID];
+    
+    //if the note does not exist return
+    if (!note) return;
+    
+    //delete the note 
+    DDXMLElement * noteParent = (DDXMLElement *)[note parent];
+    [noteParent removeChildAtIndex:[note index]];
+    
+    //delete note from all linkages if available
+    //first get all notes. For each note get all linkages. for each linkage
+    //check to see if the note appears in that linkage delete it. 
+    NSDictionary * allNotes = [self getAllNoteBasicInfo];
+    for (NSString * ReferedNoteID in allNotes){
+        NSDictionary * refNoteLinkages =[self getNoteAttributeInfo:LINKAGE_TYPE forNote:ReferedNoteID];
+        for( NSString * linkageName in refNoteLinkages){
+            [self deleteNote:noteID fromLinkage:linkageName forNote:ReferedNoteID];
+        }
+        
+    }
+    
+    //delete the note from stackings if available 
+    NSDictionary * allStackins = [self getStackingInfo];
+    for (NSString * stackingName in allStackins){
+        [self deleteNote:noteID fromStacking:stackingName];
+    }
+    //delete note from any grouping if available
+    NSDictionary * allGroupings = [self getGroupingInfo];
+    for (NSString * groupingName in allGroupings){
+        [self deleteNote:noteID fromGroupin:groupingName];
+    }
+    
+    
     
 }
 
@@ -776,22 +809,87 @@ WithReferenceToNote: (NSString *) refNoteID{
              ofType: (NSString *) attributeType 
             forNote: (NSString *) sourceNoteID{
     
+    if ([attributeType isEqualToString:LINKAGE_TYPE]){
+        //get all the linkage attributes for the sourceNote
+        
+        NSDictionary * linkageAttributes = [self getLinkageInfoForNote:sourceNoteID];
+        //for each linkage delete the targetNote from it if the traget note exists
+        for(NSString * linkageName in linkageAttributes){
+            if ([linkageName isEqualToString:attributeName]){
+                [self deleteNote:targetNoteID fromLinkage:linkageName forNote:sourceNoteID];
+            }
+            
+        }
+        
+    }
+    
 }
 
 -(void) deleteNote: (NSString *) noteID 
 fromBulletinBoardAttribute: (NSString *) 
 attributeName ofType:(NSString *) attributeType{
     
+    if ([attributeType isEqualToString:STACKING_TYPE]){
+        
+        NSDictionary * allStacking = [self getStackingInfo];
+        for (NSString * stackinName in allStacking){
+            if ([stackinName isEqualToString:attributeName]){
+                [self deleteNote:noteID fromStacking:stackinName];
+            }
+        }
+        return;
+    }
+    if ([attributeType isEqualToString:GROUPING_TYPE]){
+        
+        if ([attributeType isEqualToString:GROUPING_TYPE]){
+            
+            NSDictionary * allGrouping = [self getGroupingInfo];
+            for (NSString * groupingName in allGrouping){
+                if ([groupingName isEqualToString:attributeName]){
+                    [self deleteNote:noteID fromGroupin:groupingName];
+                }
+            }
+        
+        return;
+        }
+    
+    }
 }
 
+#define ATTRIBUTE_TYPE @"type"
 - (void) deleteNoteAttribute: (NSString *) attributeName
                       ofType: (NSString *) attributeType 
                     fromNote: (NSString *) noteID{
+    
+    //if noteID is invalid return
+    DDXMLElement * note = [self getNoteElementFor:noteID];
+    if (!note) return;
+    
+    if ([attributeType isEqualToString:LINKAGE_TYPE]){
+     
+        NSDictionary * linkageInfo = [self getLinkageInfoForNote:noteID];
+        for (NSString * linkageName in linkageInfo){
+            if ([linkageName isEqualToString:attributeName]){
+                [self deleteLinkage:linkageName forNote:noteID];
+                return;
+            }
+        }
+
+    }
+            
     
 }
 
 - (void) deleteBulletinBoardAttribute:(NSString *) attributeName 
                                ofType: (NSString *) attributeType{
+    if ([attributeType isEqualToString:STACKING_TYPE]){
+        [self deleteStacking:attributeName];
+        return;
+    }
+    if ([attributeType isEqualToString:GROUPING_TYPE]){
+        [self deleteGrouping:attributeName];
+        return;
+    }
     
 }
 

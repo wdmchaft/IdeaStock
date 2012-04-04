@@ -143,6 +143,9 @@ attributeName ofType:(NSString *) attributeType;
  This method simply checks for the validity of attributeType and invokes the right delete
  method. 
  
+ Pay attention that a note Position cannot be deleted without deleting the entire note. 
+ note position should be updated and will be deleted with note
+ 
  If the specified parameters are invalid the method returns without doing anything.
  */
 @optional
@@ -183,7 +186,7 @@ attributeName ofType:(NSString *) attributeType;
 - (void) updateNote: (NSString *) noteID 
      withProperties: (NSDictionary *)  newProperties;
 
-/*
+/* 
  Update the name of an attribute of type attributeType from old attributeName 
  to newAttributeName fot the note attribute of the note with noteID.
  
@@ -254,13 +257,14 @@ attributeName ofType:(NSString *) attributeType;
 - (NSDictionary *) getAllNoteBasicInfo;
 
 /*
- Returns all the linkage info for the note with noteID.
+ Returns all the attributes of attributeType for the note with noteID
  
- A linkage info contains a name, an and an array of noteIDs that are linked
- to that note. These are expressed as two keys name and refIDs.
+ The returned type is a NSDictionary keyed on attributeNames. the value for 
+ each key is an array of noteIDs that belong to that attribute.
+ 
  
  For example: 
- {name="linkage1", refIDs = {"NoteID2","NoteID3"}}
+ {linkageName1 = {noteID1,noteID2}, linkageName2= {noteID2,noteID3}}
  
  The burden for the linkage to be describe correctly (both in the linker and
  linkee note attributes) is on the xooml file. 
