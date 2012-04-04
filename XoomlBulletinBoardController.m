@@ -459,6 +459,24 @@ WithReferenceToNote: (NSString *) refNoteID{
                    forNote: (NSString *) noteID
                withNewName: (NSString *) newLinkageName{
     
+    DDXMLElement * noteNode = [self getNoteElementFor:noteID];
+    
+    //if the note is not found delete
+    if (!noteNode) return;
+    
+    for (DDXMLElement * noteChild in [noteNode children]){
+        if ([[noteChild name] isEqualToString:XOOML_NOTE_TOOL_ATTRIBUTE] &&
+            [[[noteChild attributeForName:ATTRIBUTE_NAME] stringValue] isEqualToString:linkageName] && 
+            [[[noteChild attributeForName:ATTRIBUTE_TYPE] stringValue] isEqualToString:LINKAGE_TYPE]){
+            
+            //TODO I'm a little bit skeptical on whether this will work
+            [[noteNode attributeForName:ATTRIBUTE_NAME] setStringValue:newLinkageName];
+            return;
+        }
+        
+    }
+
+    
 }
 
 /*
@@ -470,6 +488,16 @@ WithReferenceToNote: (NSString *) refNoteID{
 
 - (void) updateStackingName: (NSString *) stackingName
                 withNewName: (NSString *) newStackingName{
+    NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:stackingName andType:STACKING_TYPE];
+    
+    NSError * err;
+    NSArray *attribtues = [self.document nodesForXPath: xPath error: &err];
+    
+    //if the stacking attribute does not exist return
+    if (attribtues == nil || [attribtues count] == 0) return;
+    
+    DDXMLElement * bulletinBoardAttribute = [attribtues lastObject];
+    [[bulletinBoardAttribute attributeForName:ATTRIBUTE_NAME] setStringValue:newStackingName];
     
 }
 /*
@@ -481,6 +509,16 @@ WithReferenceToNote: (NSString *) refNoteID{
 
 - (void) updateGroupingName: (NSString *) groupingName
                 withNewName: (NSString *) newGroupingName{
+    NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:groupingName andType:GROUPING_TYPE];
+    
+    NSError * err;
+    NSArray *attribtues = [self.document nodesForXPath: xPath error: &err];
+    
+    //if the stacking attribute does not exist return
+    if (attribtues == nil || [attribtues count] == 0) return;
+    
+    DDXMLElement * bulletinBoardAttribute = [attribtues lastObject];
+    [[bulletinBoardAttribute attributeForName:ATTRIBUTE_NAME] setStringValue:newGroupingName];
     
 }
 
