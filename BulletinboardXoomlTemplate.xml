@@ -37,25 +37,25 @@
         </xooml:associationToolAttributes>
     </xooml:association>
     <xooml:fragmentToolAttributes xmlns="http://ischool.uw.edu/xmlns/IdeaStuck"
-        id="859ccc04-ac93-4ccc-a3fb-a226a2ac4d93" type="Stack" name="Stacking1" toolName="IdeaStock"
+        id="859ccc04-ac93-4ccc-a3fb-a226a2ac4d93" type="stacking" name="Stacking1" toolName="IdeaStock"
         toolVersion="0.1">
         <is:note refID="d391c321-4f25-4128-8a82-13dd5f268034"/>
         <is:note refID="859dab04-ac93-4ccc-a3fb-a226a2ac4d93"/>
     </xooml:fragmentToolAttributes>
     <xooml:fragmentToolAttributes xmlns="http://ischool.uw.edu/xmlns/IdeaStuck"
-        id="859ccc04-ac93-4ccc-a3fb-a226a2a33d93" type="Stack" name="Stacking2" toolName="IdeaStock"
+        id="859ccc04-ac93-4ccc-a3fb-a226a2a33d93" type="stacking" name="Stacking2" toolName="IdeaStock"
         toolVersion="0.1">
         <is:note refID="d391c321-4f25-4128-8a82-13dd5f268034"/>
         <is:note refID="859dab04-ac93-4ccc-a3fb-a226a2ac4d93"/>
     </xooml:fragmentToolAttributes>
     <xooml:fragmentToolAttributes xmlns="http://ischool.uw.edu/xmlns/IdeaStuck"
-        id="859ccc04-ac93-4ccc-a3fb-a226a2ag4d94" type="Group" name="Grouping1" toolName="IdeaStock"
+        id="859ccc04-ac93-4ccc-a3fb-a226a2ag4d94" type="grouping" name="Grouping1" toolName="IdeaStock"
         toolVersion="0.1">
         <is:note refID="d391c321-4f25-4128-8a82-13dd5f268034"/>
         <is:note refID="859dab04-ac93-4ccc-a3fb-a226a2ac4d93"/>
     </xooml:fragmentToolAttributes>
     <xooml:fragmentToolAttributes xmlns="http://ischool.uw.edu/xmlns/IdeaStuck"
-        id="859ccc04-ac93-4ccc-a3fb-a226a2aa4d95" type="Group" name="Grouping2" toolName="IdeaStock"
+        id="859ccc04-ac93-4ccc-a3fb-a226a2aa4d95" type="grouping" name="Grouping2" toolName="IdeaStock"
         toolVersion="0.1">
         <is:note refID="d391c321-4f25-4128-8a82-13dd5f268034"/>
         <is:note refID="859dab04-ac93-4ccc-a3fb-a226a2ac4d93"/>

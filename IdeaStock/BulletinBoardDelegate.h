@@ -64,6 +64,8 @@
  
  If the values is an empty array, this method only creates and empty attribute. 
  */
+
+//TODO note position and other properties should be added here. 
 - (void) addNoteAttribute: (NSString *) attributeName
                   forType: (NSString *) attributeType 
                   forNote: (NSString *)noteID 

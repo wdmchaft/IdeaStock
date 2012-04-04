@@ -10,6 +10,7 @@
 #import "XoomlNote.h"
 #import "AssociativeBulletinBoard.h"
 #import "BulletinBoardAttributes.h"
+#import "DDXML.h"
 
 /*
  This is helper that handles parsing and working 
@@ -35,6 +36,37 @@
  and returns it as NSData
  */
 + (NSData *) getEmptyBulletinBoardXooml;
+
+/*
+ Creates an empty xooml:associationToolAttribute for holding
+ a note attribute
+ */
++ (DDXMLElement *) xoomlForAssociationToolAttributeWithName: (NSString *) attributeName 
+
+                                                    andType: (NSString *) attributeType; 
+
+/*
+ Creates an empty xooml:fragmentToolAttributes for holding
+ an attribute
+ */
++ (DDXMLElement *) xoomlForFragmentToolAttributeWithName: (NSString *) attributeName 
+                                                 andType: (NSString *) attributeType;
+/*
+ Creates an note reference element. 
+ */
++ (DDXMLNode *) xoomlForNoteRef: (NSString *) refID;
+
+/*
+ Returns the xPath for accessing a note with noteID
+ */
++ (NSString *) xPathforNote: (NSString *) noteID;
+
+/*
+ Returns the xPath for accessing a framgment attribute with name and type
+ specified. 
+ */
++ (NSString *) xPathForFragmentAttributeWithName: (NSString *) attributeName
+                                         andType: (NSString *) attributeType;
 
 
 @end

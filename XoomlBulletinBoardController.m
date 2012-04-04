@@ -32,7 +32,7 @@
     //open the document from the data
     NSError * err = nil;
     self.document = [[DDXMLDocument alloc] initWithData:data options:0 error:&err];
-
+    
     //TODO right now im ignoring err. I should use it 
     //to determine the error
     if (self.document == nil){
@@ -68,15 +68,78 @@
  -------------------------*/
 
 /*
+ Finds a xml node element with noteID and returns it 
+ */
+
+- (DDXMLElement *) getNoteElementFor: (NSString *) noteID{
+    //get the note fragment using xpath
+    
+    //xooml:association[@ID ="d391c321-4f25-4128-8a82-13dd5f268034"]
+    //TODO this may not work maybe I shoud remove @ sign
+    NSString * xPath = [XoomlParser xPathforNote:noteID];
+    
+    NSError * err;
+    NSArray *notes = [self.document nodesForXPath: xPath error: &err];
+    if (notes == nil){
+        NSLog(@"Error reading the content from XML");
+        return nil;
+    }
+    if ([notes count] == 0 ){
+        NSLog(@"No Note Content exist for the given note");
+        return nil;
+    }
+    
+    return [notes lastObject];
+    
+}
+
+
+/*
+ The reason why there are static method names for linkage and stacking and etc
+ instead of a dynamic attribute Type is that at some point in future the processes
+ and elements for each type may be different for other. 
+ */
+
+/*
  Adds a linkage to note with noteID to note with note refID
  
  If the noteID is not valid this method returns without doing anything. 
  
  This method assumes that refNoteID is a valid refID. 
  */
+
+
+#define XOOML_NOTE_TOOL_ATTRIBUTE @"xooml:associationToolAttributes"
+#define ATTRIBUTE_NAME @"name"
+#define LINKAGE_TYPE @"linkage"
+
 - (void) addLinkage: (NSString *) linkageName
              ToNote: (NSString *) noteID
 WithReferenceToNote: (NSString *) refNoteID{
+    //if the note doesn't exists return
+    DDXMLElement * noteNode = [self getNoteElementFor:noteID];
+    if (!noteNode) return;
+    
+    
+    DDXMLNode * noteRef = [XoomlParser xoomlForNoteRef: refNoteID];
+    //see if there already exists a linkage attribute and if so
+    //add the noteRef to that element
+    for (DDXMLElement * noteChild in [noteNode children]){
+        if ([[noteChild name] isEqualToString:XOOML_NOTE_TOOL_ATTRIBUTE] &&
+            [[[noteChild attributeForName:ATTRIBUTE_NAME] stringValue] isEqualToString:linkageName]){
+            [noteChild addChild:noteRef];
+            return;
+            
+        }
+        
+    }
+    
+    //a note linkage with the given name does not exist so we have to 
+    //create it 
+    DDXMLElement * linkageElement = [XoomlParser xoomlForAssociationToolAttributeWithName:linkageName andType:LINKAGE_TYPE];
+    [linkageElement addChild:noteRef];
+    [noteNode addChild:linkageElement];
+    
     
 }
 
@@ -93,8 +156,17 @@ WithReferenceToNote: (NSString *) refNoteID{
  refNoteIDs. 
  */
 
+#define STACKING_TYPE @"stacking"
+
 - (void) addStackingWithName: (NSString *) stackingName
                    withNotes: (NSArray *) notes{
+    DDXMLElement * stackingElement = [XoomlParser xoomlForFragmentToolAttributeWithName:stackingName andType:STACKING_TYPE];
+    for (NSString * noteID in notes){
+        DDXMLNode * note = [XoomlParser xoomlForNoteRef:noteID];
+        [stackingElement addChild:note];
+    }
+    [[self.document rootElement] addChild:stackingElement];
+    
     
 }
 /*
@@ -110,8 +182,18 @@ WithReferenceToNote: (NSString *) refNoteID{
  refNoteIDs. 
  */
 
+#define GROUPING_TYPE @"grouping"
+
 - (void) addGroupingWithName: (NSString *) groupingName
                    withNotes: (NSArray *) notes{
+    DDXMLElement * groupingElement = [XoomlParser xoomlForFragmentToolAttributeWithName:groupingName andType:GROUPING_TYPE];
+    for (NSString * noteID in notes){
+        DDXMLNode * note = [XoomlParser xoomlForNoteRef:noteID];
+        [groupingElement addChild:note];
+    }
+    [[self.document rootElement] addChild:groupingElement];
+    
+    
     
 }
 
@@ -130,6 +212,23 @@ WithReferenceToNote: (NSString *) refNoteID{
 - (void) addNote: (NSString *) noteID
       toStacking: (NSString *) stackingName{
     
+    //get the xpath for the required attribute
+    NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:stackingName andType:STACKING_TYPE];
+    
+    NSError * err;
+    NSArray *attribtues = [self.document nodesForXPath: xPath error: &err];
+    if (attribtues == nil){
+        NSLog(@"Error reading the content from XML");
+        return;
+    }
+    if ([attribtues count] == 0 ){
+        NSLog(@"Fragment attribute is no avail :D");
+        return;
+    }
+
+    DDXMLElement * bulletinBoardAttribute = [attribtues lastObject];
+    DDXMLNode * noteRef = [XoomlParser xoomlForNoteRef:noteID];
+    [bulletinBoardAttribute addChild:noteRef];
 }
 
 
@@ -147,7 +246,23 @@ WithReferenceToNote: (NSString *) refNoteID{
 
 - (void) addNote: (NSString *) noteID
       toGrouping: (NSString *) groupingName{
+    //get the xpath for the required attribute
+    NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:groupingName andType:GROUPING_TYPE];
     
+    NSError * err;
+    NSArray *attribtues = [self.document nodesForXPath: xPath error: &err];
+    if (attribtues == nil){
+        NSLog(@"Error reading the content from XML");
+        return;
+    }
+    if ([attribtues count] == 0 ){
+        NSLog(@"Fragment attribute is no avail :D");
+        return;
+    }
+    
+    DDXMLElement * bulletinBoardAttribute = [attribtues lastObject];
+    DDXMLNode * noteRef = [XoomlParser xoomlForNoteRef:noteID];
+    [bulletinBoardAttribute addChild:noteRef];
 }
 
 

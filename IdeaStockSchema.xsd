@@ -19,8 +19,8 @@
         <xs:attribute name="type" use="required">
             <xs:simpleType>
                 <xs:restriction base="xs:string">
-                    <xs:enumeration value="Stack"/>
-                    <xs:enumeration value="Group"/>
+                    <xs:enumeration value="stacking"/>
+                    <xs:enumeration value="grouping"/>
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>

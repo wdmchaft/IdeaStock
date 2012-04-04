@@ -72,7 +72,23 @@
 #define XOOML_FRAGMENT @"xooml:fragment"
 #define XOOML_ASSOCIATION @"xooml:association"
 
+#define ATTRIBUTE_ID @"ID"
+#define ATTRIBUTE_TYPE @"type"
+#define ATTRIBUTE_NAME @"name"
+#define ATTRIBUTE_TOOL @"toolName"
+#define ATTRIBUTE_TOOL_VERSION @"toolVersion"
+
+
+
 #define APP_NAME @"IdeaStock"
+#define APP_VERSION @"0.1"
+
+#define XOOML_NOTE_TOOL_ATTRIBUTE @"xooml:associationToolAttributes"
+#define XOOML_BULLETINBOARD_TOOL_ATTRIBUTE @"xooml:fragmentToolAttributes"
+#define ATTRIBUTE_NAME @"name"
+#define NOTE_REF_ELEMENT_NAME @"is:note"
+#define REF_ID @"refID"
+
 + (NSData *) convertNoteToXooml: (XoomlNote *) note{
     
     //create the root element (xooml:fragment) and fill out its attributes
@@ -141,5 +157,59 @@
     return [xmlString dataUsingEncoding:NSUTF8StringEncoding];
 }
 
+
+
+/*xooml:associationToolAttributes xmlns="http://ischool.uw.edu/xmlns/ideastock"
+ID="d391c321-4f25-4128-8a82-13dd5f268035" type="linkage" name="link1" toolName="IdeaStock"
+toolVersion="0.1">*/
++ (DDXMLElement *) xoomlForAssociationToolAttributeWithName: (NSString *) attributeName 
+                                         andType: (NSString *) attributeType{
+    
+    DDXMLElement *element = [DDXMLNode elementWithName:XOOML_NOTE_TOOL_ATTRIBUTE];
+    
+    [element addAttribute:[DDXMLNode attributeWithName:@"xmlns" stringValue:IDEA_STOCK_NAMESPACE]];
+    [element addAttribute:[DDXMLNode attributeWithName:ATTRIBUTE_ID stringValue: [XoomlAttributeHelper generateUUID]]];
+    [element addAttribute: [DDXMLNode attributeWithName:ATTRIBUTE_TYPE stringValue:attributeType]];
+    [element addAttribute: [DDXMLNode attributeWithName:ATTRIBUTE_NAME stringValue:attributeName]];
+    [element addAttribute: [DDXMLNode attributeWithName:ATTRIBUTE_TOOL stringValue:APP_NAME]];
+    [element addAttribute: [DDXMLNode attributeWithName:ATTRIBUTE_TOOL_VERSION stringValue:APP_VERSION]];
+    
+    return  element;
+}
+
+
+
++ (DDXMLElement *) xoomlForFragmentToolAttributeWithName: (NSString *) attributeName 
+                                                 andType: (NSString *) attributeType{
+    
+    DDXMLElement *element = [DDXMLNode elementWithName:XOOML_BULLETINBOARD_TOOL_ATTRIBUTE];
+    
+    [element addAttribute:[DDXMLNode attributeWithName:@"xmlns" stringValue:IDEA_STOCK_NAMESPACE]];
+    [element addAttribute:[DDXMLNode attributeWithName:ATTRIBUTE_ID stringValue: [XoomlAttributeHelper generateUUID]]];
+    [element addAttribute: [DDXMLNode attributeWithName:ATTRIBUTE_TYPE stringValue:attributeType]];
+    [element addAttribute: [DDXMLNode attributeWithName:ATTRIBUTE_NAME stringValue:attributeName]];
+    [element addAttribute: [DDXMLNode attributeWithName:ATTRIBUTE_TOOL stringValue:APP_NAME]];
+    [element addAttribute: [DDXMLNode attributeWithName:ATTRIBUTE_TOOL_VERSION stringValue:APP_VERSION]];
+    
+    return  element;
+
+}
++ (DDXMLNode *) xoomlForNoteRef: (NSString *) refID{
+    //make the note reference element
+    DDXMLElement * noteRef = [DDXMLElement elementWithName:NOTE_REF_ELEMENT_NAME];
+    DDXMLNode * attribute = [DDXMLElement attributeWithName:REF_ID stringValue:refID];
+    [noteRef addAttribute: attribute];  
+    return noteRef;
+}
+
++ (NSString *) xPathforNote: (NSString *) noteID{
+    return [NSString stringWithFormat:@"//xooml:association[@ID = \"%@\"]",noteID];
+}
+
+//xooml:fragmentToolAttributes[@type = "stacking" and @name="Stacking1"]
++ (NSString *) xPathForFragmentAttributeWithName: (NSString *) attributeName
+                                         andType: (NSString *) attributeType{
+    return [NSString stringWithFormat:@"//xooml:fragmentToolAttributes[@type = \"%@\" and @name=\"%@\"]", attributeType, attributeName];
+}
 
 @end
