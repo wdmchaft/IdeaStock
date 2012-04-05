@@ -232,6 +232,7 @@ attributeName ofType:(NSString *) attributeType;
 @optional
 -(void) updateNoteAttribute: (NSString *) attributeName
                      ofType: (NSString *) attributeType 
+                    forNote: (NSString *)noteID
                  withValues: (NSArray *) values;
 
 /**---------------------------------
@@ -252,6 +253,7 @@ attributeName ofType:(NSString *) attributeType;
  {noteID1 = {name = "Note1", PositionX = 200 , PositionY = 200, isVisible = true"}
  
  This method does not gurauntee that all the keys are present in the dictionary. 
+ 
  */
 @required
 - (NSDictionary *) getAllNoteBasicInfo;
@@ -266,8 +268,6 @@ attributeName ofType:(NSString *) attributeType;
  For example: 
  {linkageName1 = {noteID1,noteID2}, linkageName2= {noteID2,noteID3}}
  
- The burden for the linkage to be describe correctly (both in the linker and
- linkee note attributes) is on the xooml file. 
  
  If the noteID does not exist the method returns nil without doing anything.
  */
@@ -275,6 +275,20 @@ attributeName ofType:(NSString *) attributeType;
 @optional
 - (NSDictionary *) getNoteAttributeInfo: (NSString *) attributeType
                                 forNote: (NSString *)noteID;
+
+/*
+ Returns all the attributes of attributeType for the bulletiboard
+ 
+ The returned type is a NSDictionary keyed on attributeNames. the value for 
+ each key is an array of noteIDs that belong to that attribute.
+ 
+ 
+ For example: 
+ {StackingName1 = {noteID1,noteID2}, StackingName2= {noteID2,noteID3}}
+ 
+ 
+ If the noteID does not exist the method returns nil without doing anything.
+ */
 @optional
 - (NSDictionary *) getBulletinBoardAttributeInfo: (NSString *) attributeType;
 @end

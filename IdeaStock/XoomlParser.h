@@ -87,5 +87,6 @@
 + (NSString *) xPathForFragmentAttributeWithName: (NSString *) attributeName
                                          andType: (NSString *) attributeType;
 
++(NSString *) xPathForAllNotes;
 
 @end

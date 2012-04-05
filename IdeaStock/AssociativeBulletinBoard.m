@@ -475,7 +475,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     [[self.noteAttributes objectForKey:noteID] updateAttribute:attributeName ofType:attributeType withNewValue:newValues];
     
     //reflect the changes in the xooml data model
-    [self.delegate updateNoteAttribute:attributeName ofType:attributeType withValues:newValues];
+    [self.delegate updateNoteAttribute:attributeName ofType:attributeType forNote: noteID withValues:newValues];
 }
 
 - (void) renameBulletinBoardAttribute: (NSString *) oldAttributeNAme 

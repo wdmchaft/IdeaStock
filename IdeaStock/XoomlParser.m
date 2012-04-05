@@ -278,5 +278,7 @@ toolVersion="0.1">*/
     return [NSString stringWithFormat:@"//xooml:fragmentToolAttributes[@type = \"%@\"]", attributeType];
 }
 
-
++(NSString *) xPathForAllNotes{
+    return @"//xooml:association";
+}
 @end

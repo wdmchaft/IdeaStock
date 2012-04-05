@@ -425,7 +425,7 @@ WithReferenceToNote: (NSString *) refNoteID{
  */
 
 - (void) deleteNote: (NSString *) noteID
-        fromGroupin: (NSString *) groupingName{
+       fromGrouping: (NSString *) groupingName{
     
     NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:groupingName andType:GROUPING_TYPE];
     
@@ -678,6 +678,10 @@ WithReferenceToNote: (NSString *) refNoteID{
 #define NOTE_IS_VISIBLE @"isVisbile"
 #define NOTE_LINKAGE_KEY @"linkage"
 #define POSITION_TYPE @"position"
+#define XOOML_POSITION_X @"positionX"
+#define XOOML_POSITION_Y @"positionY"
+#define XOOML_IS_VISIBLE @"isVisible"
+
 - (void) addNoteWithID: (NSString *) noteId 
          andProperties: (NSDictionary *)properties{
     
@@ -797,7 +801,7 @@ WithReferenceToNote: (NSString *) refNoteID{
     //delete note from any grouping if available
     NSDictionary * allGroupings = [self getGroupingInfo];
     for (NSString * groupingName in allGroupings){
-        [self deleteNote:noteID fromGroupin:groupingName];
+        [self deleteNote:noteID fromGrouping:groupingName];
     }
     
     
@@ -846,13 +850,13 @@ attributeName ofType:(NSString *) attributeType{
             NSDictionary * allGrouping = [self getGroupingInfo];
             for (NSString * groupingName in allGrouping){
                 if ([groupingName isEqualToString:attributeName]){
-                    [self deleteNote:noteID fromGroupin:groupingName];
+                    [self deleteNote:noteID fromGrouping:groupingName];
                 }
             }
-        
-        return;
+            
+            return;
         }
-    
+        
     }
 }
 
@@ -866,7 +870,7 @@ attributeName ofType:(NSString *) attributeType{
     if (!note) return;
     
     if ([attributeType isEqualToString:LINKAGE_TYPE]){
-     
+        
         NSDictionary * linkageInfo = [self getLinkageInfoForNote:noteID];
         for (NSString * linkageName in linkageInfo){
             if ([linkageName isEqualToString:attributeName]){
@@ -874,9 +878,9 @@ attributeName ofType:(NSString *) attributeType{
                 return;
             }
         }
-
+        
     }
-            
+    
     
 }
 
@@ -893,40 +897,152 @@ attributeName ofType:(NSString *) attributeType{
     
 }
 
+#define XOOML_NOTE_NAME @"associatedItem"
 - (void) updateNote: (NSString *) noteID 
      withProperties: (NSDictionary *)  newProperties{
+    //lookup the note if it doesnt exist return
+    DDXMLElement * note = [self getNoteElementFor:noteID];
+    if (!note) return;
     
+    NSString * newName = [newProperties objectForKey:NOTE_NAME_KEY];
+    NSString * newPositionX = [newProperties objectForKey:NOTE_POSITION_X_KEY];
+    NSString * newPositionY = [newProperties objectForKey:NOTE_POSITION_Y_KEY];
+    NSString * newIsVisible = [newProperties objectForKey:NOTE_IS_VISIBLE];
+    //if its the name of the note that we want to change change it on the 
+    //note itself
+    if (note){
+        [note removeAttributeForName:XOOML_NOTE_NAME];
+        [note addAttribute:[DDXMLNode attributeWithName:XOOML_NOTE_NAME stringValue:newName]];
+    }
+    //for every child of the node check if it is a position property
+    for (DDXMLElement * element in [note children]){
+        if ([[[element attributeForName:ATTRIBUTE_TYPE] stringValue] isEqualToString:POSITION_TYPE]){
+            //for the position proerty get the propery and if a new value is specified
+            //update it.
+            DDXMLElement * positionNode = (DDXMLElement *)[element childAtIndex:0];
+            //if there is no position element this note is invalid and can't be
+            //updated
+            if (!positionNode) return;
+            if (newPositionX){
+                [positionNode removeAttributeForName:XOOML_POSITION_X];
+                [positionNode addAttribute:[DDXMLNode attributeWithName:XOOML_POSITION_X stringValue:newPositionX]];
+            
+            }
+            if(newPositionY){
+                [positionNode removeAttributeForName:XOOML_POSITION_Y];
+                [positionNode addAttribute:[DDXMLNode attributeWithName:XOOML_POSITION_Y stringValue:newPositionY]];
+            }
+            if(newIsVisible){
+                [positionNode removeAttributeForName:XOOML_IS_VISIBLE];
+                [positionNode addAttribute:[DDXMLNode attributeWithName:XOOML_IS_VISIBLE stringValue:newIsVisible]];
+            }
+            return;   
+        }
+    }
 }
 
 - (void) updateNoteAttribute: (NSString *) oldAttributeName
                       ofType:(NSString *) attributeType 
                      forNote: (NSString *) noteID 
                  withNewName: (NSString *) newAttributeName{
+    if ([attributeType isEqualToString:LINKAGE_TYPE]){
+        [self updateLinkageName:oldAttributeName forNote:noteID withNewName:newAttributeName];
+    }
     
 }
 
 - (void) updateBulletinBoardAttributeName: (NSString *) oldAttributeName
                                    ofType: (NSString *) attributeType 
                               withNewName: (NSString *) newAttributeName{
+    if ([attributeType isEqualToString:STACKING_TYPE]){
+        [self updateStackingName:oldAttributeName withNewName:newAttributeName];
+    }
+    if ([attributeType isEqualToString:GROUPING_TYPE]){
+        [self updateGroupingName:oldAttributeName withNewName:newAttributeName];
+    }
     
 }
 
 -(void) updateNoteAttribute: (NSString *) attributeName
                      ofType: (NSString *) attributeType 
+                    forNote: (NSString *) noteID
                  withValues: (NSArray *) values{
+    if ([attributeType isEqualToString:LINKAGE_TYPE]){
+        [self deleteLinkage:attributeName forNote:attributeType];
+        for (NSString * value in values){
+            [self addLinkage:attributeName ToNote:noteID WithReferenceToNote:value];
+        }
+    }
     
 }
 
+
+#define XOOML_NOTE_ID @"ID"
+#define NOTE_ID_KEY @"ID"
+
 - (NSDictionary *) getAllNoteBasicInfo{
     
+    NSMutableDictionary * answer = [NSMutableDictionary dictionary];
+    
+    //get all the notes
+    NSString * xPath = [XoomlParser xPathForAllNotes];
+    NSError * err;
+    NSArray *notes = [self.document nodesForXPath: xPath error: &err];
+    
+    //if no note exists return the empty dictionary
+    if (notes == nil || [notes count] == 0) return [answer copy];
+
+    //for every note
+    for(DDXMLElement * note in notes){
+        //get the note attributes if they don't exist set them to nil
+        NSString * noteID = [[note attributeForName:XOOML_NOTE_ID] stringValue];
+        NSString * noteName = [[note attributeForName:XOOML_NOTE_NAME] stringValue];
+        NSString * notePositionX = nil;
+        NSString * notePositionY = nil;
+        NSString * noteVisibility = nil;
+        for(DDXMLElement * noteChild in [note children]){
+            if ([[[noteChild attributeForName:ATTRIBUTE_TYPE] stringValue] isEqualToString:POSITION_TYPE]){
+
+                DDXMLElement * positionNode = (DDXMLElement *)[noteChild childAtIndex:0];
+                notePositionX = [[positionNode attributeForName:XOOML_POSITION_X] stringValue];
+                notePositionY = [[positionNode attributeForName:XOOML_POSITION_Y] stringValue];
+                noteVisibility = [[positionNode attributeForName:XOOML_IS_VISIBLE] stringValue];
+                break;
+            }
+        }
+        //for every note create a sub answer with all that notes properties
+        NSMutableDictionary * subAnswer = [NSMutableDictionary dictionary];
+        [subAnswer setObject:noteName forKey:NOTE_NAME_KEY];
+        if (notePositionX) [subAnswer setObject:notePositionX forKey:NOTE_POSITION_X_KEY];
+        if (notePositionY) [subAnswer setObject:notePositionY forKey:NOTE_POSITION_Y_KEY];
+        if (noteVisibility) [subAnswer setObject:noteVisibility forKey:NOTE_IS_VISIBLE];
+        //set the answer object for the note with noteID as that subAnswer dictionary
+        //which now contains all key value pairs of properties. 
+        [answer setObject:[subAnswer copy] forKey:noteID];
+    }
+    
+    return [answer copy];
 }
 
 - (NSDictionary *) getNoteAttributeInfo: (NSString *) attributeType
                                 forNote: (NSString *)noteID{
     
+    if ([attributeType isEqualToString:LINKAGE_TYPE]){
+        return [self getLinkageInfoForNote:noteID];
+    }
+
+    else return nil;
 }
 
 - (NSDictionary *) getBulletinBoardAttributeInfo: (NSString *) attributeType{
+    if ([attributeType isEqualToString:STACKING_TYPE]){
+        return [self getStackingInfo];
+    }
+    if ([attributeType isEqualToString:GROUPING_TYPE]){
+        return [self getGroupingInfo];
+    }
+    else return nil; 
+        
     
 }
 @end
