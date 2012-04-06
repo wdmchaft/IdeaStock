@@ -21,11 +21,18 @@
 @synthesize restClient = _restClient;
 @synthesize delegate = _delegate;
 
-//incomplete
+
+- (void) setDelegate:(id)delegate{
+    _delegate = delegate;
+    if (self.restClient) self.restClient.delegate = delegate;
+}
+
 - (DBRestClient *) restClient{
     if (!_restClient){
         _restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
- 
+    }
+    if (!_restClient.delegate){
+        _restClient.delegate = self.delegate;
     }
     return _restClient;
 }
@@ -67,8 +74,17 @@
 
 -(void) getAllBulletinBoardsAsynch{
     
+    //TODO implement later when you need to get All bulletinboards.
+    
 }
+
+
 -(void) getBulletinBoardAsynch: (NSString *) bulletinBoardName{
+    NSString * bulletinBoardXoomlPath = [NSString stringWithFormat:@"%@/xooml.xml",bulletinBoardName];
+    NSString * tempPath = [NSString stringWithFormat:@"%@/BulletinBoardXooml.xml",NSTemporaryDirectory()];
+    
+    [self.restClient loadFile:bulletinBoardXoomlPath intoPath:tempPath];
+    //The rest is handled by the delegate
     
 }
 -(void) getNoteForTheBulletinBoardAsynch: (NSString *) bulletinBoardName

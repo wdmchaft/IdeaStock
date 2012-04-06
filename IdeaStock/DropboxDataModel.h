@@ -31,6 +31,12 @@
 
 
 -(void) getAllBulletinBoardsAsynch;
+
+/*
+ This method asynchronously gets the bulletinBoard specified by bulletinBoardName. 
+ It assumes that the bulletinBoardName is a valid existing bulletinBoard in the dropbox
+ root.
+ */
 -(void) getBulletinBoardAsynch: (NSString *) bulletinBoardName;
 -(void) getNoteForTheBulletinBoardAsynch: (NSString *) bulletinBoardName
                                       WithName: (NSString *)noteName;

@@ -8,52 +8,11 @@
 
 #import "AssociativeBulletinBoard.h"
 #import "XoomlParser.h"
-#import "BulletinBoardDelegate.h"
-#import "BulletinBoardDatasource.h"
+
 #import "XoomlBulletinBoardController.h"
 #import "CallBackDataModel.h"
 
 @interface AssociativeBulletinBoard()
-
-/*
- Holds the actual individual note contents. This dictonary is keyed on the noteID.
- 
- The noteIDs in this dictionary determine whether a note belongs to this bulletin board or not. 
- */
-@property (nonatomic,strong) NSMutableDictionary * noteContents;
-
-
-/*
- holds all the attributes that belong to the bulletin board level: for example stack groups. 
- */
-@property (nonatomic,strong) BulletinBoardAttributes * bulletinBoardAttributes;
-
-
-/*
- This is an NSDictionary of BulletinBoardAttributes. Its keyed on the noteIDs.
- 
- For each noteID,  this contains all of the note level attributes that are
- associated with that particular note.
- */
-@property (nonatomic,strong) NSMutableDictionary * noteAttributes;
-
-
-
-/*
- This is the datamodel that the bulletin board uses for retrieval and storage of itself. 
- */
-@property (nonatomic,strong) id<DataModel> dataModel;
-
-/*
- This delegate object provides information for all of the data specific 
- questions that the bulletin baord may ask. 
- 
- Properties of the bulletin board are among these data specific questions. 
- */
-@property (nonatomic,strong) id <BulletinBoardDelegate> delegate;
-
-
-@property (nonatomic,strong) id <BulletinBoardDatasource> dataSource;
 
 @end
 @implementation AssociativeBulletinBoard
@@ -139,7 +98,8 @@
 /*---------------------------------------------------------------------*/
 
 
--(id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel                                  andName:(NSString *) bulletinBoardName{
+-(id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel 
+                                 andName:(NSString *) bulletinBoardName{
     
     self = [super init];
     
@@ -190,16 +150,20 @@
     self.dataModel = datamodel;
 
     //if the datamodel requires delegation set your self as the delegate 
+    //and return. The initialization cannot be done with synchronous calls
     if ([self.dataModel conformsToProtocol:@protocol(CallBackDataModel)]){
         [(id <CallBackDataModel>) self.dataModel setDelegate:self];
+        return self;
         
     }
     
-    //Now we will initialize the innards of the class one by one
+    
+    //if the datamodel does not require delegation and is synchronous
+    //we will initialize the innards of the class one by one
     
     //First get the xooml file for the bulletinboard as NSData from
     //the datamodel
-    NSData * bulletinBoardData = [datamodel getBulletinBoard:bulletinBoardName];  
+    NSData * bulletinBoardData = [self.dataModel getBulletinBoard:bulletinBoardName];  
     
     //Initialize the bulletinBoard controller to parse and hold the 
     //tree for the bulletin board
