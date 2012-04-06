@@ -11,6 +11,7 @@
 #import "BulletinBoardDelegate.h"
 #import "BulletinBoardDatasource.h"
 #import "XoomlBulletinBoardController.h"
+#import "CallBackDataModel.h"
 
 @interface AssociativeBulletinBoard()
 
@@ -19,7 +20,7 @@
  
  The noteIDs in this dictionary determine whether a note belongs to this bulletin board or not. 
  */
-@property (nonatomic,strong) NSMutableDictionary <Note> * noteContents;
+@property (nonatomic,strong) NSMutableDictionary * noteContents;
 
 
 /*
@@ -93,6 +94,30 @@
 #define STACKING_NAME @"name"
 #define REF_IDS @"refIDs"
 
+
+-(BulletinBoardAttributes *) bulletinBoardAttributes{
+    if (!_bulletinBoardAttributes){
+            _bulletinBoardAttributes = [self createBulletinBoardAttributeForBulletinBoard];
+    }
+    return _bulletinBoardAttributes;
+}
+
+-(NSMutableDictionary *)noteAttributes{
+    if(!_noteAttributes){
+        _noteAttributes = [NSMutableDictionary dictionary];
+    }
+    return _noteAttributes;
+}
+
+-(NSMutableDictionary *) noteContents{
+    if (_noteContents){
+        _noteContents = [NSMutableDictionary dictionary];
+    }
+    return _noteContents;
+}
+/*---------------------------------------------------------------------*/
+
+
 /*
  Factory method for the bulletin board attributes
  */
@@ -100,12 +125,20 @@
         return [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:STACKING_TYPE,GROUPING_TYPE, nil]];
 }
 
+
+/*---------------------------------------------------------------------*/
+
+
 /*
  Factory method for the note bulletin board attributes
  */
 -(BulletinBoardAttributes *) createBulletinBoardAttributeForNotes{
     return [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:LINKAGE_TYPE,POSITION_TYPE, VISIBILITY_TYPE, nil]];
 }
+
+/*---------------------------------------------------------------------*/
+
+
 -(id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel                                  andName:(NSString *) bulletinBoardName{
     
     self = [super init];
@@ -113,6 +146,11 @@
     self.bulletinBoardName = bulletinBoardName;
     
     self.dataModel = dataModel;
+    //if the datamodel requires delegation set your self as the delegate 
+    if ([self.dataModel conformsToProtocol:@protocol(CallBackDataModel)]){
+        [(id <CallBackDataModel>) self.dataModel setDelegate:self];
+        
+    }
     
     //create an empty bulletinBoard controller and make it both delegate
     //and the datasource
@@ -120,19 +158,20 @@
     self.dataSource = bulletinBoardController;
     self.delegate = bulletinBoardController;
     
-    self.noteContents = [NSMutableDictionary dictionary];
-    
     //initialize the bulletin board attributes with stacking and grouping
     //to add new attributes first define them in the header file and the
     //initilize the bulletinBoardAttributes with an array of them
-    self.bulletinBoardAttributes = [self createBulletinBoardAttributeForBulletinBoard];
+
     
-    //initialize the note attributes dictionary as an empty dictionary
-    self.noteAttributes = [NSMutableDictionary dictionary];
-    
+    //add an empty bulletinboard to the datamodel
+    NSData * bulletinBoardData = [self.dataSource getSerializableData];
+    [self.dataModel addBulletinBoardWithName:bulletinBoardName andBulletinBoardInfo:bulletinBoardData] ;
     return self;
     
 }
+
+/*---------------------------------------------------------------------*/
+
 
 /*
  Initilizes the bulletin board with the content of a xooml file for a previously
@@ -144,8 +183,17 @@
 -(id) initBulletinBoardFromXoomlWithDatamodel:(id<DataModel>)datamodel
                                   andName:(NSString *)bulletinBoardName{
     
-    //initialize as an empty bulletin board
-    self = [self initEmptyBulletinBoardWithDataModel:datamodel andName:(NSString *) bulletinBoardName];
+    self = [super init];
+    
+    //initialize the data structures
+    self.bulletinBoardName = bulletinBoardName;
+    self.dataModel = datamodel;
+
+    //if the datamodel requires delegation set your self as the delegate 
+    if ([self.dataModel conformsToProtocol:@protocol(CallBackDataModel)]){
+        [(id <CallBackDataModel>) self.dataModel setDelegate:self];
+        
+    }
     
     //Now we will initialize the innards of the class one by one
     
@@ -177,6 +225,11 @@
         //from the data model
         NSString * noteName = [[noteInfo objectForKey:noteID] objectForKey:NOTE_NAME];
         NSData * noteData = [self.dataModel getNoteForTheBulletinBoard:bulletinBoardName WithName:noteName];
+        
+        if (!noteData) return self;
+        
+        
+        
         id <Note> noteObj = [XoomlParser xoomlNoteFromXML:noteData];
         
         //now set the note object as a noteContent keyed on its id
@@ -251,6 +304,10 @@
     return self;    
 }
 
+
+/*---------------------------------------------------------------------*/
+
+
 - (void) addNoteContent: (id <Note>) note 
           andProperties: (NSDictionary *) properties{
     
@@ -292,10 +349,14 @@
     [noteAttribute createAttributeWithName:IS_VISIBLE forAttributeType:VISIBILITY_TYPE andValues:[NSArray arrayWithObject:isVisible]];
     
     [self.noteAttributes setObject:noteAttribute forKey:noteID];
+    
+    //update the datamodel
+    NSData * noteData = [XoomlParser convertNoteToXooml:note];
+    [self.dataModel addNote:noteName withContent:noteData  ToBulletinBoard:self.bulletinBoardName];
 
 }
 
-
+/*---------------------------------------------------------------------*/
 
 - (void) addNoteAttribute: (NSString *) attributeName
          forAttributeType: (NSString *) attributeType
@@ -317,6 +378,8 @@
     [self.delegate addNoteAttribute:attributeName forType:attributeType forNote:noteID withValues:values];
         
 }
+
+/*---------------------------------------------------------------------*/
 
 - (void) addNote: (NSString *) targetNoteID
  toAttributeName: (NSString *) attributeName
@@ -342,6 +405,8 @@ forAttributeType: (NSString *) attributeType
     [self.delegate addBulletinBoardAttribute:attributeName forType:attributeType withValues:[NSArray array]];
 }
 
+/*---------------------------------------------------------------------*/
+
 - (void) addNoteWithID:(NSString *)noteID 
 toBulletinBoardAttribute:(NSString *)attributeName 
      forAttributeType:(NSString *)attributeType{
@@ -356,11 +421,17 @@ toBulletinBoardAttribute:(NSString *)attributeName
     [self.delegate addBulletinBoardAttribute:attributeName forType:attributeType withValues:[NSArray arrayWithObject:noteID]];
 }
 
+/*---------------------------------------------------------------------*/
+
 - (void) removeNoteWithID:(NSString *)delNoteID{
 
+    id <Note> note = [self.noteContents objectForKey:delNoteID];
     //if the note does not exist return
-    if (![self.noteContents objectForKey:delNoteID]) return;
+    if (!note) return;
     
+    //get Note Name
+    //TODO this smells
+    NSString *noteName = [[[self.noteAttributes objectForKey:delNoteID] getAttributeWithName:NOTE_NAME forAttributeType:NOTE_NAME_TYPE] lastObject];
     //remove the note content
     [self.noteContents removeObjectForKey:delNoteID];
     
@@ -374,8 +445,12 @@ toBulletinBoardAttribute:(NSString *)attributeName
     
     //remove all the occurances in the xooml file
     [self.delegate deleteNote:delNoteID];
+    [self.dataModel removeNote:noteName FromBulletinBoard:self.bulletinBoardName];
+    
     
 }
+
+/*---------------------------------------------------------------------*/
 
 - (void) removeNote: (NSString *) targetNoteID
       fromAttribute: (NSString *) attributeName
@@ -391,6 +466,8 @@ toBulletinBoardAttribute:(NSString *)attributeName
     //reflect the changes in the xooml structure
     [self.delegate deleteNote:targetNoteID fromNoteAttribute:attributeName ofType:attributeType forNote:sourceNoteID];
 }
+
+/*---------------------------------------------------------------------*/
 
 - (void) removeNoteAttribute: (NSString *) attributeName
                       ofType: (NSString *) attributeType
@@ -525,6 +602,8 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     return [[self.noteAttributes objectForKey:noteID] getAttributeWithName:attributeName forAttributeType:attributeType];
          
 }
+
+//TODO Update note name is not provided yet
 
 
 

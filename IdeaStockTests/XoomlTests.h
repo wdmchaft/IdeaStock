@@ -7,7 +7,7 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "XoomlNote.h"
+#import "BulletinBoardNote.h"
 @interface XoomlTests : SenTestCase
 
 @end

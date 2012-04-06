@@ -23,9 +23,17 @@
 
 @property (nonatomic,strong) NSString * bulletinBoardName;
 
+/*
+ Creates an internal model for the bulletin board which is empty 
+ and updates the data model for to have an external representation of
+ the bulletin board. 
+ */
 - (id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel
                                   andName:(NSString *) bulletinBoardName;
 
+/*
+ Reads and fills up a bulletin board from the external structure of the datamodel
+ */
 - (id)initBulletinBoardFromXoomlWithDatamodel: (id <DataModel>) datamodel 
                                       andName: (NSString *) bulletinBoardName;
 

@@ -22,7 +22,7 @@
 #define NOTE_CREATION_DATE @"createdOn"
 #define NOTE_MODIFICATION_DATE @"modifiedOn"
 
-+ (XoomlNote *) xoomlNoteFromXML:(NSData *)data{
++ (BulletinBoardNote *) xoomlNoteFromXML:(NSData *)data{
     
     //open the XML document
     NSError *err = nil;
@@ -52,7 +52,7 @@
     //TODO handle tool specific note properties by looking up the child nodes of the noteXML here
     
     //get note properties from the attributes
-    XoomlNote * note = [[XoomlNote alloc] init];
+    BulletinBoardNote * note = [[BulletinBoardNote alloc] init];
     note.noteText = [[noteXML attributeForName: NOTE_TEXT] stringValue];
     note.noteTextID = [[noteXML attributeForName: NOTE_ID] stringValue];
     note.creationDate = [[noteXML attributeForName: NOTE_CREATION_DATE] stringValue];
@@ -103,7 +103,7 @@
 #define NOTE_POSITION_ELEMENT_NAME @"is:position"
 #define REF_ID @"refID"
 
-+ (NSData *) convertNoteToXooml: (XoomlNote *) note{
++ (NSData *) convertNoteToXooml: (BulletinBoardNote *) note{
     
     //create the root element (xooml:fragment) and fill out its attributes
     DDXMLElement * root = [[DDXMLElement alloc] initWithName: XOOML_FRAGMENT];

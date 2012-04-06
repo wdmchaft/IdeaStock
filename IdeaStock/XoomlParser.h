@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "XoomlNote.h"
+#import "BulletinBoardNote.h"
 #import "AssociativeBulletinBoard.h"
 #import "BulletinBoardAttributes.h"
 #import "DDXML.h"
@@ -24,12 +24,12 @@
  specified in data
  */
 //TODO maybe I should just return NSData * here too.
-+ (XoomlNote *) xoomlNoteFromXML: (NSData *)data;
++ (BulletinBoardNote *) xoomlNoteFromXML: (NSData *)data;
 
 /*
  Converst the contents of a note object to Xooml xml data
  */
-+ (NSData *) convertNoteToXooml: (XoomlNote *) note;
++ (NSData *) convertNoteToXooml: (BulletinBoardNote *) note;
 
 /*
  Creates the boilerplate Xooml bulletin baord document
