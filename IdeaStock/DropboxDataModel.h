@@ -11,7 +11,9 @@
 #import <DropboxSDK/DropboxSDK.h>
 #import "CallBackDataModel.h"
 
-@interface DropboxDataModel : NSObject <DataModel,CallBackDataModel> 
+@interface DropboxDataModel : NSObject <DataModel,CallBackDataModel,DBRestClientDelegate> 
+@property  (nonatomic, strong) DBRestClient *restClient;
+
 
 /*
  This class is an implementation of the data model. 
@@ -30,6 +32,7 @@
 //because it is somehow changing its behavior . 
 
 
+
 -(void) getAllBulletinBoardsAsynch;
 
 /*
@@ -40,5 +43,6 @@
 -(void) getBulletinBoardAsynch: (NSString *) bulletinBoardName;
 -(void) getNoteForTheBulletinBoardAsynch: (NSString *) bulletinBoardName
                                       WithName: (NSString *)noteName;
+- (void) performAction;
 
 @end

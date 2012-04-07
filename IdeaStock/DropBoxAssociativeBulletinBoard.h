@@ -8,7 +8,7 @@
 
 #import "AssociativeBulletinBoard.h"
 #import <DropboxSDK/DropboxSDK.h>
-
+#import "CallBackDataModel.h"
 /*
  This class provides all the functionality of an associative bulletin board 
  with the extra functionality that it can also be used as a delegate for 
@@ -16,5 +16,5 @@
  */
 @interface DropBoxAssociativeBulletinBoard : AssociativeBulletinBoard <DBRestClientDelegate>
 
-
+-(id) initBulletinBoardFromXoomlWithName:(NSString *)bulletinBoardName;
 @end

@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <DropboxSDK/DropboxSDK.h>
+#import "DropboxDataModel.h"
+#import "DropBoxAssociativeBulletinBoard.h"
 
-@interface IdeaStockViewController : UIViewController
+@interface IdeaStockViewController : UIViewController <DBRestClientDelegate>
+    
+@property (nonatomic,strong) DropBoxAssociativeBulletinBoard * board;
 
 @end

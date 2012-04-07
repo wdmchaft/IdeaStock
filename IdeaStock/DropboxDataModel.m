@@ -12,30 +12,49 @@
 @interface DropboxDataModel()
 
 //connection to dropbox
-@property (nonatomic,strong) DBRestClient *restClient;
+
 
 @end
 
 @implementation DropboxDataModel
 
 @synthesize restClient = _restClient;
-@synthesize delegate = _delegate;
-
-
-- (void) setDelegate:(id)delegate{
-    _delegate = delegate;
-    if (self.restClient) self.restClient.delegate = delegate;
-}
 
 - (DBRestClient *) restClient{
     if (!_restClient){
         _restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
-    }
-    if (!_restClient.delegate){
-        _restClient.delegate = self.delegate;
+        _restClient.delegate = self;
     }
     return _restClient;
 }
+
+- (void) setDelegate:(id)delegate{
+    self.restClient.delegate = delegate;
+}
+
+-(id) delegate{
+    return _restClient.delegate;
+}
+-(void) performAction{
+    [[self restClient] loadMetadata:[NSString stringWithFormat: @"/%@", @"BulletinBoard"]];
+}
+
+
+- (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
+    if (metadata.isDirectory) {
+        NSLog(@"Folder '%@' contains:", metadata.path);
+        for (DBMetadata *file in metadata.contents) {
+            NSLog(@"\t%@", file.filename);
+        }
+    }
+}
+
+- (void)restClient:(DBRestClient *)client
+loadMetadataFailedWithError:(NSError *)error {
+    
+    NSLog(@"Error loading metadata: %@", error);
+}
+
 - (void) addBulletinBoardWithName: (NSString *) bulletinBoardName
              andBulletinBoardInfo: (NSData *) content{
     
@@ -80,15 +99,30 @@
 
 
 -(void) getBulletinBoardAsynch: (NSString *) bulletinBoardName{
-    NSString * bulletinBoardXoomlPath = [NSString stringWithFormat:@"%@/xooml.xml",bulletinBoardName];
+    
+ /*   //TODO maybe load it with hash ? 
+    //TODO maybe the root need to be specified?
+    NSLog(@"%@",[self.restClient.delegate description]);
+
+    [[self restClient] loadMetadata:@"/"];
+    
+    NSLog(@"%@",[self.delegate description]);
+    //[self.restClient loadMetadata:[NSString stringWithFormat: @"%@", bulletinBoardName]];
+   
+    
+   NSString * bulletinBoardXoomlPath = [NSString stringWithFormat:@"%@/xooml.xml",bulletinBoardName];
     NSString * tempPath = [NSString stringWithFormat:@"%@/BulletinBoardXooml.xml",NSTemporaryDirectory()];
     
     [self.restClient loadFile:bulletinBoardXoomlPath intoPath:tempPath];
-    //The rest is handled by the delegate
+    The rest is handled by the delegate*/
     
 }
 -(void) getNoteForTheBulletinBoardAsynch: (NSString *) bulletinBoardName
                                 WithName: (NSString *)noteName{
     
+}
+
+-(NSString *) description{
+    return @"Its me the dropbox datamodel itself";
 }
 @end

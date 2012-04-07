@@ -147,15 +147,16 @@
     
     //initialize the data structures
     self.bulletinBoardName = bulletinBoardName;
-    self.dataModel = datamodel;
+
 
     //if the datamodel requires delegation set your self as the delegate 
     //and return. The initialization cannot be done with synchronous calls
-    if ([self.dataModel conformsToProtocol:@protocol(CallBackDataModel)]){
-        [(id <CallBackDataModel>) self.dataModel setDelegate:self];
+    if ([datamodel conformsToProtocol:@protocol(CallBackDataModel)]){
         return self;
         
     }
+    
+    self.dataModel = datamodel;
     
     
     //if the datamodel does not require delegation and is synchronous
