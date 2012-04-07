@@ -35,9 +35,7 @@
 -(id) delegate{
     return _restClient.delegate;
 }
--(void) performAction{
-    [[self restClient] loadMetadata:[NSString stringWithFormat: @"/%@", @"BulletinBoard"]];
-}
+
 
 
 - (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
@@ -99,6 +97,10 @@ loadMetadataFailedWithError:(NSError *)error {
 
 
 -(void) getBulletinBoardAsynch: (NSString *) bulletinBoardName{
+    
+    
+    [[self restClient] loadMetadata:[NSString stringWithFormat: @"/%@", bulletinBoardName]];
+    
     
  /*   //TODO maybe load it with hash ? 
     //TODO maybe the root need to be specified?

@@ -56,7 +56,7 @@
 
 -(BulletinBoardAttributes *) bulletinBoardAttributes{
     if (!_bulletinBoardAttributes){
-            _bulletinBoardAttributes = [self createBulletinBoardAttributeForBulletinBoard];
+        _bulletinBoardAttributes = [self createBulletinBoardAttributeForBulletinBoard];
     }
     return _bulletinBoardAttributes;
 }
@@ -81,7 +81,7 @@
  Factory method for the bulletin board attributes
  */
 -(BulletinBoardAttributes *) createBulletinBoardAttributeForBulletinBoard{
-        return [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:STACKING_TYPE,GROUPING_TYPE, nil]];
+    return [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:STACKING_TYPE,GROUPING_TYPE, nil]];
 }
 
 
@@ -121,7 +121,7 @@
     //initialize the bulletin board attributes with stacking and grouping
     //to add new attributes first define them in the header file and the
     //initilize the bulletinBoardAttributes with an array of them
-
+    
     
     //add an empty bulletinboard to the datamodel
     NSData * bulletinBoardData = [self.dataSource getSerializableData];
@@ -139,16 +139,98 @@
  */
 
 
-//TODO this initializer is getting to heavy weight
+-(void) initiateNoteContent: (NSData *) noteData 
+                  forNoteID: (NSString *) noteID
+                    andName: (NSString *) noteName
+              andProperties: (NSDictionary *) noteInfo{
+    
+    id <Note> noteObj = [XoomlParser xoomlNoteFromXML:noteData];
+    
+    //now set the note object as a noteContent keyed on its id
+    [self.noteContents setObject:noteObj forKey:noteID];
+    
+    //now initialize the bulletinBoard attributes to hold all the 
+    //note specific attributes for that note
+    BulletinBoardAttributes * noteAttribute = [self createBulletinBoardAttributeForNotes];
+    //get the note specific info from the note basic info
+    NSString * positionX = [noteInfo objectForKey: POSITION_X];
+    if (!positionX ) positionX = DEFAULT_X_POSITION;
+    NSString * positionY = [noteInfo objectForKey: POSITION_Y];
+    if (!positionY) positionY = DEFAULT_Y_POSITION;
+    NSString * isVisible = [noteInfo objectForKey:IS_VISIBLE];
+    if (! isVisible) isVisible = DEFAULT_VISIBILITY;
+    
+    //Fill out the note specific attributes for that note in the bulletin
+    //board
+    [noteAttribute createAttributeWithName:POSITION_X forAttributeType: POSITION_TYPE andValues:[NSArray arrayWithObject: positionX ]];
+    [noteAttribute createAttributeWithName:POSITION_Y forAttributeType:POSITION_TYPE andValues:[NSArray arrayWithObject:positionY]];
+    [noteAttribute createAttributeWithName:IS_VISIBLE forAttributeType:VISIBILITY_TYPE andValues:[NSArray arrayWithObject:isVisible]];
+    [noteAttribute createAttributeWithName:NOTE_NAME forAttributeType: NOTE_NAME_TYPE andValues:[NSArray arrayWithObject: noteName ]];
+    
+    [self.noteAttributes setObject:noteAttribute forKey:noteID];
+    
+}
+
+
+-(void) initiateLinkages{
+    //For every note in the note content get all the linked notes and 
+    //add them to the note attributes only if that referenced notes
+    //in that linkage are exisiting in the note contents. 
+    for (NSString * noteID in self.noteContents){
+        NSDictionary *linkageInfo = [self.delegate getNoteAttributeInfo:LINKAGE_TYPE forNote:noteID];
+        NSArray * refIDs = [linkageInfo objectForKey:REF_IDS];
+        NSString * linkageName = [linkageInfo objectForKey:LINKAGE_NAME];
+        
+        for (NSString * refID in refIDs){
+            if (![self.noteContents objectForKey:refID]){
+                [[self.noteAttributes objectForKey:noteID] addValues:[NSArray arrayWithObject:refID] ToAttribute:linkageName forAttributeType:LINKAGE_TYPE];
+                
+            }
+        }
+        
+    }
+    
+}
+
+-(void) initiateStacking{
+    
+    //get the stacking information and fill out the stacking attributes
+    NSDictionary *stackingInfo = [self.delegate getBulletinBoardAttributeInfo:STACKING_TYPE];
+    for (NSString * stackingName in stackingInfo){
+        NSArray * refIDs = [stackingInfo objectForKey:REF_IDS];
+        for (NSString * refID in refIDs){
+            if(![self.noteContents objectForKey:refIDs]){
+                [self.bulletinBoardAttributes addValues:[NSArray arrayWithObject:refID] ToAttribute:stackingName forAttributeType:STACKING_TYPE];
+            }
+        }
+    }
+    
+}
+
+- (void) initiateGrouping{
+    
+    //get the grouping information and fill out the grouping info
+    NSDictionary *groupingInfo = [self.delegate getBulletinBoardAttributeInfo:GROUPING_TYPE];
+    for (NSString * groupingName in groupingInfo){
+        NSArray * refIDs = [groupingInfo objectForKey:REF_IDS];
+        for (NSString * refID in refIDs){
+            if(![self.noteContents objectForKey:refIDs]){
+                [self.bulletinBoardAttributes addValues:[NSArray arrayWithObject:refID] ToAttribute:groupingName forAttributeType:GROUPING_TYPE];
+            }
+        }
+    }
+    
+}
+
 -(id) initBulletinBoardFromXoomlWithDatamodel:(id<DataModel>)datamodel
-                                  andName:(NSString *)bulletinBoardName{
+                                      andName:(NSString *)bulletinBoardName{
     
     self = [super init];
     
     //initialize the data structures
     self.bulletinBoardName = bulletinBoardName;
-
-
+    
+    
     //if the datamodel requires delegation set your self as the delegate 
     //and return. The initialization cannot be done with synchronous calls
     if ([datamodel conformsToProtocol:@protocol(CallBackDataModel)]){
@@ -180,11 +262,9 @@
     //from the delegate.
     
     
-    //First Note properties
-    
     //Get all the note info for all the notes in the bulletinBoard
     NSDictionary * noteInfo = [self.delegate getAllNoteBasicInfo];
-   
+    
     for (NSString * noteID in noteInfo){
         //for each note create a note Object by reading its separate xooml files
         //from the data model
@@ -194,77 +274,22 @@
         if (!noteData) return self;
         
         
-        
-        id <Note> noteObj = [XoomlParser xoomlNoteFromXML:noteData];
-        
-        //now set the note object as a noteContent keyed on its id
-        [self.noteContents setObject:noteObj forKey:noteID];
-        
-        //now initialize the bulletinBoard attributes to hold all the 
-        //note specific attributes for that note
-        BulletinBoardAttributes * noteAttribute = [self createBulletinBoardAttributeForNotes];
-        //get the note specific info from the note basic info
-        NSString * positionX = [noteInfo objectForKey: POSITION_X];
-        if (!positionX ) positionX = DEFAULT_X_POSITION;
-        NSString * positionY = [noteInfo objectForKey: POSITION_Y];
-        if (!positionY) positionY = DEFAULT_Y_POSITION;
-        NSString * isVisible = [noteInfo objectForKey:IS_VISIBLE];
-        if (! isVisible) isVisible = DEFAULT_VISIBILITY;
-        
-        //Fill out the note specific attributes for that note in the bulletin
-        //board
-        [noteAttribute createAttributeWithName:POSITION_X forAttributeType: POSITION_TYPE andValues:[NSArray arrayWithObject: positionX ]];
-        [noteAttribute createAttributeWithName:POSITION_Y forAttributeType:POSITION_TYPE andValues:[NSArray arrayWithObject:positionY]];
-        [noteAttribute createAttributeWithName:IS_VISIBLE forAttributeType:VISIBILITY_TYPE andValues:[NSArray arrayWithObject:isVisible]];
-        [noteAttribute createAttributeWithName:NOTE_NAME forAttributeType: NOTE_NAME_TYPE andValues:[NSArray arrayWithObject: noteName ]];
-        
-        [self.noteAttributes setObject:noteAttribute forKey:noteID];
-    }
-    //now we have note contents set up 
-    
-    //For every note in the note content get all the linked notes and 
-    //add them to the note attributes only if that referenced notes
-    //in that linkage are exisiting in the note contents. 
-    for (NSString * noteID in self.noteContents){
-        NSDictionary *linkageInfo = [self.delegate getNoteAttributeInfo:LINKAGE_TYPE forNote:noteID];
-        NSArray * refIDs = [linkageInfo objectForKey:REF_IDS];
-        NSString * linkageName = [linkageInfo objectForKey:LINKAGE_NAME];
-        
-        for (NSString * refID in refIDs){
-            if (![self.noteContents objectForKey:refID]){
-                [[self.noteAttributes objectForKey:noteID] addValues:[NSArray arrayWithObject:refID] ToAttribute:linkageName forAttributeType:LINKAGE_TYPE];
-                
-            }
-        }
+        [self initiateNoteContent:noteData
+                        forNoteID:noteID 
+                          andName:noteName
+                    andProperties:noteInfo];
         
     }
-
-    //Now we have all the note specific attributes stored
     
+    //initiate Linkages
+    [self initiateLinkages];
     
-    //Setup bulletinboard attributes
+    //initiate stacking
+    [self initiateStacking];
     
-    //get the stacking information and fill out the stacking attributes
-    NSDictionary *stackingInfo = [self.delegate getBulletinBoardAttributeInfo:STACKING_TYPE];
-    for (NSString * stackingName in stackingInfo){
-        NSArray * refIDs = [stackingInfo objectForKey:REF_IDS];
-        for (NSString * refID in refIDs){
-            if(![self.noteContents objectForKey:refIDs]){
-                [self.bulletinBoardAttributes addValues:[NSArray arrayWithObject:refID] ToAttribute:stackingName forAttributeType:STACKING_TYPE];
-            }
-        }
-    }
+    //initiate grouping
     
-    //get the grouping information and fill out the grouping info
-    NSDictionary *groupingInfo = [self.delegate getBulletinBoardAttributeInfo:GROUPING_TYPE];
-    for (NSString * groupingName in groupingInfo){
-        NSArray * refIDs = [groupingInfo objectForKey:REF_IDS];
-        for (NSString * refID in refIDs){
-            if(![self.noteContents objectForKey:refIDs]){
-                [self.bulletinBoardAttributes addValues:[NSArray arrayWithObject:refID] ToAttribute:groupingName forAttributeType:GROUPING_TYPE];
-            }
-        }
-    }
+    [self initiateGrouping];
     
     return self;    
 }
@@ -280,7 +305,7 @@
     NSString * noteID = [properties objectForKey:NOTE_ID];
     NSString * noteName = [properties  objectForKey:NOTE_NAME];
     if (!noteID || !noteName) [NSException raise:NSInvalidArgumentException
-                             format:@"A Values is missing from the required properties dictionary"];
+                                          format:@"A Values is missing from the required properties dictionary"];
     
     //set the note content for the noteID
     [self.noteContents setObject:note forKey:noteID];
@@ -296,11 +321,11 @@
     
     //create a dictionary of note properties
     NSDictionary *noteProperties = [NSDictionary dictionaryWithObjectsAndKeys:noteName,NOTE_NAME,
-                                               noteID,NOTE_ID,
-                                               positionX,POSITION_X,
-                                               positionY, POSITION_Y,
-                                               isVisible,IS_VISIBLE,
-                                               nil];
+                                    noteID,NOTE_ID,
+                                    positionX,POSITION_X,
+                                    positionY, POSITION_Y,
+                                    isVisible,IS_VISIBLE,
+                                    nil];
     
     //have the delegate hold the structural information about the note
     [self.delegate addNoteWithID:noteID andProperties:noteProperties];
@@ -318,7 +343,7 @@
     //update the datamodel
     NSData * noteData = [XoomlParser convertNoteToXooml:note];
     [self.dataModel addNote:noteName withContent:noteData  ToBulletinBoard:self.bulletinBoardName];
-
+    
 }
 
 /*---------------------------------------------------------------------*/
@@ -341,7 +366,7 @@
     
     //have the delegate reflect the changes in its struture
     [self.delegate addNoteAttribute:attributeName forType:attributeType forNote:noteID withValues:values];
-        
+    
 }
 
 /*---------------------------------------------------------------------*/
@@ -350,7 +375,7 @@
  toAttributeName: (NSString *) attributeName
 forAttributeType: (NSString *) attributeType
           ofNote: (NSString *) sourceNoteId{
-
+    
     //if the targetNoteID and sourceNoteID are invalid return
     if (![self.noteContents objectForKey:targetNoteID] || ![self.noteContents objectForKey:sourceNoteId]) return;
     
@@ -374,14 +399,14 @@ forAttributeType: (NSString *) attributeType
 
 - (void) addNoteWithID:(NSString *)noteID 
 toBulletinBoardAttribute:(NSString *)attributeName 
-     forAttributeType:(NSString *)attributeType{
+      forAttributeType:(NSString *)attributeType{
     
     //if the noteID is invalid return
     if (![self.noteContents objectForKey:noteID]) return;
     
     //add the noteID to the bulletinboard attribute
     [self.bulletinBoardAttributes addValues:[NSArray arrayWithObject:noteID] ToAttribute:attributeName forAttributeType:attributeType];
-        
+    
     //have the delegate reflect the change in its structure
     [self.delegate addBulletinBoardAttribute:attributeName forType:attributeType withValues:[NSArray arrayWithObject:noteID]];
 }
@@ -389,7 +414,7 @@ toBulletinBoardAttribute:(NSString *)attributeName
 /*---------------------------------------------------------------------*/
 
 - (void) removeNoteWithID:(NSString *)delNoteID{
-
+    
     id <Note> note = [self.noteContents objectForKey:delNoteID];
     //if the note does not exist return
     if (!note) return;
@@ -421,7 +446,7 @@ toBulletinBoardAttribute:(NSString *)attributeName
       fromAttribute: (NSString *) attributeName
              ofType: (NSString *) attributeType
    fromAttributesOf: (NSString *) sourceNoteID{
-
+    
     //if the targetNoteID and sourceNoteID do not exist return
     if (![self.noteContents objectForKey:targetNoteID] || ![self.noteContents objectForKey:sourceNoteID]) return;
     
@@ -456,8 +481,8 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     
     //remove the note reference from the bulletin board attribute
     [self.bulletinBoardAttributes removeValues: [NSArray arrayWithObject:noteID]
-                                        fromAttribute: attributeName
-                                     forAttributeType: attributeType];
+                                 fromAttribute: attributeName
+                              forAttributeType: attributeType];
     
     //reflect the change in the xooml structure
     [self.delegate deleteNote:noteID fromBulletinBoardAttribute:attributeName ofType:attributeType];
@@ -477,11 +502,11 @@ fromBulletinBoardAttribute: (NSString *) attributeName
 
 - (void) updateNoteContentOf:(NSString *)noteID 
               withContentsOf:(id<Note>)newNote{
-
+    
     //if noteID is inavlid return
     id <Note> oldNote = [self.noteContents objectForKey:noteID];
     if (!oldNote) return;
-
+    
     //for attributes in newNote that a value is specified
     //update to old note to those values
     if (newNote.noteText) oldNote.noteText = newNote.noteText;
@@ -509,7 +534,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
                      ofType:(NSString *) attributeType 
                     forNote: (NSString *) noteID 
               withNewValues: (NSArray *) newValues{
-
+    
     //iif the noteID is not valid return
     if (![self.noteContents objectForKey:noteID]) return;
     
@@ -541,7 +566,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
 
 - (NSArray *) getAllNoteAttributeNamesOfType: (NSString *) attributeType
                                      forNote: (NSString *) noteID{
-
+    
     //if the noteID is invalid return
     if (![self.noteContents objectForKey:noteID]) return nil;
     
@@ -565,7 +590,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     if (![self.noteContents objectForKey:noteID]) return nil;
     
     return [[self.noteAttributes objectForKey:noteID] getAttributeWithName:attributeName forAttributeType:attributeType];
-         
+    
 }
 
 //TODO Update note name is not provided yet

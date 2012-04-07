@@ -80,4 +80,16 @@
 - (id)initBulletinBoardFromXoomlWithDatamodel: (id <DataModel>) datamodel 
                                       andName: (NSString *) bulletinBoardName;
 
+
+/*
+ TODO These should be protected but until I find a way to do that let them staty public
+ */
+-(void) initiateNoteContent: (NSData *) noteData 
+                    forNoteID: (NSString *) noteID
+                      andName: (NSString *) noteName
+                andProperties: (NSDictionary *) noteInfo;
+
+-(void) initiateLinkages;
+-(void) initiateStacking;
+-(void) initiateGrouping;
 @end

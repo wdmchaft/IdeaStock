@@ -13,16 +13,21 @@
 
 @interface IdeaStockViewController ()
 
+
+
 @end
 
 @implementation IdeaStockViewController
 
 @synthesize board = _board;
 
+
 - (DropBoxAssociativeBulletinBoard *) board{
     if (!_board){
-        _board  = [[DropBoxAssociativeBulletinBoard alloc] initBulletinBoardFromXoomlWithName:@"NAME"];
+
+        _board  = [[DropBoxAssociativeBulletinBoard alloc] initBulletinBoardFromXoomlWithName:@"BulletinBoard"];
     }
+    
     return _board;
 }
 
