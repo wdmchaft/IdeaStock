@@ -122,7 +122,8 @@ If the boardName or noteName are invalid the method returns without doing anythi
 
 
 
-
+- (void) saveBulletinBoard:(NSString *) bulletinBoardName 
+                 withData:(NSData *) data;
 
 
 

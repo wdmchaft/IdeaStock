@@ -11,6 +11,7 @@
 #import "XoomlBulletinBoardController.h"
 #import "DropboxDataModel.h"
 #import "XoomlParser.h"
+#import "FileSystemHelper.h"
 
 @interface DropBoxAssociativeBulletinBoard()
 
@@ -48,14 +49,11 @@
     return self;
 }
 
-//files are saved in lowercase
-#define BULLETINBOARD_XOOML_FILE_NAME @"xooml.xml"
+
 
 - (NSData *) getBulletinBoardData{
     
-    NSString * pathExtension = [[self.bulletinBoardName stringByAppendingString:@"/"] stringByAppendingString:BULLETINBOARD_XOOML_FILE_NAME];
-    NSString *path = [NSTemporaryDirectory() stringByAppendingString:pathExtension];
-    
+    NSString * path = [FileSystemHelper getPathForBulletinBoardWithName:self.bulletinBoardName];
     NSError * err;
     NSString *data = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
     if (!data){
@@ -69,13 +67,11 @@
     
 }
 
-#define NOTE_XOOML_FILE_NAME @"xooml.xml"
+
 - (NSData *) getNoteDataForNote: (NSString *) noteName{
     
-    NSString * bulletinBoardPath = [self.bulletinBoardName stringByAppendingString:@"/"];
-    NSString * noteExtension = [[[bulletinBoardPath stringByAppendingString:noteName] stringByAppendingString:@"/"] stringByAppendingString:NOTE_XOOML_FILE_NAME];
-    NSString * path = [NSTemporaryDirectory() stringByAppendingString:noteExtension];
-    
+
+    NSString * path = [FileSystemHelper getPathForNoteWithName:noteName inBulletinBoardWithName:self.bulletinBoardName];
     NSError * err;
     NSString *data = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
     if (!data){
@@ -151,7 +147,7 @@
     //NSLog(@"Creating root directory: %@",rootFolder);
     //handle this error later
     NSError * err;
-    NSFileManager * fileManager =  [[NSFileManager alloc] init];
+    NSFileManager * fileManager =  [NSFileManager defaultManager];
     
     for(DBMetadata * child in metadata.contents){
         NSString *path = [child.path lowercaseString];
@@ -196,37 +192,20 @@
     }
     
 }
-#define XOOML_BULLETIN_BOARD_FILE_NAME @"BulletinBoardXooml.xml"
-#define XOOML_NOTE_FILE_NAME @"NoteXooml.xml"
-
-//delegate function for when a fileIsLoaded
-/*- (void)restClient:(DBRestClient*)client loadedFile:(NSString*)localPath {
- NSError * err;
- 
- NSString * stringData = [NSString stringWithContentsOfFile:localPath encoding:NSUTF8StringEncoding error:&err];
- if (!stringData){
- //do something with the err
- NSLog(@"There was an error loading the file from fileSystem - %@", err);
- return;
- }
- 
- BOOL isBulletinBoard = YES;
- if ([localPath rangeOfString:XOOML_BULLETIN_BOARD_FILE_NAME].location == NSNotFound){
- isBulletinBoard = NO;
- }
- if(isBulletinBoard){
- NSData * data = [stringData dataUsingEncoding:NSUTF8StringEncoding];
- [self initiateBulletinBoadWithData:data];
- 
- }
- else{
- //do the note initiation stuff
- }
- 
- return;
- }*/
 
 - (void)restClient:(DBRestClient*)client loadFileFailedWithError:(NSError*)error {
     NSLog(@"There was an error loading the file - %@", error);
 }
+
+- (void)restClient:(DBRestClient*)client uploadedFile:(NSString*)destPath from:(NSString*)srcPath 
+          metadata:(DBMetadata*)metadata{
+    NSLog(@"Successfully Uploaded File from %@ to %@", srcPath,destPath);
+}
+
+- (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error{
+    NSLog(@"Upload file failed with error: %@", error);
+}
+
+
+
 @end

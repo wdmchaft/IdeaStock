@@ -72,6 +72,9 @@ loadMetadataFailedWithError:(NSError *)error {
     
     id board = self.board;
 }
+- (IBAction)savePressed:(id)sender {
+    [self.board saveBulletinBoard];
+}
 
 - (void)viewDidUnload
 {

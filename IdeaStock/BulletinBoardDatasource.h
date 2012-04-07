@@ -36,7 +36,7 @@
  
  The method guruantees that the returned data is valid. 
  */
-- (NSData *) getSerializableData;
+- (NSData *) data;
 
 
 

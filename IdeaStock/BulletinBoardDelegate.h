@@ -291,5 +291,7 @@ attributeName ofType:(NSString *) attributeType;
  */
 @optional
 - (NSDictionary *) getBulletinBoardAttributeInfo: (NSString *) attributeType;
+
+
 @end
 

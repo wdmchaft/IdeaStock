@@ -12,7 +12,9 @@
 #import "CallBackDataModel.h"
 
 @interface DropboxDataModel : NSObject <DataModel,CallBackDataModel,DBRestClientDelegate> 
+
 @property  (nonatomic, strong) DBRestClient *restClient;
+
 
 
 /*
@@ -43,6 +45,5 @@
 -(void) getBulletinBoardAsynch: (NSString *) bulletinBoardName;
 -(void) getNoteForTheBulletinBoardAsynch: (NSString *) bulletinBoardName
                                       WithName: (NSString *)noteName;
-
 
 @end

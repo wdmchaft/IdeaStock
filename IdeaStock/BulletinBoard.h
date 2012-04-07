@@ -233,6 +233,10 @@ fromBulletinBoardAttribute: (NSString *) attributeName
                                    ofAttributeType: (NSString *) attributeType
                                            forNote: (NSString *) noteID;
 
-
+@optional
+/*
+ Use any mechanism and any data model to save the bulletin board
+ */
+-(void) saveBulletinBoard;
 
 @end

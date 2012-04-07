@@ -55,7 +55,7 @@
     return self;
 }
 
--(NSData *) getSerializableData{
+-(NSData *) data{
     return [self.document XMLData];
 }
 

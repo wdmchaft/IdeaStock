@@ -124,7 +124,7 @@
     
     
     //add an empty bulletinboard to the datamodel
-    NSData * bulletinBoardData = [self.dataSource getSerializableData];
+    NSData * bulletinBoardData = [self.dataSource data];
     [self.dataModel addBulletinBoardWithName:bulletinBoardName andBulletinBoardInfo:bulletinBoardData] ;
     return self;
     
@@ -591,6 +591,10 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     
     return [[self.noteAttributes objectForKey:noteID] getAttributeWithName:attributeName forAttributeType:attributeType];
     
+}
+
+-(void) saveBulletinBoard{
+    [self.dataModel saveBulletinBoard:self.bulletinBoardName withData:[self.dataSource data]];
 }
 
 //TODO Update note name is not provided yet
