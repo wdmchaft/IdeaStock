@@ -69,7 +69,7 @@
 }
 
 -(NSMutableDictionary *) noteContents{
-    if (_noteContents){
+    if (!_noteContents){
         _noteContents = [NSMutableDictionary dictionary];
     }
     return _noteContents;
@@ -92,7 +92,7 @@
  Factory method for the note bulletin board attributes
  */
 -(BulletinBoardAttributes *) createBulletinBoardAttributeForNotes{
-    return [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:LINKAGE_TYPE,POSITION_TYPE, VISIBILITY_TYPE, nil]];
+    return [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:NOTE_NAME_TYPE,LINKAGE_TYPE,POSITION_TYPE, VISIBILITY_TYPE, nil]];
 }
 
 /*---------------------------------------------------------------------*/
@@ -594,7 +594,15 @@ fromBulletinBoardAttribute: (NSString *) attributeName
 }
 
 -(void) saveBulletinBoard{
-    [self.dataModel saveBulletinBoard:self.bulletinBoardName withData:[self.dataSource data]];
+
+    
+    for (NSString * noteID in self.noteContents){
+        //get the name of a note
+        NSData * noteData = [XoomlParser convertNoteToXooml:[self.noteContents objectForKey:noteID]];
+        BulletinBoardAttributes * noteAttributes = [self.noteAttributes objectForKey:noteID];
+        NSString * noteName = [[noteAttributes getAttributeWithName:NOTE_NAME forAttributeType:NOTE_NAME_TYPE] lastObject];
+        [self.dataModel addNote:noteName withContent:noteData ToBulletinBoard:@"joo"];
+    }
 }
 
 //TODO Update note name is not provided yet

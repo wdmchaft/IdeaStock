@@ -8,6 +8,7 @@
 
 #import "DropboxDataModel.h"
 #import "FileSystemHelper.h"
+#import "QueueProducer.h"
 
 
 @interface DropboxDataModel()
@@ -17,11 +18,20 @@
 
 
 #define ADD_BULLETIN_BOARD_ACTION @"addBulletinBoard"
+#define UPDATE_BULLETIN_BOARD_ACTION @"addBulletinBoard"
+#define ADD_NOTE_ACTION @"addNote"
+#define UPDATE_NOTE_ACTION @"updateNote"
+
+
+
+
 
 
 @property NSString * action;
 
 @property NSString * actionPath;
+@property NSString * actionBulletinBoardName;
+@property NSString * actionNoteName;
 @end
 
 @implementation DropboxDataModel
@@ -30,6 +40,8 @@
 @synthesize tempDel = _tempDel;
 @synthesize action = _action;
 @synthesize actionPath = _actionPath;
+@synthesize actionBulletinBoardName = _actionBulletinBoardName;
+@synthesize actionNoteName = _actionNoteName;
 
 - (DBRestClient *) restClient{
     if (!_restClient){
@@ -41,22 +53,51 @@
     return _restClient;
 }
 
-- (void) setDelegate:(id)delegate{
+- (void) setDelegate:(id <QueueProducer,DBRestClientDelegate>)delegate{
     self.restClient.delegate = delegate;
 }
 
 -(id) delegate{
-    return _restClient.delegate;
+    return  _restClient.delegate;
 }
 
-
+- (void) createMissingDirectoryForPath: (NSString *) path{
+    
+    NSString * directory = [path stringByDeletingLastPathComponent];
+    directory = [directory lowercaseString];
+    NSString * directoryName = [directory lastPathComponent];
+    NSFileManager * fileManager = [NSFileManager defaultManager];
+    NSError * err;
+    //check to see if directory exists
+    NSArray * rootDirectories = [fileManager contentsOfDirectoryAtPath:[directory stringByDeletingLastPathComponent] error:&err];
+    BOOL shouldCreateDirectory = YES;
+    if (rootDirectories){
+        for (NSString * dir in rootDirectories){
+            if ([dir isEqualToString:directoryName]){
+                shouldCreateDirectory =NO;
+                break;
+            }
+        }
+    }
+    if (shouldCreateDirectory){
+        BOOL didCreate = [fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error: &err];
+        if(!didCreate){
+            NSLog(@"Failed To create Directory: %@",err);
+        }
+        
+    }
+    
+}
 #define BULLETINBOARD_XOOML_FILE_NAME @"XooML.xml"
 - (void) addBulletinBoardWithName: (NSString *) bulletinBoardName
              andBulletinBoardInfo: (NSData *) content{
     
+    
     //first write the new content to the disk
-    NSString * path = [FileSystemHelper getPathForBulletinBoardWithName:bulletinBoardName];
+
     NSError * err;
+    NSString * path = [FileSystemHelper getPathForBulletinBoardWithName:bulletinBoardName];
+    [self createMissingDirectoryForPath:path];
     BOOL didWrite = [content writeToFile:path options:NSDataWritingAtomic error:&err];
     if (!didWrite){
         NSLog(@"Error in writing to file system: %@", err);
@@ -74,17 +115,119 @@
     //set the action
     self.action = ADD_BULLETIN_BOARD_ACTION;
     self.actionPath = path;
+    self.actionBulletinBoardName = bulletinBoardName;
     
-    //the rest is done for loadedMetadata method
-    //now upload the file to the dropbox
-    NSString * destination = [NSString stringWithFormat: @"/%@/%@", bulletinBoardName,BULLETINBOARD_XOOML_FILE_NAME];
-    
-    [self.restClient loadMetadata:destination];
+
+    //now create a folder in dropbox the rest is done by the foldercreated delegate method
+    [self.restClient createFolder:bulletinBoardName];
 }
+
+
+-(void) updateBulletinBoardWithName: (NSString *) bulletinBoardName 
+               andBulletinBoardInfo: (NSData *) content{
+    
+    NSError * err;
+    NSString * path = [FileSystemHelper getPathForBulletinBoardWithName:bulletinBoardName];
+    [self createMissingDirectoryForPath:path];
+    
+    BOOL didWrite = [content writeToFile:path options:NSDataWritingAtomic error:&err];
+    if (!didWrite){
+        NSLog(@"Error in writing to file system: %@", err);
+        return;
+    }
+    
+    //temporality save the delegate
+    self.tempDel = self.delegate;
+    
+    //make yourself delegate
+    self.restClient.delegate = self;
+    
+    //set the action
+    self.action = UPDATE_BULLETIN_BOARD_ACTION;
+    self.actionPath = path;
+    self.actionBulletinBoardName = bulletinBoardName;
+    
+    //now update the bulletin board. No need to create any folders 
+    //because we are assuming its always there.
+    //To update we need to know the latest revision number by calling metadata
+    NSString * destination = [NSString stringWithFormat:@"/%@/%@",bulletinBoardName,BULLETINBOARD_XOOML_FILE_NAME];
+    [self.restClient loadMetadata:destination];
+    
+    
+}
+#define NOTE_XOOML_FILE_NAME @"XooML.xml"
 
 - (void) addNote: (NSString *)noteName 
      withContent: (NSData *) note 
  ToBulletinBoard: (NSString *) bulletinBoardName{
+    
+  //  noteName = @"Joojoo";
+    NSError * err;
+    //first write the note to the disk
+    NSString * path = [FileSystemHelper getPathForNoteWithName:noteName inBulletinBoardWithName:bulletinBoardName];
+    [self createMissingDirectoryForPath:path];
+    BOOL didWrite = [note writeToFile:path options:NSDataWritingAtomic error:&err];
+    if (!didWrite){
+        NSLog(@"Error in writing to file system: %@", err);
+        return;
+    }
+    
+    //temporarily save the delegate
+    self.tempDel = self.delegate;
+    
+    //make yourself delegate
+    self.restClient.delegate = self;
+    
+    
+    //set the action
+    self.action = ADD_NOTE_ACTION;
+    self.actionPath = path;
+    self.actionBulletinBoardName = bulletinBoardName;
+    self.actionNoteName = noteName;
+    
+
+    //now upload the file to the dropbox
+    //First check whether the note folder exists
+    //NSString * destination = [NSString stringWithFormat: @"/%@/%@/%@", bulletinBoardName, noteName, NOTE_XOOML_FILE_NAME];
+     NSString * destination = [NSString stringWithFormat: @"/%@/%@", bulletinBoardName, noteName];
+    
+    //the rest is done for loadedMetadata method
+    [self.restClient createFolder: destination];
+    
+}
+
+-(void) updateNote: (NSString *) noteName 
+       withContent: (NSData *) content
+   inBulletinBoard:(NSString *) bulletinBoardName{
+    
+    NSError *err;
+    NSString *path = [FileSystemHelper getPathForNoteWithName:noteName inBulletinBoardWithName:bulletinBoardName];
+    [self createMissingDirectoryForPath:path];
+    
+    BOOL didWrite = [content writeToFile:path options:NSDataWritingAtomic error:&err];
+    if (!didWrite){
+        NSLog(@"Error in writing to file system: %@", err);
+        return;
+    }
+    
+    //temporality save the delegate
+    self.tempDel = self.delegate;
+    
+    //make yourself delegate
+    self.restClient.delegate = self;
+    
+    //set the action
+    self.action = UPDATE_NOTE_ACTION;
+    self.actionPath = path;
+    self.actionBulletinBoardName = bulletinBoardName;
+    
+    //now update the bulletin board. No need to create any folders 
+    //because we are assuming its always there.
+    //To update we need to know the latest revision number by calling metadata
+    NSString * destination = [NSString stringWithFormat:@"/%@/%@/%@",bulletinBoardName,noteName, NOTE_XOOML_FILE_NAME];
+    [self.restClient loadMetadata:destination];
+
+    
     
 }
 
@@ -132,12 +275,7 @@
 }
 
 
--(void) saveBulletinBoard:(NSString *) bulletinBoardName
-                 withData:(NSData *) data{
-    [self addBulletinBoardWithName:bulletinBoardName andBulletinBoardInfo:data];
 
-    
-}
 
 /*----------------------------------------------------
  Delegate Methods
@@ -149,29 +287,37 @@
     NSString * parentRev = [metadata rev];
     NSString * path = [metadata path];
     NSLog(@"Got Rev: %@", parentRev);
-    NSLog(@"For File: %@" ,path);
+    NSLog(@"For path: %@" , path);
                                      
     
-    //we are done now change the delegate to the original one
-    
-    self.delegate = self.tempDel;
-    
-    if( [self.action isEqualToString:ADD_BULLETIN_BOARD_ACTION]){
+    if( [self.action isEqualToString:UPDATE_BULLETIN_BOARD_ACTION] ){
+        NSString * sourcePath = self.actionPath;
         
-        //now upload the file to the dropbox
-
-        
-        //TODO need to do error checking 
-        NSString * sourcePAth = self.actionPath;
-        //pop the self action and its path
-        self.action = nil; 
+        self.action = nil;
         self.actionPath = nil;
+        self.actionBulletinBoardName = nil;
+        self.actionNoteName = nil;
+        self.restClient.delegate = self.tempDel;
         
-        //remove the filename from the path
         path = [path stringByDeletingLastPathComponent];
-        [self.restClient uploadFile:BULLETINBOARD_XOOML_FILE_NAME toPath:path withParentRev:parentRev fromPath:sourcePAth];
+        [self.restClient uploadFile:BULLETINBOARD_XOOML_FILE_NAME toPath:path withParentRev:parentRev fromPath:sourcePath];
+        return;
     }
+    
+    if ( [self.action isEqualToString:UPDATE_NOTE_ACTION]){
+        
+        NSString * sourcePath = self.actionPath;        
+     
+        self.action = nil;
+        self.actionPath = nil;
+        self.actionNoteName = nil;
+        self.actionBulletinBoardName = nil;
 
+        
+        path = [path stringByDeletingLastPathComponent];
+        [self.restClient uploadFile:NOTE_XOOML_FILE_NAME toPath:path withParentRev:parentRev fromPath:sourcePath];
+        return;
+    }
     
 }
 
@@ -181,7 +327,60 @@ loadMetadataFailedWithError:(NSError *)error {
     NSLog(@"Error loading metadata: %@", error);
 }
 
+-(void) restClient:(DBRestClient *)client uploadedFile:(NSString *)destPath from:(NSString *)srcPath{
+    NSLog(@"File sucessfully uploaded from %@ to %@",srcPath, destPath);
+    self.restClient.delegate = self.tempDel;
+    [self.delegate produceNext];
+}
+    
+
 -(NSString *) description{
     return @"Its me the dropbox datamodel itself";
 }
+
+- (void)restClient:(DBRestClient*)client createdFolder:(DBMetadata*)folder{
+    
+    if ([self.action isEqualToString:ADD_BULLETIN_BOARD_ACTION]){
+        NSLog(@"Folder Created for bulletinboard: %@ ", self.actionBulletinBoardName);
+        NSString *path = [folder path];
+        NSString * sourcePath = self.actionPath;
+        //pop the self action and its path
+        self.action = nil; 
+        self.actionPath = nil;
+        self.actionBulletinBoardName = nil;
+        self.actionNoteName = nil;
+        
+        //reset the delegate
+        self.restClient.delegate = self.tempDel;
+        //since its a new file the revision is set to nil
+        [self.restClient uploadFile:BULLETINBOARD_XOOML_FILE_NAME toPath:path withParentRev:nil fromPath:sourcePath];
+        return;
+        
+    }
+    
+    
+    //TODO Right now Im assuming that there would not be consequetive add notes so there is no need for queue if this turns out wrong
+    //I will need to implement something like the queue mechanism for update note. 
+    if([self.action isEqualToString:ADD_NOTE_ACTION]){
+        NSLog(@"Folder Created for note: %@", self.actionNoteName);
+        NSString * path = [folder path];
+        NSString * sourcePath = self.actionPath;
+        //pop the self action and its path
+        self.action = nil; 
+        self.actionPath = nil;
+        self.actionBulletinBoardName = nil;
+        self.actionNoteName = nil;
+        self.restClient.delegate = self.tempDel;
+        
+
+        [self.restClient uploadFile:NOTE_XOOML_FILE_NAME toPath:path withParentRev:nil fromPath:sourcePath];
+    }
+}
+
+- (void)restClient:(DBRestClient*)client createFolderFailedWithError:(NSError*)error{
+    NSLog(@"Failed to create Folder: %@", error);
+    self.restClient.delegate = self.tempDel;
+}
+
+
 @end

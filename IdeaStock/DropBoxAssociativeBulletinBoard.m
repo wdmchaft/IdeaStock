@@ -25,7 +25,14 @@
 
 @synthesize dataModel = _dataModel;
 @synthesize fileCounter = _fileCounter;
+@synthesize queue = _queue;
 
+- (NSMutableArray *) queue{
+    if (!_queue){
+        _queue = [NSMutableArray array];
+    }
+    return _queue;
+}
 - (DropboxDataModel *) dataModel{
     if (!_dataModel){
         _dataModel = [[DropboxDataModel alloc] init];
@@ -140,6 +147,20 @@
 
 }
 
+-(void) saveBulletinBoard{
+    
+    //put all the notes into the queue for the later processing 
+    for(NSString *noteID in self.noteContents){
+        [self putIntoQueue:noteID];
+    }
+    
+    //produce the next item in the queue
+    [self produceNext];
+}
+/*-------------------------------------
+ Drop box rest client delegate methods
+ --------------------------------------*/
+
 - (void)restClient:(DBRestClient*)client loadedMetadata:(DBMetadata*)metadata{
     
     NSString * tempDir = [NSTemporaryDirectory() stringByDeletingPathExtension];
@@ -204,6 +225,37 @@
 
 - (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error{
     NSLog(@"Upload file failed with error: %@", error);
+}
+
+
+/*---------------------
+ Queue Delegate Methods
+ --------------------*/
+
+-(void) putIntoQueue: (id) item{
+    [self.queue addObject:item];    
+}
+
+/*
+ This method is called whenever the asynch data model finishes processing 
+ and adding a new note. The datamodel will call this method and picks up another
+ remianing note to be added.
+ */
+#define NOTE_NAME_TYPE @"name"
+-(void) produceNext{
+    //we are done
+    if ([self.queue count] == 0) return;
+    
+    NSString * noteID = [self.queue lastObject];
+    [self.queue removeLastObject];
+    NSData * noteData = [XoomlParser convertNoteToXooml:[self.noteContents objectForKey:noteID]];
+    BulletinBoardAttributes * noteAttributes = [self.noteAttributes objectForKey:noteID];
+    NSString * noteName = [[noteAttributes getAttributeWithName:NOTE_NAME forAttributeType:NOTE_NAME_TYPE] lastObject];
+    
+    [self.dataModel updateNote:noteName withContent:noteData inBulletinBoard:self.bulletinBoardName];
+    
+    
+    
 }
 
 

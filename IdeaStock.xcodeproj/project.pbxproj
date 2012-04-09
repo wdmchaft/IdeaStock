@@ -84,6 +84,7 @@
 		D74CF0C315266DD900DDEF0F /* BulletinboardXoomlTemplate.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = BulletinboardXoomlTemplate.xml; sourceTree = "<group>"; };
 		D74E481E1524F3DF00BC8B9D /* XoomlAttributeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XoomlAttributeHelper.h; sourceTree = "<group>"; };
 		D74E481F1524F3DF00BC8B9D /* XoomlAttributeHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XoomlAttributeHelper.m; sourceTree = "<group>"; };
+		D75820EF1532C8EC00F2617E /* QueueProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueueProducer.h; sourceTree = "<group>"; };
 		D7947AB6152E35B10054CB23 /* NoteXooMLTemplate.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = NoteXooMLTemplate.xml; sourceTree = "<group>"; };
 		D7A53CEC1522F39500183CB6 /* IdeaStock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IdeaStock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7A53CF01522F39500183CB6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -197,6 +198,7 @@
 		D709472B15242BA4008E4AD9 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
+				D75820EF1532C8EC00F2617E /* QueueProducer.h */,
 				D7F85EB21528D80300F16D25 /* XoomlBulletinBoardController.h */,
 				D7F85EB31528D80300F16D25 /* XoomlBulletinBoardController.m */,
 				D7B1431F15268B4C00DC7556 /* BulletinBoardAttributes.h */,

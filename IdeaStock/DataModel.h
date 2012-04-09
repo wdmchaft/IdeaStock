@@ -23,6 +23,8 @@
  Creation Behavior
  ----------------------*/
 
+
+
 /*
  Adds a bulletin board with all of its note content to the data model. 
  
@@ -31,6 +33,11 @@
  
  This method assumes that the content passed to it as NSData is verified 
  and is valid.
+ 
+ This method also assumes that the bulletinBoard with the given name doesn't exist
+ If the bulletin board name with this same name exists the details should be handled
+ by the implementation. 
+ 
  */
 - (void) addBulletinBoardWithName: (NSString *) bulletinBoardName
              andBulletinBoardInfo: (NSData *) content;
@@ -54,8 +61,28 @@
  Update Behavior
  -----------------------*/
 
-//Right now  the data model provides no explicit update. 
-//Update should be done by using deletion and creation behavior
+/*
+ Updates the bulletinboard with name with the given content
+ 
+ The method assumes that the bulletinboard with the name exists. 
+ If the bulletinboard does not exist an error should be occured. 
+ 
+ The method replaces the bulletinboard info with the new one. 
+ */
+-(void) updateBulletinBoardWithName: (NSString *) bulletinBoardName 
+               andBulletinBoardInfo: (NSData *) content;
+
+/*
+ Updates a given note with noteName with the content. 
+ 
+ The note assumes that the noteName and bulletinBoardName already exist.
+ If they don't exist an error will occure. 
+ 
+ The method replaces the old note content with the new one. 
+ */
+-(void) updateNote: (NSString *) noteName 
+       withContent: (NSData *) conetent
+   inBulletinBoard:(NSString *) bulletinBoardName;
  
  /*----------------------
  Deletion Behavior
@@ -122,8 +149,6 @@ If the boardName or noteName are invalid the method returns without doing anythi
 
 
 
-- (void) saveBulletinBoard:(NSString *) bulletinBoardName 
-                 withData:(NSData *) data;
 
 
 

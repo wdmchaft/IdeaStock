@@ -608,8 +608,8 @@ WithReferenceToNote: (NSString *) refNoteID{
         NSString * name = [[item attributeForName:ATTRIBUTE_NAME] stringValue];
         
         NSMutableArray * refNotesArray = [NSMutableArray array];
-        for (DDXMLElement *refID in [item children]){
-            NSString * refID = [[item attributeForName:REF_ID] stringValue];
+        for (DDXMLElement *refIDElem in [item children]){
+            NSString * refID = [[refIDElem attributeForName:REF_ID] stringValue];
             [refNotesArray addObject:refID];
         }
         [result setObject:[refNotesArray copy] forKey:name];
@@ -659,8 +659,8 @@ WithReferenceToNote: (NSString *) refNoteID{
         NSString * name = [[item attributeForName:ATTRIBUTE_NAME] stringValue];
         
         NSMutableArray * refNotesArray = [NSMutableArray array];
-        for (DDXMLElement *refID in [item children]){
-            NSString * refID = [[item attributeForName:REF_ID] stringValue];
+        for (DDXMLElement *refIDElem in [item children]){
+            NSString * refID = [[refIDElem attributeForName:REF_ID] stringValue];
             [refNotesArray addObject:refID];
         }
         [result setObject:[refNotesArray copy] forKey:name];
