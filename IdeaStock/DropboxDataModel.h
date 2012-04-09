@@ -43,7 +43,6 @@
  root.
  */
 -(void) getBulletinBoardAsynch: (NSString *) bulletinBoardName;
--(void) getNoteForTheBulletinBoardAsynch: (NSString *) bulletinBoardName
-                                      WithName: (NSString *)noteName;
+
 
 @end

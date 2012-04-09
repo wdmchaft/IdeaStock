@@ -233,6 +233,7 @@
 
 - (void) removeBulletinBoard:(NSString *) boardName{
     
+    
 }
 
 - (void) removeNote: (NSString *) noteName
@@ -250,11 +251,6 @@
     return nil;
 }
 
-- (NSData *) getNoteForTheBulletinBoard: (NSString *) bulletinBoardName
-                               WithName: (NSString *) noteName{
-    [self getNoteForTheBulletinBoardAsynch:bulletinBoardName WithName:noteName];
-    return nil;
-}
 
 -(void) getAllBulletinBoardsAsynch{
     
@@ -269,10 +265,7 @@
     [[self restClient] loadMetadata:[NSString stringWithFormat: @"/%@", bulletinBoardName]];
     
 }
--(void) getNoteForTheBulletinBoardAsynch: (NSString *) bulletinBoardName
-                                WithName: (NSString *)noteName{
-    
-}
+
 
 
 

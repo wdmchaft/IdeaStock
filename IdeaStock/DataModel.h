@@ -144,6 +144,8 @@ If the boardName or noteName are invalid the method returns without doing anythi
  
  The method does not gurantee the NSData returned is a valid note data. 
  */
+
+@optional
 - (NSData *) getNoteForTheBulletinBoard: (NSString *) bulletinBoardName
                                    WithName: (NSString *) noteName;
 
