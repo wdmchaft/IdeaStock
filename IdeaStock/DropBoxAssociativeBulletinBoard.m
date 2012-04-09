@@ -148,14 +148,7 @@
 }
 
 -(void) saveBulletinBoard{
-    
-    //put all the notes into the queue for the later processing 
-    for(NSString *noteID in self.noteContents){
-        [self putIntoQueue:noteID];
-    }
-    
-    //produce the next item in the queue
-    [self produceNext];
+    //TODO fill this out 
 }
 /*-------------------------------------
  Drop box rest client delegate methods
@@ -228,6 +221,13 @@
 }
 
 
+- (void)restClient:(DBRestClient*)client deletedPath:(NSString *)path{
+    NSLog(@"Successfully deleted path : %@", path);
+    
+}
+- (void)restClient:(DBRestClient*)client deletePathFailedWithError:(NSError*)error{
+    NSLog(@"Failed to delete path: %@", error);
+}
 /*---------------------
  Queue Delegate Methods
  --------------------*/

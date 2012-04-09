@@ -232,12 +232,41 @@
 }
 
 - (void) removeBulletinBoard:(NSString *) boardName{
+    NSError * err;
+    NSString * path = [FileSystemHelper getPathForBulletinBoardWithName:boardName];
+    path = [path stringByDeletingLastPathComponent];
+    NSFileManager * manager = [NSFileManager defaultManager];
+    BOOL didDelete = [manager removeItemAtPath:path error:&err];
     
+    //its okey if this is not on the disk and we have an error
+    //try dropbox and see if you can delete it from there
+    if (!didDelete){
+        NSLog(@"Error in deleting the file from the disk: %@",err);
+        NSLog(@"Trying to delete from dropbox...");
+    }
+    
+    [self.restClient deletePath:boardName];
     
 }
 
 - (void) removeNote: (NSString *) noteName
   FromBulletinBoard: (NSString *) bulletinBoardName{
+    
+    NSError *err;
+    NSString * path = [[FileSystemHelper getPathForNoteWithName:noteName inBulletinBoardWithName:bulletinBoardName] stringByDeletingLastPathComponent];
+    NSFileManager * manager = [NSFileManager defaultManager];
+    BOOL didDelete = [manager removeItemAtPath:path error:&err];
+    
+    //its okey if this is not on the disk and we have an error
+    //try dropbox and see if you can delete it from there
+    if (!didDelete){
+        NSLog(@"Error in deleting the file from the disk: %@",err);
+        NSLog(@"Trying to delete from dropbox...");
+    }
+    
+    NSString * delPath = [bulletinBoardName stringByAppendingFormat:@"/%@",noteName];
+    [self.restClient deletePath:delPath];
+
     
 }
 
