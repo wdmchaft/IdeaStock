@@ -513,6 +513,14 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     if (newNote.noteTextID) oldNote.noteTextID = newNote.noteTextID;
     if (newNote.creationDate) oldNote.creationDate = newNote.creationDate;
     if (newNote.modificationDate) oldNote.modificationDate = newNote.modificationDate;
+    
+    NSData * noteData = [XoomlParser convertNoteToXooml:[self.noteContents objectForKey:noteID]];
+    BulletinBoardAttributes * noteAttributes = [self.noteAttributes objectForKey:noteID];
+    NSString * noteName = [[noteAttributes getAttributeWithName:NOTE_NAME forAttributeType:NOTE_NAME_TYPE] lastObject];
+
+    [self.dataModel updateNote:noteName 
+                   withContent:noteData 
+               inBulletinBoard:self.bulletinBoardName];
 }
 
 //TODO There may be performance penalities for this way of doing an update
@@ -528,6 +536,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     
     //reflect the changes in the xooml data model
     [self.delegate updateNoteAttribute:oldAttributeName ofType:attributeType forNote:noteID withNewName:newAttributeName];
+
 }
 
 -(void) updateNoteAttribute: (NSString *) attributeName
@@ -595,7 +604,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
 
 -(void) saveBulletinBoard{
 
-    
+    [self.dataModel updateBulletinBoardWithName:self.bulletinBoardName andBulletinBoardInfo:[self.dataSource data]];
     for (NSString * noteID in self.noteContents){
         //get the name of a note
         NSData * noteData = [XoomlParser convertNoteToXooml:[self.noteContents objectForKey:noteID]];

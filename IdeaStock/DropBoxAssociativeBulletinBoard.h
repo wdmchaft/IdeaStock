@@ -18,4 +18,9 @@
 @interface DropBoxAssociativeBulletinBoard : AssociativeBulletinBoard <DBRestClientDelegate,QueueProducer>
 
 -(id) initBulletinBoardFromXoomlWithName:(NSString *)bulletinBoardName;
+
+//for stopping or starting the syncrhnozation timer
+-(void) startTimer;
+-(void) stopTimer;
+
 @end

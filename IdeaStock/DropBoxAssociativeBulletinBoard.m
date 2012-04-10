@@ -13,11 +13,22 @@
 #import "XoomlParser.h"
 #import "FileSystemHelper.h"
 
+#define SYNCHRONIZATION_PERIOD 200
 @interface DropBoxAssociativeBulletinBoard()
+
+- (void) synchronize:(NSTimer *) timer;
 
 @property int fileCounter;
 
+//this indicates that we need to synchronize
+//any action that changes the bulletinBoard data model calls
+//this and then nothing else is needed
+
+@property BOOL needSynchronization;
+@property NSTimer * timer;
+
 @end
+
 
 @implementation DropBoxAssociativeBulletinBoard
 
@@ -26,6 +37,8 @@
 @synthesize dataModel = _dataModel;
 @synthesize fileCounter = _fileCounter;
 @synthesize queue = _queue;
+@synthesize  needSynchronization = _needSynchronization;
+@synthesize  timer = _timer;
 
 - (NSMutableArray *) queue{
     if (!_queue){
@@ -40,6 +53,32 @@
     return (DropboxDataModel *)_dataModel;
 }
 
+/*
+ Every SYNCHRONIZATION_PERIOD seconds we try to synchrnoize. 
+ If the synchronize flag is set the bulletin board is updated from
+ the internal datastructures.
+ */
+- (void) startTimer{
+    [NSTimer scheduledTimerWithTimeInterval: SYNCHRONIZATION_PERIOD 
+                                     target:self 
+                                   selector:@selector(synchronize:) 
+                                   userInfo:nil 
+                                    repeats:YES];
+}
+
+//TODO who calls you ? 
+-(void) stopTimer{
+    [self.timer invalidate];
+}
+
+-(id) initEmptyBulletinBoardWithDataModel:(id<DataModel>)dataModel 
+                                  andName:(NSString *)bulletinBoardName{
+    self = [super initEmptyBulletinBoardWithDataModel:dataModel
+                                       andName:bulletinBoardName];
+    [self startTimer];
+    return self;
+    
+}
 -(id) initBulletinBoardFromXoomlWithName:(NSString *)bulletinBoardName{
     
     
@@ -51,8 +90,9 @@
     self.fileCounter = 0;
     [(DropboxDataModel <CallBackDataModel> *) self.dataModel getBulletinBoardAsynch:bulletinBoardName];
     
-    //the rest of initialization will be done in the callbacks
-    // [(DropboxDataModel *) self.dataModel getBulletinBoardAsynch:bulletinBoardName];
+    //start synchronization timer
+    [self startTimer];
+    
     return self;
 }
 
@@ -89,10 +129,8 @@
     NSLog(@"Note: %@ read Successful", noteName);
     
     return [data dataUsingEncoding:NSUTF8StringEncoding];
-    
-    
-    
 }
+
 /*
  This methods completely initiates the bulletin board. 
  When this method is called it assumes that the bulletinboard data has been downloadded to disk so it uses disk to initiate itself. 
@@ -147,8 +185,146 @@
 
 }
 
+- (void) synchronize:(NSTimer *) timer{
+    
+    if (self.needSynchronization){
+        self.needSynchronization = NO;
+        [self saveBulletinBoard];
+    }
+}
 -(void) saveBulletinBoard{
-    //TODO fill this out 
+    [self.dataModel updateBulletinBoardWithName: self.bulletinBoardName
+                           andBulletinBoardInfo:[self.dataSource data]];
+    
+}
+
+/*
+ For the rest of the methods we use the parent methods. 
+ However those methods that change only and only the bulletin board require later synchronization.
+ In those cases we set the synchronization flag. 
+ Note that notes that are changed directly without the bulletin board : for example changing the
+ contnets of a note, do not require synchronization cause the changes gets saved in dropbox as
+ soon as they happen. 
+ */
+
+- (void) addNoteContent: (id <Note>) note 
+          andProperties: (NSDictionary *) properties{
+    [super addNoteContent:note andProperties:properties];
+    
+    self.needSynchronization = YES;
+}
+
+- (void) addNoteAttribute: (NSString *) attributeName
+         forAttributeType: (NSString *) attributeType
+                  forNote: (NSString *) noteID 
+                andValues: (NSArray *) values{
+    [super addNoteAttribute:attributeName
+           forAttributeType:attributeType 
+                    forNote:noteID 
+                  andValues:values];
+    
+    self.needSynchronization  = YES;
+}
+
+- (void) addNote: (NSString *) targetNoteID
+ toAttributeName: (NSString *) attributeName
+forAttributeType: (NSString *) attributeType
+          ofNote: (NSString *) sourceNoteId{
+    [super addNote:targetNoteID 
+   toAttributeName:attributeName 
+  forAttributeType:attributeType 
+            ofNote:sourceNoteId];
+    
+    self.needSynchronization = YES;
+}
+
+- (void) addNoteWithID:(NSString *)noteID 
+toBulletinBoardAttribute:(NSString *)attributeName 
+      forAttributeType:(NSString *)attributeType{
+    [super addNoteWithID:noteID 
+toBulletinBoardAttribute:attributeName
+        forAttributeType:attributeType];
+    
+    self.needSynchronization = YES;
+}
+
+- (void) removeNoteWithID:(NSString *)delNoteID{
+    [super removeNoteWithID:delNoteID];
+    
+    self.needSynchronization = YES;
+}
+
+- (void) removeNote: (NSString *) targetNoteID
+      fromAttribute: (NSString *) attributeName
+             ofType: (NSString *) attributeType
+   fromAttributesOf: (NSString *) sourceNoteID{
+    [super removeNote:targetNoteID 
+        fromAttribute:attributeName 
+               ofType:attributeType 
+     fromAttributesOf:sourceNoteID];
+    
+    self.needSynchronization = YES;
+}
+
+- (void) removeNoteAttribute: (NSString *) attributeName
+                      ofType: (NSString *) attributeType
+                    FromNote: (NSString *) noteID{
+    [super removeNoteAttribute:attributeName 
+                        ofType:attributeType 
+                      FromNote:noteID];
+    
+    self.needSynchronization = YES;
+}
+
+- (void) removeNote: (NSString *) noteID
+fromBulletinBoardAttribute: (NSString *) attributeName 
+             ofType: (NSString *) attributeType{
+    [super removeNote:noteID 
+fromBulletinBoardAttribute:attributeName
+               ofType:attributeType];
+    
+    self.needSynchronization = YES;
+}
+
+- (void) removeBulletinBoardAttribute:(NSString *)attributeName 
+                               ofType:(NSString *)attributeType{
+    [super removeBulletinBoardAttribute:attributeName 
+                                 ofType:attributeType];
+    self.needSynchronization = YES;
+}
+
+- (void) renameNoteAttribute: (NSString *) oldAttributeName 
+                      ofType: (NSString *) attributeType
+                     forNote: (NSString *) noteID 
+                    withName: (NSString *) newAttributeName{
+    [super renameNoteAttribute:oldAttributeName
+                        ofType:attributeType
+                       forNote:noteID
+                      withName:newAttributeName];
+    
+    self.needSynchronization = YES;
+}
+
+-(void) updateNoteAttribute: (NSString *) attributeName
+                     ofType:(NSString *) attributeType 
+                    forNote: (NSString *) noteID 
+              withNewValues: (NSArray *) newValues{
+    [super updateNoteAttribute:attributeName
+                        ofType:attributeType
+                       forNote:noteID 
+                 withNewValues:newValues];
+    
+    self.needSynchronization = YES;
+}
+
+- (void) renameBulletinBoardAttribute: (NSString *) oldAttributeNAme 
+                               ofType: (NSString *) attributeType 
+                             withName: (NSString *) newAttributeName{
+    [super renameBulletinBoardAttribute:oldAttributeNAme
+                                 ofType:attributeType 
+                               withName:newAttributeName];
+    
+    self.needSynchronization = YES;
 }
 /*-------------------------------------
  Drop box rest client delegate methods
@@ -214,6 +390,9 @@
 - (void)restClient:(DBRestClient*)client uploadedFile:(NSString*)destPath from:(NSString*)srcPath 
           metadata:(DBMetadata*)metadata{
     NSLog(@"Successfully Uploaded File from %@ to %@", srcPath,destPath);
+    //now synchronize everything to the dropbox
+    //this is like saving to make sure everything is reflected
+
 }
 
 - (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error{
