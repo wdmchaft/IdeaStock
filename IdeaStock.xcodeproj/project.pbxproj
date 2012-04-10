@@ -35,7 +35,6 @@
 		D7A53D261522F4C700183CB6 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D251522F4C700183CB6 /* DropboxSDK.framework */; };
 		D7A53D281522F4E100183CB6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D271522F4E100183CB6 /* Security.framework */; };
 		D7AB7DEA152F760400FC6BC0 /* DropBoxAssociativeBulletinBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = D7AB7DE9152F760400FC6BC0 /* DropBoxAssociativeBulletinBoard.m */; };
-		D7AB7DED152FA54600FC6BC0 /* DropboxTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D7AB7DEC152FA54600FC6BC0 /* DropboxTests.m */; };
 		D7AB7DEE152FB52C00FC6BC0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D271522F4E100183CB6 /* Security.framework */; };
 		D7AB7DEF152FB54800FC6BC0 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D251522F4C700183CB6 /* DropboxSDK.framework */; };
 		D7B1431C152680B600DC7556 /* IdeaStockSchema.xsd in Resources */ = {isa = PBXBuildFile; fileRef = D7B1431B152680B500DC7556 /* IdeaStockSchema.xsd */; };
@@ -43,6 +42,7 @@
 		D7B1432D1526A50400DC7556 /* AssociativeBulletinBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B1432C1526A50400DC7556 /* AssociativeBulletinBoard.m */; };
 		D7DEF2C41530D37800D13CF4 /* FileSystemHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DEF2C31530D37800D13CF4 /* FileSystemHelper.m */; };
 		D7F85EB41528D80300F16D25 /* XoomlBulletinBoardController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7F85EB31528D80300F16D25 /* XoomlBulletinBoardController.m */; };
+		D7FAD4301534DBDE0072E35B /* DropboxBulletinBoardControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FAD42F1534DBDE0072E35B /* DropboxBulletinBoardControllerTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,8 +108,6 @@
 		D7AB7DE6152F6DB200FC6BC0 /* CallBackDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallBackDataModel.h; sourceTree = "<group>"; };
 		D7AB7DE8152F760400FC6BC0 /* DropBoxAssociativeBulletinBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropBoxAssociativeBulletinBoard.h; sourceTree = "<group>"; };
 		D7AB7DE9152F760400FC6BC0 /* DropBoxAssociativeBulletinBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropBoxAssociativeBulletinBoard.m; sourceTree = "<group>"; };
-		D7AB7DEB152FA54600FC6BC0 /* DropboxTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxTests.h; sourceTree = "<group>"; };
-		D7AB7DEC152FA54600FC6BC0 /* DropboxTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxTests.m; sourceTree = "<group>"; };
 		D7B1431B152680B500DC7556 /* IdeaStockSchema.xsd */ = {isa = PBXFileReference; explicitFileType = text.xml; fileEncoding = 4; path = IdeaStockSchema.xsd; sourceTree = "<group>"; };
 		D7B1431F15268B4C00DC7556 /* BulletinBoardAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoardAttributes.h; sourceTree = "<group>"; };
 		D7B1432015268B4C00DC7556 /* BulletinBoardAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletinBoardAttributes.m; sourceTree = "<group>"; };
@@ -121,6 +119,8 @@
 		D7F85EAE1528D29E00F16D25 /* BulletinBoardDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoardDelegate.h; sourceTree = "<group>"; };
 		D7F85EB21528D80300F16D25 /* XoomlBulletinBoardController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XoomlBulletinBoardController.h; path = ../XoomlBulletinBoardController.h; sourceTree = "<group>"; };
 		D7F85EB31528D80300F16D25 /* XoomlBulletinBoardController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XoomlBulletinBoardController.m; path = ../XoomlBulletinBoardController.m; sourceTree = "<group>"; };
+		D7FAD42E1534DBDE0072E35B /* DropboxBulletinBoardControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxBulletinBoardControllerTests.h; sourceTree = "<group>"; };
+		D7FAD42F1534DBDE0072E35B /* DropboxBulletinBoardControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxBulletinBoardControllerTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -291,13 +291,13 @@
 		D7A53D141522F39500183CB6 /* IdeaStockTests */ = {
 			isa = PBXGroup;
 			children = (
+				D7FAD42E1534DBDE0072E35B /* DropboxBulletinBoardControllerTests.h */,
+				D7FAD42F1534DBDE0072E35B /* DropboxBulletinBoardControllerTests.m */,
 				D709473015244557008E4AD9 /* IdeaStockTests.m */,
 				D709472F1524454A008E4AD9 /* IdeaStockTests.h */,
 				D7A53D151522F39500183CB6 /* Supporting Files */,
 				D709473515245416008E4AD9 /* XoomlTests.h */,
 				D709473615245416008E4AD9 /* XoomlTests.m */,
-				D7AB7DEB152FA54600FC6BC0 /* DropboxTests.h */,
-				D7AB7DEC152FA54600FC6BC0 /* DropboxTests.m */,
 			);
 			path = IdeaStockTests;
 			sourceTree = "<group>";
@@ -448,7 +448,7 @@
 			files = (
 				D709473115244557008E4AD9 /* IdeaStockTests.m in Sources */,
 				D709473715245416008E4AD9 /* XoomlTests.m in Sources */,
-				D7AB7DED152FA54600FC6BC0 /* DropboxTests.m in Sources */,
+				D7FAD4301534DBDE0072E35B /* DropboxBulletinBoardControllerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

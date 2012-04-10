@@ -13,6 +13,9 @@
 #import "XoomlParser.h"
 #import "FileSystemHelper.h"
 
+#import "XoomlAttributeHelper.h"
+
+
 #define SYNCHRONIZATION_PERIOD 200
 @interface DropBoxAssociativeBulletinBoard()
 
@@ -26,6 +29,8 @@
 
 @property BOOL needSynchronization;
 @property NSTimer * timer;
+@property NSString * demoBulletinBoardName;
+@property NSString * demoNoteName;
 
 @end
 
@@ -39,6 +44,8 @@
 @synthesize queue = _queue;
 @synthesize  needSynchronization = _needSynchronization;
 @synthesize  timer = _timer;
+@synthesize demoNoteName = _demoNoteName;
+@synthesize demoBulletinBoardName = _demoBulletinBoardName;
 
 - (NSMutableArray *) queue{
     if (!_queue){
@@ -74,7 +81,7 @@
 -(id) initEmptyBulletinBoardWithDataModel:(id<DataModel>)dataModel 
                                   andName:(NSString *)bulletinBoardName{
     self = [super initEmptyBulletinBoardWithDataModel:dataModel
-                                       andName:bulletinBoardName];
+                                              andName:bulletinBoardName];
     [self startTimer];
     return self;
     
@@ -117,7 +124,7 @@
 
 - (NSData *) getNoteDataForNote: (NSString *) noteName{
     
-
+    
     NSString * path = [FileSystemHelper getPathForNoteWithName:noteName inBulletinBoardWithName:self.bulletinBoardName];
     NSError * err;
     NSString *data = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
@@ -159,9 +166,7 @@
         //for each note create a note Object by reading its separate xooml files
         //from the data model
         NSString * noteName = [[noteInfo objectForKey:noteID] objectForKey:NOTE_NAME];
-        NSData * noteData = [self getNoteDataForNote: noteName];
-        
-        if (!noteData) return;
+        NSData * noteData = [self getNoteDataForNote:noteName];
         
         [self initiateNoteContent:noteData
                         forNoteID:noteID
@@ -169,20 +174,20 @@
                     andProperties:noteInfo];
     }
     NSLog(@"Note Content Initiated");
-
+    
     //initiate Linkages
     [self initiateLinkages];
     NSLog(@"Linkages initiated");
-
+    
     //initiate stacking
     [self initiateStacking];
     NSLog(@"Stacking initiated");
-
+    
     //initiate grouping
     [self initiateGrouping];
     NSLog(@"Grouping initiated");
-
-
+    
+    
 }
 
 - (void) synchronize:(NSTimer *) timer{
@@ -392,7 +397,7 @@ fromBulletinBoardAttribute:attributeName
     NSLog(@"Successfully Uploaded File from %@ to %@", srcPath,destPath);
     //now synchronize everything to the dropbox
     //this is like saving to make sure everything is reflected
-
+    
 }
 
 - (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error{
@@ -437,6 +442,41 @@ fromBulletinBoardAttribute:attributeName
     
 }
 
+/*---------------------
+ Dummy methods
+ --------------------*/
+
+-(void) demoAddNewBulletinBoard{
+    
+    int r = arc4random();
+    NSString * BBName = [NSString stringWithFormat:@"BulletinBoard%d",r];
+    self.demoBulletinBoardName = BBName;
+    [self.dataModel addBulletinBoardWithName:BBName andBulletinBoardInfo:[self.dataSource data]];
+}
+
+-(void) demoAddNewNote{
+    
+    NSData * content;
+    for (NSString * noteID in self.noteContents){
+        content = [XoomlParser convertNoteToXooml:[self.noteContents objectForKey:noteID]];
+        break;
+    }
+    NSString * bulletinBoardName = self.demoBulletinBoardName ? self.demoBulletinBoardName : self.bulletinBoardName;
+    
+    int r = arc4random();
+    NSString * noteName = [NSString stringWithFormat:@"note%d",r];
+    self.demoNoteName = noteName;
+    [self.dataModel addNote: noteName withContent:content ToBulletinBoard:bulletinBoardName];
+}
+
+-(void) demoDeleteBB{
+    [self.dataModel removeBulletinBoard:self.demoBulletinBoardName];
+}
+
+
+-(void) demoDeleteNote{
+    [self.dataModel removeNote:self.demoNoteName FromBulletinBoard:self.demoBulletinBoardName];
+}
 
 
 @end

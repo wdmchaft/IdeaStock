@@ -76,6 +76,23 @@ loadMetadataFailedWithError:(NSError *)error {
     [self.board saveBulletinBoard];
 }
 
+- (IBAction)addNewNote:(id)sender {
+    [self.board demoAddNewNote];
+}
+- (IBAction)addNewBB:(id)sender {
+    [self.board demoAddNewBulletinBoard];
+}
+
+- (IBAction)deleteBB:(id)sender {
+    [self.board demoDeleteBB];
+}
+
+- (IBAction)deleteNote:(id)sender {
+    [self.board demoDeleteNote];
+}
+
+
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];

@@ -23,4 +23,10 @@
 -(void) startTimer;
 -(void) stopTimer;
 
+
+-(void) demoAddNewBulletinBoard;
+-(void) demoAddNewNote;
+-(void) demoDeleteBB;
+-(void) demoDeleteNote;
+
 @end
