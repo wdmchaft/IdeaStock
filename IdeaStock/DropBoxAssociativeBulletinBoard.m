@@ -13,6 +13,7 @@
 #import "XoomlParser.h"
 #import "FileSystemHelper.h"
 
+
 #import "XoomlAttributeHelper.h"
 
 
@@ -86,6 +87,13 @@
     return self;
     
 }
+
+-(id) initBulletinBoardFromXoomlWithDatamodel:(id<DataModel>)datamodel
+                                      andName:(NSString *)bulletinBoardName{
+    self.dataModel = datamodel;
+    return [self initBulletinBoardFromXoomlWithName:bulletinBoardName];
+}
+
 -(id) initBulletinBoardFromXoomlWithName:(NSString *)bulletinBoardName{
     
     

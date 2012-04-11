@@ -207,12 +207,12 @@ fromBulletinBoardAttribute: (NSString *) attributeName
 /*
  Returns an array of strings containing the name of all the attributes of type attributeType in the bulletin board. 
  */
-- (NSArray *) getAllBulletinBoardAttributeNamesOfType: (NSString *) attributeType;
+- (NSDictionary *) getAllBulletinBoardAttributeNamesOfType: (NSString *) attributeType;
 
 /*
  Returns an array of strings containing the name of all the attributes of type attributeType in the attribute list of note with noteID. 
  */
-- (NSArray *) getAllNoteAttributeNamesOfType: (NSString *) attributeType
+- (NSDictionary *) getAllNoteAttributeNamesOfType: (NSString *) attributeType
                             forNote: (NSString *) noteID;
 
 /*
@@ -238,5 +238,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
  Use any mechanism and any data model to save the bulletin board
  */
 -(void) saveBulletinBoard;
+
+
 
 @end

@@ -178,17 +178,18 @@
     //in that linkage are exisiting in the note contents. 
     for (NSString * noteID in self.noteContents){
         NSDictionary *linkageInfo = [self.delegate getNoteAttributeInfo:LINKAGE_TYPE forNote:noteID];
-        NSArray * refIDs = [linkageInfo objectForKey:REF_IDS];
-        NSString * linkageName = [linkageInfo objectForKey:LINKAGE_NAME];
-        
-        for (NSString * refID in refIDs){
-            if (![self.noteContents objectForKey:refID]){
-                [[self.noteAttributes objectForKey:noteID] addValues:[NSArray arrayWithObject:refID] ToAttribute:linkageName forAttributeType:LINKAGE_TYPE];
-                
+        for(NSString *linkageName in linkageInfo){
+            NSArray * refIDs = [linkageInfo objectForKey:linkageName];
+            for (NSString * refID in refIDs){
+                if ([self.noteContents objectForKey:refID]){
+                    [[self.noteAttributes objectForKey:noteID] addValues:[NSArray arrayWithObject:refID] ToAttribute:linkageName forAttributeType:LINKAGE_TYPE];
+                }
             }
+            
+            
         }
-        
     }
+    
     
 }
 
@@ -197,7 +198,7 @@
     //get the stacking information and fill out the stacking attributes
     NSDictionary *stackingInfo = [self.delegate getBulletinBoardAttributeInfo:STACKING_TYPE];
     for (NSString * stackingName in stackingInfo){
-        NSArray * refIDs = [stackingInfo objectForKey:REF_IDS];
+        NSArray * refIDs = [stackingInfo objectForKey:stackingName];
         for (NSString * refID in refIDs){
             if(![self.noteContents objectForKey:refIDs]){
                 [self.bulletinBoardAttributes addValues:[NSArray arrayWithObject:refID] ToAttribute:stackingName forAttributeType:STACKING_TYPE];
@@ -212,7 +213,7 @@
     //get the grouping information and fill out the grouping info
     NSDictionary *groupingInfo = [self.delegate getBulletinBoardAttributeInfo:GROUPING_TYPE];
     for (NSString * groupingName in groupingInfo){
-        NSArray * refIDs = [groupingInfo objectForKey:REF_IDS];
+        NSArray * refIDs = [groupingInfo objectForKey:groupingName];
         for (NSString * refID in refIDs){
             if(![self.noteContents objectForKey:refIDs]){
                 [self.bulletinBoardAttributes addValues:[NSArray arrayWithObject:refID] ToAttribute:groupingName forAttributeType:GROUPING_TYPE];
@@ -517,7 +518,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     NSData * noteData = [XoomlParser convertNoteToXooml:[self.noteContents objectForKey:noteID]];
     BulletinBoardAttributes * noteAttributes = [self.noteAttributes objectForKey:noteID];
     NSString * noteName = [[noteAttributes getAttributeWithName:NOTE_NAME forAttributeType:NOTE_NAME_TYPE] lastObject];
-
+    
     [self.dataModel updateNote:noteName 
                    withContent:noteData 
                inBulletinBoard:self.bulletinBoardName];
@@ -536,7 +537,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     
     //reflect the changes in the xooml data model
     [self.delegate updateNoteAttribute:oldAttributeName ofType:attributeType forNote:noteID withNewName:newAttributeName];
-
+    
 }
 
 -(void) updateNoteAttribute: (NSString *) attributeName
@@ -569,11 +570,11 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     return [self.noteContents copy];
 }
 
-- (NSArray *) getAllBulletinBoardAttributeNamesOfType: (NSString *) attributeType{
+- (NSDictionary *) getAllBulletinBoardAttributeNamesOfType: (NSString *) attributeType{
     return [self.bulletinBoardAttributes getAllAttributeNamesForAttributeType:attributeType];
 }
 
-- (NSArray *) getAllNoteAttributeNamesOfType: (NSString *) attributeType
+- (NSDictionary *) getAllNoteAttributeNamesOfType: (NSString *) attributeType
                                      forNote: (NSString *) noteID{
     
     //if the noteID is invalid return
@@ -603,7 +604,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
 }
 
 -(void) saveBulletinBoard{
-
+    
     [self.dataModel updateBulletinBoardWithName:self.bulletinBoardName andBulletinBoardInfo:[self.dataSource data]];
     for (NSString * noteID in self.noteContents){
         //get the name of a note

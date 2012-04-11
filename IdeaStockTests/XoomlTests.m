@@ -13,6 +13,7 @@
 @implementation XoomlTests
 
 NSData * xml;
+
 - (void)setUp
 {
 

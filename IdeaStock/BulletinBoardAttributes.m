@@ -68,7 +68,8 @@
 }
 
 - (NSDictionary *) getAllAttributeNamesForAttributeType: (NSString *) attributeType{
-    return [[self.attributes objectForKey:attributeType] copy];
+    NSDictionary * result = [[self.attributes objectForKey:attributeType] copy];
+    return result;
 }
 
 - (NSArray *) getAttributeWithName: (NSString *) attributeName

@@ -73,7 +73,7 @@
  
  If attributeType is not valid the method returns nil. 
  */
-- (NSArray *) getAllAttributeNamesForAttributeType: (NSString *) attributeType;
+- (NSDictionary *) getAllAttributeNamesForAttributeType: (NSString *) attributeType;
 
 /*
  Returns an array of NSString containing all the values of that attribtue name 

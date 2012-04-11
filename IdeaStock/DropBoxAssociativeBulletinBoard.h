@@ -19,6 +19,9 @@
 
 -(id) initBulletinBoardFromXoomlWithName:(NSString *)bulletinBoardName;
 
+//initiates the bulletin board from the available data on the disk
+//this can be used in offline mode with some support
+- (void) initiateBulletinBoad;
 //for stopping or starting the syncrhnozation timer
 -(void) startTimer;
 -(void) stopTimer;
