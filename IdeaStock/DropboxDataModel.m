@@ -283,8 +283,7 @@
 
 -(void) getAllBulletinBoardsAsynch{
     
-    //TODO implement later when you need to get All bulletinboards.
-    
+    [self.restClient loadMetadata:@"/"];
 }
 
 
