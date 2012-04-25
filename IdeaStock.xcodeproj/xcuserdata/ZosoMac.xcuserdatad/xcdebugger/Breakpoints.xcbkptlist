@@ -411,11 +411,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/MainScreenDropboxViewController.m"
-         timestampString = "356991073.048519"
+         timestampString = "356992432.499763"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "85"
-         endingLineNumber = "85"
+         startingLineNumber = "87"
+         endingLineNumber = "87"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -476,24 +476,24 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/MainScreenDropboxViewController.m"
-         timestampString = "356991337.633423"
+         timestampString = "356992432.499763"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "52"
-         endingLineNumber = "52"
+         startingLineNumber = "54"
+         endingLineNumber = "54"
          landmarkName = "-restClient:loadedMetadata:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/MainScreenDropboxViewController.m"
-         timestampString = "356991460.661321"
+         timestampString = "356992432.499763"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "59"
-         endingLineNumber = "59"
+         startingLineNumber = "61"
+         endingLineNumber = "61"
          landmarkName = "-restClient:loadedMetadata:"
          landmarkType = "5">
       </FileBreakpoint>

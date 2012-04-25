@@ -38,6 +38,8 @@
 		D7AB7DEA152F760400FC6BC0 /* DropBoxAssociativeBulletinBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = D7AB7DE9152F760400FC6BC0 /* DropBoxAssociativeBulletinBoard.m */; };
 		D7AB7DEE152FB52C00FC6BC0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D271522F4E100183CB6 /* Security.framework */; };
 		D7AB7DEF152FB54800FC6BC0 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D251522F4C700183CB6 /* DropboxSDK.framework */; };
+		D7AD16BF1547492400B9F084 /* Pile note.png in Resources */ = {isa = PBXBuildFile; fileRef = D7AD16BE1547492400B9F084 /* Pile note.png */; };
+		D7AD16C31547566A00B9F084 /* trashcan.png in Resources */ = {isa = PBXBuildFile; fileRef = D7AD16C21547566A00B9F084 /* trashcan.png */; };
 		D7B1431C152680B600DC7556 /* IdeaStockSchema.xsd in Resources */ = {isa = PBXBuildFile; fileRef = D7B1431B152680B500DC7556 /* IdeaStockSchema.xsd */; };
 		D7B1432115268B4C00DC7556 /* BulletinBoardAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B1432015268B4C00DC7556 /* BulletinBoardAttributes.m */; };
 		D7B1432D1526A50400DC7556 /* AssociativeBulletinBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B1432C1526A50400DC7556 /* AssociativeBulletinBoard.m */; };
@@ -113,6 +115,8 @@
 		D7AB7DE6152F6DB200FC6BC0 /* CallBackDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallBackDataModel.h; sourceTree = "<group>"; };
 		D7AB7DE8152F760400FC6BC0 /* DropBoxAssociativeBulletinBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropBoxAssociativeBulletinBoard.h; sourceTree = "<group>"; };
 		D7AB7DE9152F760400FC6BC0 /* DropBoxAssociativeBulletinBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropBoxAssociativeBulletinBoard.m; sourceTree = "<group>"; };
+		D7AD16BE1547492400B9F084 /* Pile note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Pile note.png"; path = "../Pile note.png"; sourceTree = "<group>"; };
+		D7AD16C21547566A00B9F084 /* trashcan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trashcan.png; sourceTree = "<group>"; };
 		D7B1431B152680B500DC7556 /* IdeaStockSchema.xsd */ = {isa = PBXFileReference; explicitFileType = text.xml; fileEncoding = 4; path = IdeaStockSchema.xsd; sourceTree = "<group>"; };
 		D7B1431F15268B4C00DC7556 /* BulletinBoardAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoardAttributes.h; sourceTree = "<group>"; };
 		D7B1432015268B4C00DC7556 /* BulletinBoardAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletinBoardAttributes.m; sourceTree = "<group>"; };
@@ -290,6 +294,8 @@
 		D7A53CF71522F39500183CB6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D7AD16C21547566A00B9F084 /* trashcan.png */,
+				D7AD16BE1547492400B9F084 /* Pile note.png */,
 				D7A53CF81522F39500183CB6 /* IdeaStock-Info.plist */,
 				D7A53CF91522F39500183CB6 /* InfoPlist.strings */,
 				D7A53CFC1522F39500183CB6 /* main.m */,
@@ -410,6 +416,8 @@
 				D7B1431C152680B600DC7556 /* IdeaStockSchema.xsd in Resources */,
 				D7947AB7152E35B10054CB23 /* NoteXooMLTemplate.xml in Resources */,
 				D7BF465D154728DD00F06412 /* MainStoryBoard.storyboard in Resources */,
+				D7AD16BF1547492400B9F084 /* Pile note.png in Resources */,
+				D7AD16C31547566A00B9F084 /* trashcan.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

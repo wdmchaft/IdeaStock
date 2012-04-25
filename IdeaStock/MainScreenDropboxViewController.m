@@ -13,12 +13,14 @@
 //this is the main model that will be initialized from dropbox. 
 @property (nonatomic,strong) NSMutableArray * bulletinBoardNames;
 
+@property (weak, nonatomic) IBOutlet UIScrollView *mainView;
 @end
 
 @implementation MainScreenDropboxViewController
 
 @synthesize dropBox = _dropBox;
 @synthesize bulletinBoardNames = _bulletinBoardNames;
+@synthesize mainView = _mainView;
 @synthesize queue = _queue;
 
 - (NSMutableArray *) bulletinBoardNames{
@@ -84,6 +86,8 @@
     //This call is asynch and the initialization of the bulletinBoardNames happen
     //in the callback here. 
     
+
+
     //TODO make delegate a property so you can access it by dropbox.delegate
     [self.dropBox setDelegate: self];
     [self.dropBox getAllBulletinBoardsAsynch];
@@ -92,6 +96,7 @@
 
 - (void)viewDidUnload
 {
+    [self setMainView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
