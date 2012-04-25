@@ -35,6 +35,26 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                     </imageView>
+                                    <view hidden="YES" contentMode="scaleToFill" id="Bdq-pr-5nD">
+                                        <rect key="frame" x="20" y="84" width="227" height="215"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="redraw" image="Pile note.png" id="AHJ-m8-DAB">
+                                                <rect key="frame" x="-26" y="-44" width="307" height="314"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            </imageView>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="BulletinBoard Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" id="jZQ-MD-FuS">
+                                                <rect key="frame" x="32" y="58" width="157" height="73"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" name="Baskerville" family="Baskerville" pointSize="31"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                                <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <size key="shadowOffset" width="0.0" height="3"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                             </scrollView>
@@ -43,6 +63,7 @@
                     </view>
                     <connections>
                         <outlet property="mainView" destination="1TM-Gl-tht" id="1FM-f8-fYU"/>
+                        <outlet property="prototypeView" destination="Bdq-pr-5nD" id="tCc-Ue-Lie"/>
                     </connections>
                 </viewController>
             </objects>
@@ -75,7 +96,36 @@
                     </view>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="835" y="-708"/>
+            <point key="canvasLocation" x="795" y="-670"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="OZP-BD-509">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nFS-hY-AUa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="o7h-T9-tBV" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="AIi-V6-X9h">
+                        <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="redraw" image="Pile note.png" id="79u-fb-bfe">
+                                <rect key="frame" x="-78" y="-47" width="996" height="1097"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="BulletinBoard Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" id="vIk-O7-clD">
+                                <rect key="frame" x="63" y="409" width="606" height="186"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Baskerville" family="Baskerville" pointSize="31"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <size key="shadowOffset" width="0.0" height="3"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                    </view>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="795" y="-670"/>
         </scene>
     </scenes>
     <resources>
@@ -87,6 +137,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MainScreenDropboxViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="mainView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="prototypeView" candidateClass="UIView"/>
             </relationships>
         </class>
     </classes>
