@@ -67,6 +67,7 @@
     CGFloat middleY = view.bounds.size.height/2 + view.bounds.origin.y;
     UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(middleX * 0.4, middleY * 0.85, view.bounds.size.width/2, 0.1* view.bounds.size.height)];
     label.text = name;
+    [label setBackgroundColor:[UIColor clearColor]];
     label.textAlignment = UITextAlignmentCenter;
     label.font = [UIFont fontWithName:@"Helvetica" size:12.0];
     [view addSubview:label];
@@ -110,6 +111,7 @@
         
     }
     else {
+        initPointX += 50;
         for (NSString * name in self.bulletinBoardNames){
             CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth, bulletinBoardHeight);
             UIView * view = [self createBulletinBoardPreviewWithName:name inFrame:frame];
@@ -117,13 +119,14 @@
             [self.bulletinBoardViews addObject:view];
             rowCount++;
             if (rowCount <= 2 ) {
-                initPointX += bulletinBoardWidth * 0.75;
+                initPointX += bulletinBoardWidth * 0.90;
             }
             else{
                 rowCount = 0 ;
                 colCount ++;
-                initPointX = self.mainView.bounds.origin.x + 0.02 * self.mainView.bounds.size.width;
-                initPointY += bulletinBoardHeight * 0.8;
+                initPointX = 50;
+                //self.mainView.bounds.origin.x + 0.02 * self.mainView.bounds.size.width;
+                initPointY += bulletinBoardHeight * 0.9;
             }
             
         }
@@ -170,7 +173,7 @@
             }
             if (isFirst){
                 isFirst = false;
-                [UIView animateWithDuration:3.0
+                [UIView animateWithDuration:1.0
                                       delay:0 
                                     options:UIViewAnimationOptionBeginFromCurrentState
                                  animations:^{view.alpha = 1;} 
@@ -181,9 +184,10 @@
     }
     else {
         NSLog(@"Landscape");
+        initPointX +=50;
         for (UIView * view in self.bulletinBoardViews){
             CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth, bulletinBoardHeight);
-            [UIView animateWithDuration:3.0
+            [UIView animateWithDuration:1.0
                                   delay:0 
                                 options:UIViewAnimationOptionBeginFromCurrentState
                              animations:^{[view setFrame:frame];} 
@@ -193,17 +197,18 @@
             [[view.subviews lastObject] setFrame:CGRectMake(middleX * 0.4, middleY * 0.85, view.bounds.size.width/2, 0.1* view.bounds.size.height)];
             rowCount++;
             if ( rowCount <= 2 ) {
-                initPointX += bulletinBoardWidth * 0.75;
+                initPointX += bulletinBoardWidth * 0.90;
             }
             else{
                 rowCount = 0 ;
                 colCount ++;
-                initPointX = self.mainView.bounds.origin.x + 0.02 * self.mainView.bounds.size.width;
-                initPointY += bulletinBoardHeight * 0.8;
+                initPointX =  50;
+                ///self.mainView.bounds.origin.x + 0.02 * self.mainView.bounds.size.width;
+                initPointY += bulletinBoardHeight * 0.9;
             }
             if (isFirst){
                 isFirst = false;
-                [UIView animateWithDuration:3.0
+                [UIView animateWithDuration:1.0
                                       delay:0 
                                     options:UIViewAnimationOptionBeginFromCurrentState
                                  animations:^{view.alpha = 1;} 
@@ -331,7 +336,7 @@
     }
     else {
         NSLog(@"Landscape");
-
+        initPointX += 50;
         for (UIView * view in self.bulletinBoardViews){
             CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth, bulletinBoardHeight);
             [view setFrame:frame];
@@ -340,13 +345,13 @@
             [[view.subviews lastObject] setFrame:CGRectMake(middleX * 0.4, middleY * 0.85, view.bounds.size.width/2, 0.1* view.bounds.size.height)];
             rowCount++;
             if ( rowCount <= 2 ) {
-                initPointX += bulletinBoardWidth * 0.9;
+                initPointX += bulletinBoardWidth * 0.90;
             }
             else{
                 rowCount = 0 ;
                 colCount ++;
-                initPointX = self.mainView.bounds.origin.x + 0.02 * self.mainView.bounds.size.width;
-                initPointY += bulletinBoardHeight * 0.8;
+                initPointX = 50;
+                initPointY += bulletinBoardHeight * 0.9;
             }
         }
     }
