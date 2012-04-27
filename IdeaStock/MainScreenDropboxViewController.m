@@ -124,20 +124,18 @@
                 rowCount = 0 ;
                 if (colCount >= 2){
                     colCount = 0;
-                    for (id  view in self.mainView.subviews){
-                        if ([view isKindOfClass:[UIScrollView class]]){
-                            CGFloat originalWidht = ((UIScrollView *) view).contentSize.width ;
-                            CGFloat originalHeight = ((UIScrollView *) view).contentSize.height; 
-                            CGSize newSize = CGSizeMake(originalWidht* 2, originalHeight);
-                            [((UIScrollView *) view) setContentSize:newSize];
-                            colCount = 0 ;
-                            initPointY = self.mainView.bounds.origin.y + 0.11 * self.mainView.bounds.size.height;
-                            initPointY *= 0.1;
-                            initPointX = originalWidht;
-                            
-                        }
-                        
-                    }
+                    CGFloat originalWidth = self.mainView.bounds.size.width ;
+                    CGFloat originalHeight = self.mainView.bounds.size.height; 
+                    CGSize newSize = CGSizeMake(originalWidth* 2, originalHeight);
+                    [self.mainView setContentSize:newSize];
+                    colCount = 0 ;
+                    initPointY = self.mainView.bounds.origin.y + 0.11 * self.mainView.bounds.size.height;
+                    initPointY *= 0.1;
+                    initPointX = originalWidth/2;
+                    
+                    
+                    
+                    
                 }
                 else{
                     colCount ++;
@@ -267,7 +265,7 @@
     view.alpha = 0;
     [self.mainView addSubview:view];
     [self.bulletinBoardViews insertObject:view atIndex:0];
-    [self layoutBulletinBoards:YES withDuration:1.0];
+    [self layoutBulletinBoards:YES withDuration:0.5];
 }
 
 -(void) viewWillAppear:(BOOL)animated{
@@ -276,18 +274,19 @@
 }
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+    
     if (![[DBSession sharedSession] isLinked]) {
         [[DBSession sharedSession] link];
     }
-    [super viewDidLoad];
+    
+
+    [self.mainView setContentSize:self.mainView.bounds.size];
     
     //This call is asynch and the initialization of the bulletinBoardNames happen
     //in the callback here. 
-    
-    
-    
     //TODO make delegate a property so you can access it by dropbox.delegate
-
+    
     [self.dropBox setDelegate: self];
     [self.dropBox getAllBulletinBoardsAsynch];
     

@@ -410,19 +410,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "IdeaStock/MainScreenDropboxViewController.m"
-         timestampString = "357198257.978785"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "285"
-         endingLineNumber = "285"
-         landmarkName = "-viewDidLoad"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "IdeaStock/DropboxDataModel.m"
          timestampString = "356990873.155958"
          startingColumnNumber = "9223372036854775807"
@@ -476,11 +463,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/MainScreenDropboxViewController.m"
-         timestampString = "357197935.355045"
+         timestampString = "357200051.84702"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "220"
-         endingLineNumber = "220"
+         startingLineNumber = "218"
+         endingLineNumber = "218"
          landmarkName = "-restClient:loadedMetadata:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -489,11 +476,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/MainScreenDropboxViewController.m"
-         timestampString = "357197935.355045"
+         timestampString = "357200051.84702"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "227"
-         endingLineNumber = "227"
+         startingLineNumber = "225"
+         endingLineNumber = "225"
          landmarkName = "-restClient:loadedMetadata:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -507,6 +494,58 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "101"
          endingLineNumber = "101"
+         landmarkName = "-layoutBulletinBoards:withDuration:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "IdeaStock/MainScreenDropboxViewController.m"
+         timestampString = "357199094.382146"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "125"
+         endingLineNumber = "125"
+         landmarkName = "-layoutBulletinBoards:withDuration:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "IdeaStock/MainScreenDropboxViewController.m"
+         timestampString = "357199096.296427"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "126"
+         endingLineNumber = "126"
+         landmarkName = "-layoutBulletinBoards:withDuration:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "IdeaStock/MainScreenDropboxViewController.m"
+         timestampString = "357200051.84702"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "127"
+         endingLineNumber = "127"
+         landmarkName = "-layoutBulletinBoards:withDuration:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "IdeaStock/MainScreenDropboxViewController.m"
+         timestampString = "357200513.221626"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "134"
+         endingLineNumber = "134"
          landmarkName = "-layoutBulletinBoards:withDuration:"
          landmarkType = "5">
       </FileBreakpoint>
