@@ -16,7 +16,6 @@
 @property (weak, nonatomic) IBOutlet UIView *prototypeView;
 @property (weak, nonatomic) IBOutlet UIScrollView *mainView;
 @property (strong, nonatomic) NSMutableArray * bulletinBoardViews; 
-
 @end
 
 @implementation MainScreenDropboxViewController
@@ -27,6 +26,7 @@
 @synthesize prototypeView = _prototypeView;
 @synthesize mainView = _mainView;
 @synthesize queue = _queue;
+
 
 -(NSMutableArray *) bulletinBoardViews{
     if (!_bulletinBoardViews){
@@ -78,30 +78,42 @@
     
 }
 
+#define X_STARTING_POS 0
+#define Y_STARTING_POST 0
+#define PORTRAIT_ROW_COUNT 3
+#define PORTRAIT_COL_COUNT 4
+#define LANDSCAPE_ROW_COUNT 4
+#define LANDSCAPE_COL_COUNT 3
+//ROW AND COL ARE USED IN REVERSE ! 
 -(void) layoutBulletinBoards: (BOOL) animation withDuration: (float) duration{
-    [super viewWillLayoutSubviews];
-    CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.29;
-    CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.22;
-    CGFloat initPointX = self.mainView.bounds.origin.x + 0.04 * self.mainView.bounds.size.width;
-    initPointX *= 0;
-    CGFloat initPointY = self.mainView.bounds.origin.y + 0.11 * self.mainView.bounds.size.height;
-    initPointY *= 0.1;
+    
+    CGSize newSize = CGSizeMake(self.mainView.bounds.size.width, self.mainView.bounds.size.height);
+    [self.mainView setContentSize: newSize];
+    
+    CGFloat initPointX = X_STARTING_POS;
+    CGFloat initPointY = Y_STARTING_POST;
     
     int rowCount = 0;
     int colCount = 0;
+    CGFloat rowOffset = 0 ;
+
     
     BOOL isFirst = YES;
     
-    if ([UIDevice currentDevice].generatesDeviceOrientationNotifications){
-        NSLog(@"Generates orientation");
-    }
-    if ([UIDevice currentDevice].orientation  == UIDeviceOrientationUnknown){
-        NSLog(@"Unknown Orientation");
-    }
     if ( [UIDevice currentDevice].orientation ==  UIDeviceOrientationPortrait || [UIDevice currentDevice].orientation == UIDeviceOrientationPortraitUpsideDown){
-        NSLog(@"Portrait");
+        int numPages = self.bulletinBoardViews.count / (PORTRAIT_ROW_COUNT * PORTRAIT_COL_COUNT);
+        int remainder = self.bulletinBoardViews.count % (PORTRAIT_COL_COUNT * PORTRAIT_ROW_COUNT);
+        if ( remainder ==  0 ) numPages --;
+        
+        CGSize newSize = CGSizeMake(self.mainView.contentSize.width * (numPages + 1), self.mainView.contentSize.height);
+        [self.mainView setContentSize:newSize];
+        
         for (UIView * view in self.bulletinBoardViews){
-            CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth, bulletinBoardHeight);
+            
+            CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.37;
+            CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.28;
+            CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth , bulletinBoardHeight );
+            
             if (animation){
                 [UIView animateWithDuration:duration
                                       delay:0 
@@ -113,33 +125,29 @@
                 [view setFrame:frame];
             }
             
+            //set the text according to the orientation
             CGFloat middleX = view.bounds.size.width/2 + view.bounds.origin.x;
             CGFloat middleY = view.bounds.size.height/2 + view.bounds.origin.y;
             [[view.subviews lastObject] setFrame:CGRectMake(middleX * 0.4, middleY * 0.85, view.bounds.size.width/2, 0.1* view.bounds.size.height)];
+            
+            
             rowCount++;
-            if ( rowCount <= 3 ) {
-                initPointX += bulletinBoardWidth * 0.75;
+            if ( rowCount <= PORTRAIT_ROW_COUNT - 1 ) {
+                initPointX += bulletinBoardWidth * 0.90;
             }
             else{
                 rowCount = 0 ;
-                if (colCount >= 2){
+                if (colCount >= PORTRAIT_COL_COUNT - 1){
                     colCount = 0;
                     CGFloat originalWidth = self.mainView.bounds.size.width ;
-                    CGFloat originalHeight = self.mainView.bounds.size.height; 
-                    CGSize newSize = CGSizeMake(originalWidth* 2, originalHeight);
-                    [self.mainView setContentSize:newSize];
                     colCount = 0 ;
-                    initPointY = self.mainView.bounds.origin.y + 0.11 * self.mainView.bounds.size.height;
-                    initPointY *= 0.1;
-                    initPointX = originalWidth/2;
-                    
-                    
-                    
-                    
+                    initPointY = Y_STARTING_POST;
+                    initPointX = originalWidth + rowOffset;
+                    rowOffset = initPointX;
                 }
                 else{
                     colCount ++;
-                    initPointX = self.mainView.bounds.origin.x + 0.02 * self.mainView.bounds.size.width;
+                    initPointX = rowOffset;
                     initPointY += bulletinBoardHeight * 0.8;
                 }
             }
@@ -155,10 +163,18 @@
         
     }
     else {
-        NSLog(@"Landscape");
-        initPointX +=50;
+        
+        CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.34;
+        CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.28;
+        int numPages = self.bulletinBoardViews.count / (LANDSCAPE_ROW_COUNT * LANDSCAPE_COL_COUNT);
+        int remainder = self.bulletinBoardViews.count % (LANDSCAPE_COL_COUNT * LANDSCAPE_ROW_COUNT);
+        if ( remainder ==  0 ) numPages --;
+        CGSize newSize = CGSizeMake(self.mainView.contentSize.width * (numPages + 1), self.mainView.contentSize.height);
+        [self.mainView setContentSize:newSize];
+        
         for (UIView * view in self.bulletinBoardViews){
-            CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth, bulletinBoardHeight);
+            CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth * 0.8, bulletinBoardHeight * 1.2);
+            
             if(animation){
                 [UIView animateWithDuration:duration
                                       delay:0 
@@ -173,16 +189,27 @@
             CGFloat middleX = view.bounds.size.width/2 + view.bounds.origin.x;
             CGFloat middleY = view.bounds.size.height/2 + view.bounds.origin.y;
             [[view.subviews lastObject] setFrame:CGRectMake(middleX * 0.4, middleY * 0.85, view.bounds.size.width/2, 0.1* view.bounds.size.height)];
+            
             rowCount++;
-            if ( rowCount <= 2 ) {
-                initPointX += bulletinBoardWidth * 0.90;
+            if ( rowCount <= LANDSCAPE_ROW_COUNT-1 ) {
+                initPointX += bulletinBoardWidth * 0.70;
             }
             else{
                 rowCount = 0 ;
-                colCount ++;
-                initPointX =  50;
-                ///self.mainView.bounds.origin.x + 0.02 * self.mainView.bounds.size.width;
-                initPointY += bulletinBoardHeight * 0.9;
+                if (colCount >= LANDSCAPE_COL_COUNT-1){
+                    colCount = 0;
+                    CGFloat originalWidth = self.mainView.bounds.size.width ;
+                    colCount = 0 ;
+                    initPointY = Y_STARTING_POST;
+                    initPointX = originalWidth + rowOffset;
+                    rowOffset = initPointX;
+
+                }
+                else {
+                    colCount ++;
+                    initPointX =  rowOffset;
+                    initPointY += bulletinBoardHeight * 1.1 ;
+                }
             }
             if (isFirst){
                 isFirst = false;
@@ -303,6 +330,22 @@
 }
 
 -(void) viewWillLayoutSubviews{
+   
+    /*int lastPage = 0 ;
+    if ( [UIDevice currentDevice].orientation ==  UIDeviceOrientationPortrait || [UIDevice currentDevice].orientation == UIDeviceOrientationPortraitUpsideDown){
+         lastPage = self.bulletinBoardViews.count / (PORTRAIT_ROW_COUNT * PORTRAIT_COL_COUNT);
+        if ( self.bulletinBoardViews.count % (PORTRAIT_ROW_COUNT * PORTRAIT_COL_COUNT) == 0 ){
+            lastPage--;
+        }
+    }
+    else{
+        lastPage = self.bulletinBoardViews.count / (LANDSCAPE_ROW_COUNT * LANDSCAPE_COL_COUNT);
+        if ( self.bulletinBoardViews.count % (LANDSCAPE_ROW_COUNT * LANDSCAPE_COL_COUNT) == 0 ){
+            lastPage--;
+        }
+    }
+    CGSize newSize = CGSizeMake(self.mainView.bounds.size.width * (lastPage+1), self.mainView.bounds.size.height);
+    [self.mainView setContentSize: newSize];*/
     [super viewWillLayoutSubviews];
     [self layoutBulletinBoards:NO withDuration:0];    
 }
