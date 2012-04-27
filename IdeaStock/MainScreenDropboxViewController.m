@@ -71,71 +71,14 @@
     label.textAlignment = UITextAlignmentCenter;
     label.font = [UIFont fontWithName:@"Helvetica" size:12.0];
     [view addSubview:label];
-
+    
     
     
     return view;
     
 }
 
--(void) layoutBulletinBoards{
-    
-    CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.29;
-    CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.22;
-    CGFloat initPointX = self.mainView.bounds.origin.x + 0.04 * self.mainView.bounds.size.width;
-    initPointX *= 0;
-    CGFloat initPointY = self.mainView.bounds.origin.y + 0.11 * self.mainView.bounds.size.height;
-    initPointY *= 0.1;
-    
-    int rowCount = 0;
-    int colCount = 0;
-    
-    if ( [UIDevice currentDevice].orientation ==  UIDeviceOrientationPortrait || [UIDevice currentDevice].orientation == UIDeviceOrientationPortraitUpsideDown || [UIDevice currentDevice].orientation ==  UIDeviceOrientationUnknown){
-        for (NSString * name in self.bulletinBoardNames){
-            CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth, bulletinBoardHeight);
-            UIView * view = [self createBulletinBoardPreviewWithName:name inFrame:frame];
-            [self.mainView addSubview:view];
-            [self.bulletinBoardViews addObject:view];
-            rowCount++;
-            if (rowCount <= 3 ) {
-                initPointX += bulletinBoardWidth * 0.75;
-            }
-            else{
-                rowCount = 0 ;
-                colCount ++;
-                initPointX = self.mainView.bounds.origin.x + 0.02 * self.mainView.bounds.size.width;
-                initPointY += bulletinBoardHeight * 0.8;
-            }
-            
-        }
-        
-    }
-    else {
-        initPointX += 50;
-        for (NSString * name in self.bulletinBoardNames){
-            CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth, bulletinBoardHeight);
-            UIView * view = [self createBulletinBoardPreviewWithName:name inFrame:frame];
-            [self.mainView addSubview:view];
-            [self.bulletinBoardViews addObject:view];
-            rowCount++;
-            if (rowCount <= 2 ) {
-                initPointX += bulletinBoardWidth * 0.90;
-            }
-            else{
-                rowCount = 0 ;
-                colCount ++;
-                initPointX = 50;
-                //self.mainView.bounds.origin.x + 0.02 * self.mainView.bounds.size.width;
-                initPointY += bulletinBoardHeight * 0.9;
-            }
-            
-        }
-    }
-    
-    
-}
-
-- (void) layoutItmesWithAnimation{
+-(void) layoutBulletinBoards: (BOOL) animation withDuration: (float) duration{
     [super viewWillLayoutSubviews];
     CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.29;
     CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.22;
@@ -148,15 +91,27 @@
     int colCount = 0;
     
     BOOL isFirst = YES;
+    
+    if ([UIDevice currentDevice].generatesDeviceOrientationNotifications){
+        NSLog(@"Generates orientation");
+    }
+    if ([UIDevice currentDevice].orientation  == UIDeviceOrientationUnknown){
+        NSLog(@"Unknown Orientation");
+    }
     if ( [UIDevice currentDevice].orientation ==  UIDeviceOrientationPortrait || [UIDevice currentDevice].orientation == UIDeviceOrientationPortraitUpsideDown){
         NSLog(@"Portrait");
         for (UIView * view in self.bulletinBoardViews){
             CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth, bulletinBoardHeight);
-            [UIView animateWithDuration:1.0
-                                  delay:0 
-                                options:UIViewAnimationOptionBeginFromCurrentState
-                             animations:^{[view setFrame:frame];} 
-                             completion:nil];
+            if (animation){
+                [UIView animateWithDuration:duration
+                                      delay:0 
+                                    options:UIViewAnimationOptionBeginFromCurrentState
+                                 animations:^{[view setFrame:frame];} 
+                                 completion:nil];
+            }
+            else{
+                [view setFrame:frame];
+            }
             
             CGFloat middleX = view.bounds.size.width/2 + view.bounds.origin.x;
             CGFloat middleY = view.bounds.size.height/2 + view.bounds.origin.y;
@@ -167,13 +122,32 @@
             }
             else{
                 rowCount = 0 ;
-                colCount ++;
-                initPointX = self.mainView.bounds.origin.x + 0.02 * self.mainView.bounds.size.width;
-                initPointY += bulletinBoardHeight * 0.8;
+                if (colCount >= 2){
+                    colCount = 0;
+                    for (id  view in self.mainView.subviews){
+                        if ([view isKindOfClass:[UIScrollView class]]){
+                            CGFloat originalWidht = ((UIScrollView *) view).contentSize.width ;
+                            CGFloat originalHeight = ((UIScrollView *) view).contentSize.height; 
+                            CGSize newSize = CGSizeMake(originalWidht* 2, originalHeight);
+                            [((UIScrollView *) view) setContentSize:newSize];
+                            colCount = 0 ;
+                            initPointY = self.mainView.bounds.origin.y + 0.11 * self.mainView.bounds.size.height;
+                            initPointY *= 0.1;
+                            initPointX = originalWidht;
+                            
+                        }
+                        
+                    }
+                }
+                else{
+                    colCount ++;
+                    initPointX = self.mainView.bounds.origin.x + 0.02 * self.mainView.bounds.size.width;
+                    initPointY += bulletinBoardHeight * 0.8;
+                }
             }
             if (isFirst){
                 isFirst = false;
-                [UIView animateWithDuration:1.0
+                [UIView animateWithDuration:duration
                                       delay:0 
                                     options:UIViewAnimationOptionBeginFromCurrentState
                                  animations:^{view.alpha = 1;} 
@@ -187,11 +161,17 @@
         initPointX +=50;
         for (UIView * view in self.bulletinBoardViews){
             CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth, bulletinBoardHeight);
-            [UIView animateWithDuration:1.0
-                                  delay:0 
-                                options:UIViewAnimationOptionBeginFromCurrentState
-                             animations:^{[view setFrame:frame];} 
-                             completion:nil];
+            if(animation){
+                [UIView animateWithDuration:duration
+                                      delay:0 
+                                    options:UIViewAnimationOptionBeginFromCurrentState
+                                 animations:^{[view setFrame:frame];} 
+                                 completion:nil];
+            }
+            else{
+                [view setFrame:frame]; 
+            }
+            
             CGFloat middleX = view.bounds.size.width/2 + view.bounds.origin.x;
             CGFloat middleY = view.bounds.size.height/2 + view.bounds.origin.y;
             [[view.subviews lastObject] setFrame:CGRectMake(middleX * 0.4, middleY * 0.85, view.bounds.size.width/2, 0.1* view.bounds.size.height)];
@@ -208,7 +188,7 @@
             }
             if (isFirst){
                 isFirst = false;
-                [UIView animateWithDuration:1.0
+                [UIView animateWithDuration:duration
                                       delay:0 
                                     options:UIViewAnimationOptionBeginFromCurrentState
                                  animations:^{view.alpha = 1;} 
@@ -216,8 +196,21 @@
             }
         }
     }
-    
 }
+-(void) layoutBulletinBoards{
+    
+    CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.29;
+    CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.22;
+    
+    for (NSString * name in self.bulletinBoardNames){
+        CGRect frame = CGRectMake(0, 0, bulletinBoardWidth, bulletinBoardHeight);
+        UIView * view = [self createBulletinBoardPreviewWithName:name inFrame:frame];
+        [self.mainView addSubview:view];
+        [self.bulletinBoardViews addObject:view];
+    }
+    [self layoutBulletinBoards:YES withDuration:0.2];
+}
+
 /*---------------------------------
  Dropbox Datamodel delegate methods
  ----------------------------------*/
@@ -274,11 +267,18 @@
     view.alpha = 0;
     [self.mainView addSubview:view];
     [self.bulletinBoardViews insertObject:view atIndex:0];
-    [self layoutItmesWithAnimation];
+    [self layoutBulletinBoards:YES withDuration:1.0];
 }
 
+-(void) viewWillAppear:(BOOL)animated{
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    NSLog(@"Generating orientation notification");
+}
 - (void)viewDidLoad
 {
+    if (![[DBSession sharedSession] isLinked]) {
+        [[DBSession sharedSession] link];
+    }
     [super viewDidLoad];
     
     //This call is asynch and the initialization of the bulletinBoardNames happen
@@ -287,6 +287,7 @@
     
     
     //TODO make delegate a property so you can access it by dropbox.delegate
+
     [self.dropBox setDelegate: self];
     [self.dropBox getAllBulletinBoardsAsynch];
     
@@ -295,6 +296,7 @@
 
 - (void)viewDidUnload
 {
+    
     [self setMainView:nil];
     [self setPrototypeView:nil];
     [super viewDidUnload];
@@ -303,59 +305,7 @@
 
 -(void) viewWillLayoutSubviews{
     [super viewWillLayoutSubviews];
-    CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.29;
-    CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.22;
-    CGFloat initPointX = self.mainView.bounds.origin.x + 0.04 * self.mainView.bounds.size.width;
-    initPointX *= 0;
-    CGFloat initPointY = self.mainView.bounds.origin.y + 0.11 * self.mainView.bounds.size.height;
-    initPointY *= 0.1;
-    
-    int rowCount = 0;
-    int colCount = 0;
-    
-    
-    if ( [UIDevice currentDevice].orientation ==  UIDeviceOrientationPortrait || [UIDevice currentDevice].orientation == UIDeviceOrientationPortraitUpsideDown){
-        NSLog(@"Portrait");
-        for (UIView * view in self.bulletinBoardViews){
-            CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth, bulletinBoardHeight);
-            [view setFrame:frame];
-            CGFloat middleX = view.bounds.size.width/2 + view.bounds.origin.x;
-            CGFloat middleY = view.bounds.size.height/2 + view.bounds.origin.y;
-            [[view.subviews lastObject] setFrame:CGRectMake(middleX * 0.4, middleY * 0.85, view.bounds.size.width/2, 0.1* view.bounds.size.height)];
-            rowCount++;
-            if ( rowCount <= 3 ) {
-                initPointX += bulletinBoardWidth * 0.75;
-            }
-            else{
-                rowCount = 0 ;
-                colCount ++;
-                initPointX = self.mainView.bounds.origin.x + 0.02 * self.mainView.bounds.size.width;
-                initPointY += bulletinBoardHeight * 0.8;
-            }
-        }
-    }
-    else {
-        NSLog(@"Landscape");
-        initPointX += 50;
-        for (UIView * view in self.bulletinBoardViews){
-            CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth, bulletinBoardHeight);
-            [view setFrame:frame];
-            CGFloat middleX = view.bounds.size.width/2 + view.bounds.origin.x;
-            CGFloat middleY = view.bounds.size.height/2 + view.bounds.origin.y;
-            [[view.subviews lastObject] setFrame:CGRectMake(middleX * 0.4, middleY * 0.85, view.bounds.size.width/2, 0.1* view.bounds.size.height)];
-            rowCount++;
-            if ( rowCount <= 2 ) {
-                initPointX += bulletinBoardWidth * 0.90;
-            }
-            else{
-                rowCount = 0 ;
-                colCount ++;
-                initPointX = 50;
-                initPointY += bulletinBoardHeight * 0.9;
-            }
-        }
-    }
-    
+    [self layoutBulletinBoards:NO withDuration:0];    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
