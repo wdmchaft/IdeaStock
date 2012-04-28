@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UIView *prototypeView;
 @property (weak, nonatomic) IBOutlet UIScrollView *mainView;
 @property (strong, nonatomic) NSMutableArray * bulletinBoardViews; 
+@property int colorOrder;
 @end
 
 @implementation MainScreenDropboxViewController
@@ -27,6 +28,7 @@
 @synthesize prototypeView = _prototypeView;
 @synthesize mainView = _mainView;
 @synthesize queue = _queue;
+@synthesize colorOrder = _colorOrder;
 
 
 -(NSMutableArray *) bulletinBoardViews{
@@ -60,8 +62,21 @@
 
 -(UIView *) createBulletinBoardPreviewWithName: (NSString *) name inFrame: (CGRect) frame{
     
-    
-    UIImage *image = [UIImage imageNamed:@"Pile note.png"];
+    UIImage *image;
+    if ( self.colorOrder == 0 ) {
+        image  = [UIImage imageNamed:@"green board.png"];
+        self.colorOrder++;
+        
+    }
+    else if ( self.colorOrder == 1){
+        image =[UIImage imageNamed:@"red board.png"];
+        self.colorOrder++;
+    }
+    else {
+        image =[UIImage imageNamed:@"blue board.png"];
+        self.colorOrder = 0 ;
+    }
+
     UIImageView * view = [[UIImageView alloc] initWithImage:image];
     [view setFrame:frame];
     CGFloat middleX = view.bounds.size.width/2 + view.bounds.origin.x;
@@ -70,7 +85,7 @@
     label.text = name;
     [label setBackgroundColor:[UIColor clearColor]];
     label.textAlignment = UITextAlignmentCenter;
-    label.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    label.font = [UIFont fontWithName:@"Helvetica" size:14.0];
     [view addSubview:label];
     
     
@@ -79,8 +94,8 @@
     
 }
 
-#define X_STARTING_POS 0
-#define Y_STARTING_POST 0
+#define X_STARTING_POS 40
+#define Y_STARTING_POST 40
 #define PORTRAIT_ROW_COUNT 3
 #define PORTRAIT_COL_COUNT 4
 #define LANDSCAPE_ROW_COUNT 4
@@ -96,7 +111,7 @@
     
     int rowCount = 0;
     int colCount = 0;
-    CGFloat rowOffset = 0 ;
+    CGFloat rowOffset = initPointX ;
 
     
     BOOL isFirst = YES;
@@ -111,16 +126,26 @@
         
         for (UIView * view in self.bulletinBoardViews){
             
-            CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.37;
-            CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.28;
+            CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.26;
+            CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.20;
+            
             CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth , bulletinBoardHeight );
             
             if (animation){
-                [UIView animateWithDuration:duration
-                                      delay:0 
-                                    options:UIViewAnimationOptionBeginFromCurrentState
-                                 animations:^{[view setFrame:frame];} 
-                                 completion:nil];
+                if (isFirst){
+                    [UIView animateWithDuration:duration *2
+                                          delay:0.25
+                                        options:UIViewAnimationOptionBeginFromCurrentState
+                                     animations:^{[view setFrame:frame];} 
+                                     completion:nil];
+                    
+                }else{
+                    [UIView animateWithDuration:duration
+                                          delay:0 
+                                        options:UIViewAnimationOptionBeginFromCurrentState
+                                     animations:^{[view setFrame:frame];} 
+                                     completion:nil];
+                }
             }
             else{
                 [view setFrame:frame];
@@ -134,7 +159,7 @@
             
             rowCount++;
             if ( rowCount <= PORTRAIT_ROW_COUNT - 1 ) {
-                initPointX += bulletinBoardWidth * 0.90;
+                initPointX += bulletinBoardWidth * 1.2;
             }
             else{
                 rowCount = 0 ;
@@ -143,19 +168,19 @@
                     CGFloat originalWidth = self.mainView.bounds.size.width ;
                     colCount = 0 ;
                     initPointY = Y_STARTING_POST;
-                    initPointX = originalWidth + rowOffset;
+                    initPointX = originalWidth + rowOffset ;
                     rowOffset = initPointX;
                 }
                 else{
                     colCount ++;
                     initPointX = rowOffset;
-                    initPointY += bulletinBoardHeight * 0.8;
+                    initPointY += bulletinBoardHeight + Y_STARTING_POST;
                 }
             }
             if (isFirst){
                 isFirst = false;
                 [UIView animateWithDuration:duration
-                                      delay:0 
+                                      delay:0.5 
                                     options:UIViewAnimationOptionBeginFromCurrentState
                                  animations:^{view.alpha = 1;} 
                                  completion:nil];
@@ -165,8 +190,8 @@
     }
     else {
         
-        CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.34;
-        CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.28;
+        CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.26;
+        CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.23;
         int numPages = self.bulletinBoardViews.count / (LANDSCAPE_ROW_COUNT * LANDSCAPE_COL_COUNT);
         int remainder = self.bulletinBoardViews.count % (LANDSCAPE_COL_COUNT * LANDSCAPE_ROW_COUNT);
         if ( remainder ==  0 ) numPages --;
@@ -177,12 +202,23 @@
             CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth * 0.8, bulletinBoardHeight * 1.2);
             
             if(animation){
-                [UIView animateWithDuration:duration
-                                      delay:0 
-                                    options:UIViewAnimationOptionBeginFromCurrentState
-                                 animations:^{[view setFrame:frame];} 
-                                 completion:nil];
+                if (isFirst){
+                    [UIView animateWithDuration:duration
+                                          delay:0.25
+                                        options:UIViewAnimationOptionBeginFromCurrentState
+                                     animations:^{[view setFrame:frame];} 
+                                     completion:nil];
+                }
+                else{
+                    [UIView animateWithDuration:duration
+                                          delay:0 
+                                        options:UIViewAnimationOptionBeginFromCurrentState
+                                     animations:^{[view setFrame:frame];} 
+                                     completion:nil];
+                }
+
             }
+
             else{
                 [view setFrame:frame]; 
             }
@@ -193,7 +229,7 @@
             
             rowCount++;
             if ( rowCount <= LANDSCAPE_ROW_COUNT-1 ) {
-                initPointX += bulletinBoardWidth * 0.70;
+                initPointX += bulletinBoardWidth * 0.91;
             }
             else{
                 rowCount = 0 ;
@@ -209,13 +245,13 @@
                 else {
                     colCount ++;
                     initPointX =  rowOffset;
-                    initPointY += bulletinBoardHeight * 1.1 ;
+                    initPointY += bulletinBoardHeight * 1.1 + Y_STARTING_POST ;
                 }
             }
             if (isFirst){
                 isFirst = false;
                 [UIView animateWithDuration:duration
-                                      delay:0 
+                                      delay:0.5
                                     options:UIViewAnimationOptionBeginFromCurrentState
                                  animations:^{view.alpha = 1;} 
                                  completion:nil];
@@ -242,7 +278,7 @@
         //test
         SEL actionSelector = @selector(selectBulletinBoard:);
         UITapGestureRecognizer * gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:actionSelector];
-      //  [view addGestureRecognizer:gr];
+        [self.mainView addGestureRecognizer:gr];
         [self.mainView addSubview:view];
         [self.bulletinBoardViews addObject:view];
     }
@@ -315,7 +351,7 @@
         view.alpha = 0;
         [self.mainView addSubview:view];
         [self.bulletinBoardViews insertObject:view atIndex:0];
-        [self layoutBulletinBoards:YES withDuration:0.5];
+        [self layoutBulletinBoards:YES withDuration:0.30];
         NSData * emptyBulletinBoard = [XoomlBulletinBoardController getEmptyBulletinBoardData];
         [self.dropBox addBulletinBoardWithName:name andBulletinBoardInfo:emptyBulletinBoard];
     }
