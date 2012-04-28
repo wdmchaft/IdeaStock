@@ -7,6 +7,7 @@
 //
 
 #import "MainScreenDropboxViewController.h"
+#import "XoomlBulletinBoardController.h"
 
 @interface MainScreenDropboxViewController ()
 
@@ -222,7 +223,15 @@
         }
     }
 }
+
+-(void) selectBulletinBoard: (UITapGestureRecognizer *) sender{
+    NSLog(@"Gesture Recognized");
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ouch" message:@"ouch" delegate:self cancelButtonTitle:@"Sorry" otherButtonTitles: nil];
+    [alert show];
+}
 -(void) layoutBulletinBoards{
+    
+    
     
     CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.29;
     CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.22;
@@ -230,6 +239,10 @@
     for (NSString * name in self.bulletinBoardNames){
         CGRect frame = CGRectMake(0, 0, bulletinBoardWidth, bulletinBoardHeight);
         UIView * view = [self createBulletinBoardPreviewWithName:name inFrame:frame];
+        //test
+        SEL actionSelector = @selector(selectBulletinBoard:);
+        UITapGestureRecognizer * gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:actionSelector];
+      //  [view addGestureRecognizer:gr];
         [self.mainView addSubview:view];
         [self.bulletinBoardViews addObject:view];
     }
@@ -278,23 +291,35 @@
  View Events
  ------------------*/
 
+
 - (IBAction)AddPressed:(id)sender {
-    CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.29;
-    CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.22;
-    CGFloat initPointX = self.mainView.bounds.origin.x + 0.04 * self.mainView.bounds.size.width;
-    initPointX *= 0;
-    CGFloat initPointY = self.mainView.bounds.origin.y + 0.11 * self.mainView.bounds.size.height;
-    initPointY *= 0.1;
-    CGFloat topRightX = self.mainView.bounds.origin.x + self.mainView.bounds.size.width - 250;
-    CGFloat topRightY = self.mainView.bounds.origin.y - 50;
-    CGRect frame = CGRectMake(topRightX,topRightY, bulletinBoardWidth, bulletinBoardHeight);
-    UIView * view = [self createBulletinBoardPreviewWithName:@"Unknown" inFrame:frame];
-    view.alpha = 0;
-    [self.mainView addSubview:view];
-    [self.bulletinBoardViews insertObject:view atIndex:0];
-    [self layoutBulletinBoards:YES withDuration:0.5];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Create New Bulletinboard" message: @"Enter the name of the the BulletinBoard" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alert show];
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 1){
+        NSString * name = [[alertView textFieldAtIndex:0] text];
+        CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.29;
+        CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.22;
+        CGFloat initPointX = self.mainView.bounds.origin.x + 0.04 * self.mainView.bounds.size.width;
+        initPointX *= 0;
+        CGFloat initPointY = self.mainView.bounds.origin.y + 0.11 * self.mainView.bounds.size.height;
+        initPointY *= 0.1;
+        CGFloat topRightX = self.mainView.bounds.origin.x + self.mainView.bounds.size.width - 250;
+        CGFloat topRightY = self.mainView.bounds.origin.y - 50;
+        CGRect frame = CGRectMake(topRightX,topRightY, bulletinBoardWidth, bulletinBoardHeight);
+        UIView * view = [self createBulletinBoardPreviewWithName:name inFrame:frame];
+
+        view.alpha = 0;
+        [self.mainView addSubview:view];
+        [self.bulletinBoardViews insertObject:view atIndex:0];
+        [self layoutBulletinBoards:YES withDuration:0.5];
+        NSData * emptyBulletinBoard = [XoomlBulletinBoardController getEmptyBulletinBoardData];
+        [self.dropBox addBulletinBoardWithName:name andBulletinBoardInfo:emptyBulletinBoard];
+    }
+}
 -(void) viewWillAppear:(BOOL)animated{
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     NSLog(@"Generating orientation notification");

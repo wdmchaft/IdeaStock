@@ -43,6 +43,10 @@
     return self;
 }
 
++ (NSData *) getEmptyBulletinBoardData{
+    return [XoomlParser getEmptyBulletinBoardXooml];
+}
+
 -(id) initAsEmpty{
     
     //use this helper method to create xooml

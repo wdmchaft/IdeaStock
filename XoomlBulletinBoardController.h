@@ -27,4 +27,5 @@
  */
 @interface XoomlBulletinBoardController : NSObject <BulletinBoardDelegate, BulletinBoardDatasource>
 
++ (NSData *) getEmptyBulletinBoardData;
 @end

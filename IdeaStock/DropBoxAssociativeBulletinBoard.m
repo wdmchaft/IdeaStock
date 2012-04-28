@@ -79,6 +79,7 @@
     [self.timer invalidate];
 }
 
+
 -(id) initEmptyBulletinBoardWithDataModel:(id<DataModel>)dataModel 
                                   andName:(NSString *)bulletinBoardName{
     self = [super initEmptyBulletinBoardWithDataModel:dataModel
