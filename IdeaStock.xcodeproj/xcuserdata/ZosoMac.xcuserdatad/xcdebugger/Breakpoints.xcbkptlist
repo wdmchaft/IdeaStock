@@ -580,13 +580,39 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "357360043.903043"
+         timestampString = "357368538.430552"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "25"
-         endingLineNumber = "25"
+         startingLineNumber = "36"
+         endingLineNumber = "36"
          landmarkName = "-setBulletinBoardName:"
          landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "IdeaStock/BulletinBoardViewController.m"
+         timestampString = "357368538.430552"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "31"
+         endingLineNumber = "31"
+         landmarkName = "-board"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "IdeaStock/BulletinBoardViewController.m"
+         timestampString = "357368538.430552"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "20"
+         endingLineNumber = "20"
+         landmarkName = "@implementation BulletinBoardViewController"
+         landmarkType = "3">
       </FileBreakpoint>
    </FileBreakpoints>
    <ExceptionBreakpoints>

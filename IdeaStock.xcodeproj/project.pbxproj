@@ -20,6 +20,7 @@
 		D71EA17E154BA19600496663 /* pile boardSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = D71EA17C154BA19600496663 /* pile boardSmall.png */; };
 		D71EA17F154BA19600496663 /* pile boardBig.png in Resources */ = {isa = PBXBuildFile; fileRef = D71EA17D154BA19600496663 /* pile boardBig.png */; };
 		D71EA185154CD3FB00496663 /* BulletinBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D71EA184154CD3FB00496663 /* BulletinBoardViewController.m */; };
+		D71EA187154CFF0D00496663 /* green2 note.png in Resources */ = {isa = PBXBuildFile; fileRef = D71EA186154CFF0D00496663 /* green2 note.png */; };
 		D731B4C11535F17B0015C325 /* MockDropBoxDatamodel.m in Sources */ = {isa = PBXBuildFile; fileRef = D731B4C01535F17B0015C325 /* MockDropBoxDatamodel.m */; };
 		D74CF0C415266DD900DDEF0F /* BulletinboardXoomlTemplate.xml in Resources */ = {isa = PBXBuildFile; fileRef = D74CF0C315266DD900DDEF0F /* BulletinboardXoomlTemplate.xml */; };
 		D74E48201524F3DF00BC8B9D /* XoomlAttributeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D74E481F1524F3DF00BC8B9D /* XoomlAttributeHelper.m */; };
@@ -100,6 +101,7 @@
 		D71EA17D154BA19600496663 /* pile boardBig.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pile boardBig.png"; sourceTree = "<group>"; };
 		D71EA183154CD3FB00496663 /* BulletinBoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoardViewController.h; sourceTree = "<group>"; };
 		D71EA184154CD3FB00496663 /* BulletinBoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletinBoardViewController.m; sourceTree = "<group>"; };
+		D71EA186154CFF0D00496663 /* green2 note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green2 note.png"; sourceTree = "<group>"; };
 		D731B4BF1535F17B0015C325 /* MockDropBoxDatamodel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MockDropBoxDatamodel.h; path = IdeaStockTests/MockDropBoxDatamodel.h; sourceTree = SOURCE_ROOT; };
 		D731B4C01535F17B0015C325 /* MockDropBoxDatamodel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MockDropBoxDatamodel.m; path = IdeaStockTests/MockDropBoxDatamodel.m; sourceTree = SOURCE_ROOT; };
 		D74CF0C315266DD900DDEF0F /* BulletinboardXoomlTemplate.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = BulletinboardXoomlTemplate.xml; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 		D7A53CF71522F39500183CB6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D71EA186154CFF0D00496663 /* green2 note.png */,
 				D71EA17C154BA19600496663 /* pile boardSmall.png */,
 				D71EA17D154BA19600496663 /* pile boardBig.png */,
 				D7E88ACD154B9A7B003C773F /* metallic board.png */,
@@ -459,6 +462,7 @@
 				D7E88AD4154B9A7B003C773F /* yellow board.png in Resources */,
 				D71EA17E154BA19600496663 /* pile boardSmall.png in Resources */,
 				D71EA17F154BA19600496663 /* pile boardBig.png in Resources */,
+				D71EA187154CFF0D00496663 /* green2 note.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
