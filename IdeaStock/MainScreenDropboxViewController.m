@@ -8,6 +8,7 @@
 
 #import "MainScreenDropboxViewController.h"
 #import "XoomlBulletinBoardController.h"
+#import "BulletinBoardViewController.h"
 
 @interface MainScreenDropboxViewController ()
 
@@ -16,6 +17,8 @@
 @property (strong, nonatomic) NSMutableArray * bulletinBoardViews; 
 @property (weak, nonatomic) IBOutlet UIView *prototypeView;
 @property (weak, nonatomic) IBOutlet UIScrollView *mainView;
+@property (weak, nonatomic) UIView * lastView;
+@property CGRect lastFrame;
 //Maybe change this to a more graceful way of cycling through colors
 @property int colorOrder;
 
@@ -35,6 +38,9 @@
 @synthesize mainView = _mainView;
 @synthesize queue = _queue;
 @synthesize colorOrder = _colorOrder;
+@synthesize lastView = _lastView;
+@synthesize lastFrame = _lastFrame;
+
 
 - (NSMutableArray *) bulletinBoardViews{
     
@@ -210,6 +216,8 @@
         [self.mainView setContentSize:newSize];
         
         for (UIView * view in self.bulletinBoardViews){
+            
+                       
             CGRect frame = CGRectMake(initPointX, initPointY, bulletinBoardWidth * 0.8, bulletinBoardHeight * 1.2);
             
             if(animation){
@@ -331,25 +339,49 @@
                                                    delay:0
                                                  options:UIViewAnimationCurveEaseOut
                                               animations:^{
-                                                  view.transform = CGAffineTransformScale(transform, 20, 20);
+                                                  view.transform = CGAffineTransformScale(transform, 10, 10);
                                                   view.alpha = 0;
                                               }completion:^ (BOOL finished){
-                                                  [self performSegueWithIdentifier:@"Segue" sender:self];
+                                                  [self performSegueWithIdentifier:@"Segue" sender:view];
                                               }];
                              
                          }
                      }];
 }
 
+-(void) animateReturn{
+    
+    self.lastView.alpha = 1;
+    [UIView animateWithDuration:0.65
+                          delay:0
+                        options:UIViewAnimationCurveEaseOut
+                     animations:^{
+                        self.lastView.transform = CGAffineTransformIdentity;
+                         self.lastView.frame = self.lastFrame;
+                        UILabel * viewLabel = (UILabel *)[[self.lastView subviews] objectAtIndex:0];
+
+                         viewLabel.alpha = 1;
+                        // viewLabel.transform = CGAffineTransformIdentity;
+                     }completion:nil];
+}
+
 /*---------------------------------------------------------------------------------------------------------
  Event responsers
  --------------------------------------------------------------------------------------------------------*/
 
-
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if ([segue.identifier isEqualToString:@"Segue"]){
+        
+        NSString * name = ((UILabel *)[[((UIView *) sender) subviews] objectAtIndex:0]).text;
+        ((BulletinBoardViewController *) segue.destinationViewController).bulletinBoardName = name; 
+        ((BulletinBoardViewController *) segue.destinationViewController).parent = self;
+    }
+}
 -(void) selectBulletinBoard: (UITapGestureRecognizer *) sender{
     
     UIView * touchedView = [sender view];
-    NSString * bulletinBoardName = ((UILabel *)[[touchedView subviews] objectAtIndex:0]).text;
+    self.lastView = touchedView;
+    self.lastFrame = touchedView.frame;
     [self animateSelect: touchedView];
     
     
@@ -494,6 +526,15 @@
 - (void)restClient:(DBRestClient*)client loadMetadataFailedWithError:(NSError*)error{
     
     NSLog(@"Failutre: %@",error);
+}
+
+/*---------------------------------------------------------------------------------------------------------
+ BulletinBoard Delegate Methods
+ --------------------------------------------------------------------------------------------------------*/
+
+-(void) finishedWorkingWithBulletinBoard{
+    [self dismissModalViewControllerAnimated:YES];
+    [self animateReturn];
 }
 
 /*---------------------------------------------------------------------------------------------------------

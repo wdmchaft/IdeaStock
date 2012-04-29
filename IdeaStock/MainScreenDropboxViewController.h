@@ -16,4 +16,7 @@
 //this for the main page and one instance per bulletinboard. This should make stuff easier. 
 @property (strong, readonly) DropboxDataModel * dropBox;
 
+//maybe better to make this private
+-(void) finishedWorkingWithBulletinBoard;
+
 @end
