@@ -52,6 +52,11 @@
     [self.parent finishedWorkingWithBulletinBoard];
 }
 
+-(void) mainScreenTapped:(UITapGestureRecognizer *)sender{
+    
+    NSLog(@"Double Tapped");
+}
+
 - (void)viewDidLoad
 {
     
@@ -62,7 +67,10 @@
     self.label.title = self.bulletinBoardName;
     CGSize size =  CGSizeMake(self.bulletinboardView.bounds.size.width * 5, self.bulletinboardView.bounds.size.height * 5);
    [self.bulletinboardView setContentSize:size];
-    
+
+    UITapGestureRecognizer * gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainScreenTapped:)];
+    gr.numberOfTapsRequired = 2;
+    [self.bulletinboardView addGestureRecognizer:gr];
 	// Do any additional setup after loading the view.
 }
 
