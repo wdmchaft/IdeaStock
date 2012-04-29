@@ -54,7 +54,19 @@
     [self.parent finishedWorkingWithBulletinBoard];
 }
 
--(void) mainScreenTapped:(UITapGestureRecognizer *)sender{
+-(void) notePanned: (UIPanGestureRecognizer *) sender{
+    NSLog(@"Pan Recognized");
+    if( sender.state == UIGestureRecognizerStateChanged ||
+       sender.state == UIGestureRecognizerStateEnded){
+        CGPoint translation = [sender translationInView:self.bulletinboardView];
+        UIView * pannedView = [sender view];
+        CGPoint newOrigin = CGPointMake(pannedView.frame.origin.x + translation.x,
+                                               pannedView.frame.origin.y + translation.y);
+        pannedView.frame = CGRectMake(newOrigin.x, newOrigin.y, pannedView.frame.size.width,pannedView.frame.size.height);
+        [sender setTranslation:CGPointZero inView:self.bulletinboardView];
+    }
+}
+-(void) mainScreenDoubleTapped:(UITapGestureRecognizer *)sender{
     
     CGPoint location = [sender locationOfTouch:0 inView:self.bulletinboardView];
     CGRect frame = CGRectMake(location.x, location.y, 200, 200);
@@ -63,11 +75,12 @@
     note.alpha = 0;
     [UIView animateWithDuration:0.25 animations:^{
         note.transform = CGAffineTransformScale(note.transform, 0.1, 0.1);
-//        note.frame = CGRectMake(location.x, location.y, 200, 200);
-//        note.transform = CGAffineTransformScale(note.transform, 1/16, 1/16);
         note.alpha = 1;
     }];
+    
     [self.bulletinboardView addSubview:note];
+    UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(notePanned:)];
+    [note addGestureRecognizer:gr];
 }
 
 - (void)viewDidLoad
@@ -81,7 +94,7 @@
     CGSize size =  CGSizeMake(self.bulletinboardView.bounds.size.width * 5, self.bulletinboardView.bounds.size.height * 5);
    [self.bulletinboardView setContentSize:size];
 
-    UITapGestureRecognizer * gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainScreenTapped:)];
+    UITapGestureRecognizer * gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainScreenDoubleTapped:)];
     gr.numberOfTapsRequired = 2;
     [self.bulletinboardView addGestureRecognizer:gr];
 
