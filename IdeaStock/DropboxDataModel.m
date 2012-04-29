@@ -64,12 +64,13 @@
 - (void) createMissingDirectoryForPath: (NSString *) path{
     
     NSString * directory = [path stringByDeletingLastPathComponent];
-    directory = [directory lowercaseString];
     NSString * directoryName = [directory lastPathComponent];
     NSFileManager * fileManager = [NSFileManager defaultManager];
     NSError * err;
     //check to see if directory exists
-    NSArray * rootDirectories = [fileManager contentsOfDirectoryAtPath:[directory stringByDeletingLastPathComponent] error:&err];
+    NSString * root = [directory stringByDeletingLastPathComponent];
+    NSArray * rootDirectories = [fileManager contentsOfDirectoryAtPath:root  error:&err];
+    NSLog(@"Error: %@",err );
     BOOL shouldCreateDirectory = YES;
     if (rootDirectories){
         for (NSString * dir in rootDirectories){
@@ -80,9 +81,11 @@
         }
     }
     if (shouldCreateDirectory){
-        BOOL didCreate = [fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error: &err];
+        
+
+        BOOL didCreate = [fileManager createDirectoryAtPath:directory withIntermediateDirectories:NO attributes:nil error: &err];
         if(!didCreate){
-            NSLog(@"Failed To create Directory: %@",err);
+            NSLog(@"Failed To create Direcjjjtory: %@",err);
         }
         
     }
@@ -399,7 +402,7 @@ loadMetadataFailedWithError:(NSError *)error {
 }
 
 - (void)restClient:(DBRestClient*)client createFolderFailedWithError:(NSError*)error{
-    NSLog(@"Failed to create Folder: %@", error);
+    NSLog(@"Failed to create Folder:: %@", error);
     self.restClient.delegate = self.tempDel;
 }
 

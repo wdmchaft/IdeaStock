@@ -16,7 +16,11 @@
 
 + (NSString *) getPathForBulletinBoardWithName:(NSString *) bulletinBoardName{
     
+    
     NSString * pathExtension = [[bulletinBoardName stringByAppendingString:@"/"] stringByAppendingString:BULLETINBOARD_XOOML_FILE_NAME];
+    pathExtension = [pathExtension lowercaseString];
+    NSString * tempDir = NSTemporaryDirectory();
+    NSLog(@"Temp Dir Is: %@", tempDir);
     NSString *path = [NSTemporaryDirectory() stringByAppendingString:pathExtension];
     return path;
 

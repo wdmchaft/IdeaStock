@@ -23,7 +23,7 @@
 
 /*--------------------------------------------------------------------------------------
  Synthesizers
-----------------------------------------------------------------------------------------*/
+ ----------------------------------------------------------------------------------------*/
 
 
 @implementation MainScreenDropboxViewController
@@ -307,11 +307,39 @@
 }
 
 -(void) animateSelect: (UIView *) view{
-
+    CGFloat middleScreenX = self.mainView.bounds.origin.x + self.mainView.bounds.size.width/2 - ((UIView *)self.bulletinBoardViews.lastObject).bounds.size.width/2;
+    CGFloat middleScreenY = self.mainView.bounds.origin.y + self.mainView.bounds.size.height/2 - ((UIView *)self.bulletinBoardViews.lastObject).bounds.size.height/2;
+    [UIView animateWithDuration:0.25
+                          delay:0
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         ((UIView *)[view.subviews lastObject]).alpha = 0;
+                     }completion:nil];
+    
+    [UIView animateWithDuration:0.25 
+                          delay:0 
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         [view setFrame:CGRectMake(middleScreenX, middleScreenY, view.frame.size.width, view.frame.size.height)];
+                     }completion:^(BOOL finished){
+                         if(finished){
+                             CGAffineTransform transform = view.transform;
+                             [UIView animateWithDuration:0.25
+                                                   delay:0
+                                                 options:UIViewAnimationCurveEaseOut
+                                              animations:^{
+                                                  view.transform = CGAffineTransformScale(transform, 20, 20);
+                                                  view.alpha = 0;
+                                              }completion:^ (BOOL finished){
+                                                  [self performSegueWithIdentifier:@"Segue" sender:self];
+                                              }];
+                             
+                         }
+                     }];
 }
 
 /*---------------------------------------------------------------------------------------------------------
-Event responsers
+ Event responsers
  --------------------------------------------------------------------------------------------------------*/
 
 
@@ -319,7 +347,9 @@ Event responsers
     
     UIView * touchedView = [sender view];
     NSString * bulletinBoardName = ((UILabel *)[[touchedView subviews] objectAtIndex:0]).text;
-    [self animateSelect: sender];
+    [self animateSelect: touchedView];
+    
+    
 }
 
 -(void) layoutBulletinBoards{
