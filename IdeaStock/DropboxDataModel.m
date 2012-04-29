@@ -70,7 +70,6 @@
     //check to see if directory exists
     NSString * root = [directory stringByDeletingLastPathComponent];
     NSArray * rootDirectories = [fileManager contentsOfDirectoryAtPath:root  error:&err];
-    NSLog(@"Error: %@",err );
     BOOL shouldCreateDirectory = YES;
     if (rootDirectories){
         for (NSString * dir in rootDirectories){

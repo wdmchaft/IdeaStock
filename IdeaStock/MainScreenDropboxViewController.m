@@ -124,7 +124,10 @@
     
     BOOL isFirst = YES;
     
-    if ( [UIDevice currentDevice].orientation ==  UIDeviceOrientationPortrait || [UIDevice currentDevice].orientation == UIDeviceOrientationPortraitUpsideDown){
+    if ( [UIDevice currentDevice].orientation ==  UIDeviceOrientationPortrait 
+        || [UIDevice currentDevice].orientation == UIDeviceOrientationPortraitUpsideDown 
+        || [UIDevice currentDevice].orientation == UIDeviceOrientationFaceUp 
+        || [UIDevice currentDevice].orientation ==  UIDeviceOrientationUnknown){
         int numPages = self.bulletinBoardViews.count / (PORTRAIT_ROW_COUNT * PORTRAIT_COL_COUNT);
         int remainder = self.bulletinBoardViews.count % (PORTRAIT_COL_COUNT * PORTRAIT_ROW_COUNT);
         if ( remainder ==  0 ) numPages --;
