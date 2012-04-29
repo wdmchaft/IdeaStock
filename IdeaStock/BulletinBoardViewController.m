@@ -54,8 +54,25 @@
     [self.parent finishedWorkingWithBulletinBoard];
 }
 
+-(void) notePinched: (UIPinchGestureRecognizer *) sender{
+    
+    if (sender.state == UIGestureRecognizerStateChanged ||
+        sender.state == UIGestureRecognizerStateEnded){
+        CGFloat scale = sender.scale;
+        if ([sender.view isKindOfClass: [NoteView class]]){
+            NSLog(@"Note View Pinched");
+            NoteView * noteView = (NoteView *) sender.view;
+            noteView.frame = CGRectMake(noteView.frame.origin.x,
+                                        noteView.frame.origin.y, 
+                                        noteView.frame.size.width * scale,
+                                        noteView.frame.size.height * scale);
+            [noteView scale:scale];
+        }
+        
+        sender.scale = 1 ;
+    }
+}
 -(void) notePanned: (UIPanGestureRecognizer *) sender{
-    NSLog(@"Pan Recognized");
     if( sender.state == UIGestureRecognizerStateChanged ||
        sender.state == UIGestureRecognizerStateEnded){
         CGPoint translation = [sender translationInView:self.bulletinboardView];
@@ -73,6 +90,7 @@
     UIView * note = [[NoteView alloc] initWithFrame:frame];
     note.transform = CGAffineTransformScale(note.transform, 10, 10);
     note.alpha = 0;
+
     [UIView animateWithDuration:0.25 animations:^{
         note.transform = CGAffineTransformScale(note.transform, 0.1, 0.1);
         note.alpha = 1;
@@ -80,7 +98,9 @@
     
     [self.bulletinboardView addSubview:note];
     UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(notePanned:)];
+    UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(notePinched:)];
     [note addGestureRecognizer:gr];
+    [note addGestureRecognizer:pgr];
 }
 
 - (void)viewDidLoad

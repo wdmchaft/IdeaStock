@@ -10,4 +10,5 @@
 
 @interface NoteView : UIView
 
+-(void) scale:(CGFloat) scaleFactor;
 @end
