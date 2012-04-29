@@ -57,6 +57,7 @@
 		D7E88AD3154B9A7B003C773F /* red board.png in Resources */ = {isa = PBXBuildFile; fileRef = D7E88ACF154B9A7B003C773F /* red board.png */; };
 		D7E88AD4154B9A7B003C773F /* yellow board.png in Resources */ = {isa = PBXBuildFile; fileRef = D7E88AD0154B9A7B003C773F /* yellow board.png */; };
 		D7EC3C65154B7BD300230C0C /* green board.png in Resources */ = {isa = PBXBuildFile; fileRef = D7EC3C64154B7BD300230C0C /* green board.png */; };
+		D7F1FF2C154D1A3300D07B58 /* NoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7F1FF2B154D1A3300D07B58 /* NoteView.m */; };
 		D7F85EB41528D80300F16D25 /* XoomlBulletinBoardController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7F85EB31528D80300F16D25 /* XoomlBulletinBoardController.m */; };
 		D7FAD4301534DBDE0072E35B /* DropboxAssociativeBulletinBoardTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FAD42F1534DBDE0072E35B /* DropboxAssociativeBulletinBoardTests.m */; };
 /* End PBXBuildFile section */
@@ -150,6 +151,8 @@
 		D7E88ACF154B9A7B003C773F /* red board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red board.png"; sourceTree = "<group>"; };
 		D7E88AD0154B9A7B003C773F /* yellow board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yellow board.png"; sourceTree = "<group>"; };
 		D7EC3C64154B7BD300230C0C /* green board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green board.png"; sourceTree = "<group>"; };
+		D7F1FF2A154D1A3300D07B58 /* NoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NoteView.h; path = ../NoteView.h; sourceTree = "<group>"; };
+		D7F1FF2B154D1A3300D07B58 /* NoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NoteView.m; path = ../NoteView.m; sourceTree = "<group>"; };
 		D7F85EAD1528CF7800F16D25 /* BulletinBoardDatasource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoardDatasource.h; sourceTree = "<group>"; };
 		D7F85EAE1528D29E00F16D25 /* BulletinBoardDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoardDelegate.h; sourceTree = "<group>"; };
 		D7F85EB21528D80300F16D25 /* XoomlBulletinBoardController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XoomlBulletinBoardController.h; path = ../XoomlBulletinBoardController.h; sourceTree = "<group>"; };
@@ -361,6 +364,8 @@
 		D7BF466315472E0D00F06412 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				D7F1FF2A154D1A3300D07B58 /* NoteView.h */,
+				D7F1FF2B154D1A3300D07B58 /* NoteView.m */,
 				D7A53D021522F39500183CB6 /* dataModelTestBoard.storyboard */,
 				D7BF465C154728DD00F06412 /* MainStoryBoard.storyboard */,
 				D7A53D051522F39500183CB6 /* IdeaStockViewController.h */,
@@ -516,6 +521,7 @@
 				D7DEF2C41530D37800D13CF4 /* FileSystemHelper.m in Sources */,
 				D7BF46661547303700F06412 /* MainScreenDropboxViewController.m in Sources */,
 				D71EA185154CD3FB00496663 /* BulletinBoardViewController.m in Sources */,
+				D7F1FF2C154D1A3300D07B58 /* NoteView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

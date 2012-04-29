@@ -8,6 +8,7 @@
 
 #import "BulletinBoardViewController.h"
 #import "DropBoxAssociativeBulletinBoard.h"
+#import "NoteView.h"
 
 @interface BulletinBoardViewController ()
 
@@ -22,6 +23,7 @@
 @synthesize bulletinboardView = _bulletinboardView; 
 @synthesize parent = _parent;
 @synthesize board = _board;
+
 
 @synthesize bulletinBoardName = _bulletinBoardName;
 
@@ -54,7 +56,18 @@
 
 -(void) mainScreenTapped:(UITapGestureRecognizer *)sender{
     
-    NSLog(@"Double Tapped");
+    CGPoint location = [sender locationOfTouch:0 inView:self.bulletinboardView];
+    CGRect frame = CGRectMake(location.x, location.y, 200, 200);
+    UIView * note = [[NoteView alloc] initWithFrame:frame];
+    note.transform = CGAffineTransformScale(note.transform, 10, 10);
+    note.alpha = 0;
+    [UIView animateWithDuration:0.25 animations:^{
+        note.transform = CGAffineTransformScale(note.transform, 0.1, 0.1);
+//        note.frame = CGRectMake(location.x, location.y, 200, 200);
+//        note.transform = CGAffineTransformScale(note.transform, 1/16, 1/16);
+        note.alpha = 1;
+    }];
+    [self.bulletinboardView addSubview:note];
 }
 
 - (void)viewDidLoad
@@ -71,6 +84,7 @@
     UITapGestureRecognizer * gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainScreenTapped:)];
     gr.numberOfTapsRequired = 2;
     [self.bulletinboardView addGestureRecognizer:gr];
+
 	// Do any additional setup after loading the view.
 }
 
