@@ -15,6 +15,9 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *label;
 @property (weak, nonatomic) IBOutlet UIScrollView *bulletinboardView;
 @property (strong, nonatomic) DropBoxAssociativeBulletinBoard * board;
+@property (weak, nonatomic) UIView * layerView;
+
+
 
 @end
 
@@ -23,6 +26,7 @@
 @synthesize bulletinboardView = _bulletinboardView; 
 @synthesize parent = _parent;
 @synthesize board = _board;
+@synthesize layerView = _layerView;
 
 
 @synthesize bulletinBoardName = _bulletinBoardName;
@@ -60,7 +64,6 @@
         sender.state == UIGestureRecognizerStateEnded){
         CGFloat scale = sender.scale;
         if ([sender.view isKindOfClass: [NoteView class]]){
-            NSLog(@"Note View Pinched");
             NoteView * noteView = (NoteView *) sender.view;
             noteView.frame = CGRectMake(noteView.frame.origin.x,
                                         noteView.frame.origin.y, 
@@ -72,20 +75,21 @@
         sender.scale = 1 ;
     }
 }
+
 -(void) notePanned: (UIPanGestureRecognizer *) sender{
     if( sender.state == UIGestureRecognizerStateChanged ||
        sender.state == UIGestureRecognizerStateEnded){
-        CGPoint translation = [sender translationInView:self.bulletinboardView];
+        CGPoint translation = [sender translationInView:self.layerView];
         UIView * pannedView = [sender view];
         CGPoint newOrigin = CGPointMake(pannedView.frame.origin.x + translation.x,
                                                pannedView.frame.origin.y + translation.y);
         pannedView.frame = CGRectMake(newOrigin.x, newOrigin.y, pannedView.frame.size.width,pannedView.frame.size.height);
-        [sender setTranslation:CGPointZero inView:self.bulletinboardView];
+        [sender setTranslation:CGPointZero inView:self.layerView];
     }
 }
 -(void) mainScreenDoubleTapped:(UITapGestureRecognizer *)sender{
     
-    CGPoint location = [sender locationOfTouch:0 inView:self.bulletinboardView];
+    CGPoint location = [sender locationOfTouch:0 inView:self.layerView];
     CGRect frame = CGRectMake(location.x, location.y, 200, 200);
     UIView * note = [[NoteView alloc] initWithFrame:frame];
     note.transform = CGAffineTransformScale(note.transform, 10, 10);
@@ -96,11 +100,12 @@
         note.alpha = 1;
     }];
     
-    [self.bulletinboardView addSubview:note];
+    [self.layerView addSubview:note];
     UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(notePanned:)];
     UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(notePinched:)];
     [note addGestureRecognizer:gr];
     [note addGestureRecognizer:pgr];
+    
 }
 
 - (void)viewDidLoad
@@ -113,11 +118,19 @@
     self.label.title = self.bulletinBoardName;
     CGSize size =  CGSizeMake(self.bulletinboardView.bounds.size.width * 5, self.bulletinboardView.bounds.size.height * 5);
    [self.bulletinboardView setContentSize:size];
-
+    UIView * layerView = [[UIView alloc] initWithFrame:CGRectMake(self.bulletinboardView.bounds.origin.x,
+                                                                  self.bulletinboardView.bounds.origin.y,
+                                                                  size.width,
+                                                                  size.height)];
+    self.layerView = layerView;
+    [self.bulletinboardView addSubview:layerView];
     UITapGestureRecognizer * gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainScreenDoubleTapped:)];
     gr.numberOfTapsRequired = 2;
+    
     [self.bulletinboardView addGestureRecognizer:gr];
-
+    self.bulletinboardView.delegate = self;
+//    self.bulletinboardView.minimumZoomScale = 0.1;
+  //  self.bulletinboardView.minimumZoomScale = 10;
 	// Do any additional setup after loading the view.
 }
 
@@ -134,5 +147,11 @@
 {
 	return YES;
 }
+
+- (UIView *) viewForZoomingInScrollView:(UIScrollView *)scrollView{
+    return self.layerView;
+}
+
+
 
 @end

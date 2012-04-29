@@ -80,8 +80,8 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="yKh-N0-ML3"/>
                                 </items>
                             </toolbar>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="QXW-F8-5QD">
-                                <rect key="frame" x="0.0" y="44" width="768" height="968"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" minimumZoomScale="0.20000000000000001" maximumZoomScale="2" id="QXW-F8-5QD">
+                                <rect key="frame" x="0.0" y="44" width="768" height="960"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </scrollView>
                         </subviews>
