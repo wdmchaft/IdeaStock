@@ -29,6 +29,7 @@
 @synthesize layerView = _layerView;
 
 
+
 @synthesize bulletinBoardName = _bulletinBoardName;
 
 - (DropBoxAssociativeBulletinBoard *) board{
@@ -77,8 +78,10 @@
 }
 
 -(void) notePanned: (UIPanGestureRecognizer *) sender{
+    NSLog(@"Panning the note");
     if( sender.state == UIGestureRecognizerStateChanged ||
        sender.state == UIGestureRecognizerStateEnded){
+        NSLog(@"Panning the note inside if");
         CGPoint translation = [sender translationInView:self.layerView];
         UIView * pannedView = [sender view];
         CGPoint newOrigin = CGPointMake(pannedView.frame.origin.x + translation.x,
@@ -116,9 +119,9 @@
     
     [super viewDidLoad];
     self.label.title = self.bulletinBoardName;
-    CGSize size =  CGSizeMake(self.bulletinboardView.bounds.size.width * 5, self.bulletinboardView.bounds.size.height * 5);
+    CGSize size =  CGSizeMake(self.bulletinboardView.bounds.size.width, self.bulletinboardView.bounds.size.height);
    [self.bulletinboardView setContentSize:size];
-    UIView * layerView = [[UIView alloc] initWithFrame:CGRectMake(self.bulletinboardView.bounds.origin.x,
+    UIScrollView * layerView = [[UIScrollView alloc] initWithFrame:CGRectMake(self.bulletinboardView.bounds.origin.x,
                                                                   self.bulletinboardView.bounds.origin.y,
                                                                   size.width,
                                                                   size.height)];
@@ -148,10 +151,12 @@
 	return YES;
 }
 
+/*
+ Unlimited space is disable now
 - (UIView *) viewForZoomingInScrollView:(UIScrollView *)scrollView{
     return self.layerView;
 }
-
+*/
 
 
 @end
