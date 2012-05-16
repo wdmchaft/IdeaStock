@@ -11,4 +11,5 @@
 @interface NoteView : UIView
 
 -(void) scale:(CGFloat) scaleFactor;
+@property (strong,nonatomic) NSString * text;
 @end
