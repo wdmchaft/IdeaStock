@@ -42,13 +42,14 @@
     if (self){
         self.mainView = mainView;
         self.views = views;
-        UIImage * image = [UIImage imageNamed:@"StackedGreenNote.png"];
+        UIImage * image = [UIImage imageNamed:@"stackedGreenNote.png"];
         UIImageView * imageView = [[UIImageView alloc]initWithImage:image];
         imageView.frame = self.bounds;
         CGRect textFrame = CGRectMake(self.bounds.origin.x + self.bounds.size.width * STARTING_POS_OFFSET_X ,
                                       self.bounds.origin.y + self.bounds.size.height * STARTING_POS_OFFSET_Y,
                                       self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
         UITextView * textView = [[UITextView alloc] initWithFrame:textFrame];
+        textView.editable = NO;
         [self addSubview:imageView];
         [self addSubview:textView];
         self.text= mainView.text;

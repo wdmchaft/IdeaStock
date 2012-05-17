@@ -76,9 +76,9 @@
         if ([sender.view conformsToProtocol: @protocol(BulletinBoardObject)]){
             UIView <BulletinBoardObject> * view = (NoteView *) sender.view;
             view.frame = CGRectMake(view.frame.origin.x,
-                                        view.frame.origin.y, 
-                                        view.frame.size.width * scale,
-                                        view.frame.size.height * scale);
+                                    view.frame.origin.y, 
+                                    view.frame.size.width * scale,
+                                    view.frame.size.height * scale);
             [view scale:scale];
         }
         
@@ -89,9 +89,10 @@
 - (NSArray *) checkForOverlapWithView: (UIView *) senderView{
     NSMutableArray * ans = [[NSMutableArray alloc] init];
     for (UIView * view in self.bulletinboardView.subviews){
-        if ([view isKindOfClass: [NoteView class]] && view != senderView){
+        if (view != senderView && [view conformsToProtocol:@protocol(BulletinBoardObject)]){
             if (CGRectIntersectsRect(view.frame,senderView.frame)){
                 [ans addObject:view];
+                
             }
         }
     }
@@ -103,38 +104,49 @@
 #define STACKING_SCALING_WIDTH 1.1
 #define STACKING_SCALING_HEIGHT 1.2
 
--(void) stackNotes: (NSArray *) items into: (UIView *) mainNote{
-     __block BOOL first = YES;
+-(void) stackNotes: (NSArray *) items into: (UIView *) mainView{
+    __block BOOL first = YES;
+    
+    NSLog(@"item Count: %d", [items count]);
     for (UIView * view in items){
-        if (view != mainNote){
+        if (view != mainView){
             [UIView animateWithDuration:0.5
                                   delay:0 options:UIViewAnimationCurveEaseOut
-                             animations:^{[view setFrame:mainNote.frame];}
+                             animations:^{[view setFrame:mainView.frame];}
                              completion:^(BOOL finished){
                                  [view removeFromSuperview];
                                  if (first){
-                                     CGRect stackFrame = CGRectMake(mainNote.frame.origin.x - ((STACKING_SCALING_WIDTH -1)/4) * mainNote.frame.origin.x,
-                                                                    mainNote.frame.origin.y - ((STACKING_SCALING_HEIGHT -1)/4) * mainNote.frame.origin.y,
-                                                                    mainNote.frame.size.width * STACKING_SCALING_WIDTH,
-                                                                    mainNote.frame.size.height * STACKING_SCALING_HEIGHT );
-                                     StackView * stack = [[StackView alloc] initWithViews:items
-                                                                          andMainView:(NoteView *)mainNote
-                                                                            withFrame:
-                                                      stackFrame];
-                                     [UIView animateWithDuration:0.5 animations:^{mainNote.alpha = 0;}];
-                                     [mainNote removeFromSuperview];
-                                     mainNote.alpha = 1;
+                                     CGRect stackFrame;
+                                     if ([mainView isKindOfClass:[NoteView class]]){
+                                      stackFrame = CGRectMake(mainView.frame.origin.x - ((STACKING_SCALING_WIDTH -1)/4) * mainView.frame.origin.x,
+                                                                    mainView.frame.origin.y - ((STACKING_SCALING_HEIGHT -1)/4) * mainView.frame.origin.y,
+                                                                    mainView.frame.size.width * STACKING_SCALING_WIDTH,
+                                                                    mainView.frame.size.height * STACKING_SCALING_HEIGHT );
+                                     }
+                                     else if ([mainView isKindOfClass:[StackView class]]){
+                                         stackFrame = mainView.frame;
+                                     }
+                                     
+                                     NSArray * allNotes = [self getAllNormalNotesInViews:items];
+                                     StackView * stack = [[StackView alloc] initWithViews:allNotes
+                                                                              andMainView:(NoteView *)mainView
+                                                                                withFrame:
+                                                          stackFrame];
+                                     [UIView animateWithDuration:0.5 animations:^{mainView.alpha = 0;}];
+                                     [mainView removeFromSuperview];
+                                     mainView.alpha = 1;
                                      stack.alpha =0;
                                      UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectPanned:)];
                                      UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(objectPinched:)];
                                      [stack addGestureRecognizer:gr];
                                      [stack addGestureRecognizer:pgr];
+                                     NSLog(@"items in stacking: %d", [stack.views count]);
                                      [self.bulletinboardView addSubview:stack];
                                      [UIView animateWithDuration:0.5 animations:^{stack.alpha = 1;}];
                                      first = NO;
-                                 
+                                     
                                  }
-                         }];
+                             }];
         }
     }
     
@@ -143,6 +155,22 @@
     
     
 }
+
+
+- (NSArray *) getAllNormalNotesInViews: (NSArray *) views{
+    NSMutableArray * ans = [[NSMutableArray alloc] init];
+    for (UIView * view in views){
+        if ([view isKindOfClass: [NoteView class]]){
+            [ans addObject:view];
+        }
+        else if ([view isKindOfClass:[StackView class]]){
+            [view removeFromSuperview];
+            [ans addObjectsFromArray:((StackView *) view).views];
+        }
+    }
+    return ans;
+}
+
 #define CHECK_TIME 0
 -(void) objectPanned: (UIPanGestureRecognizer *) sender{
     if( sender.state == UIGestureRecognizerStateChanged ||
@@ -158,7 +186,6 @@
         if (self.panCounter > CHECK_TIME ){
             self.panCounter = 0;
             NSArray * intersectingViews = [self checkForOverlapWithView:sender.view];
-            
             if ( [intersectingViews count] != [self.intersectingViews count] || [intersectingViews count] == 1){
                 for (UIView * view in self.intersectingViews){
                     view.alpha = 1;
@@ -172,7 +199,7 @@
             }
             self.intersectingViews = intersectingViews;   
         }
-
+        
     }
     
     if (sender.state == UIGestureRecognizerStateEnded){
@@ -218,7 +245,7 @@
     self.label.title = self.bulletinBoardName;
     CGSize size =  CGSizeMake(self.bulletinboardView.bounds.size.width, self.bulletinboardView.bounds.size.height);
     [self.bulletinboardView setContentSize:size];
-
+    
     UITapGestureRecognizer * gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainScreenDoubleTapped:)];
     gr.numberOfTapsRequired = 2;
     
