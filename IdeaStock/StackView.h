@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "NoteView.h"
 
-@interface StackView : UIView
+@interface StackView : UIView <BulletinBoardObject>
 
 @property (weak,nonatomic) NSArray * views;
 -(id) initWithViews: (NSArray *) views 

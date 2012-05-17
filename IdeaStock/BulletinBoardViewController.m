@@ -68,18 +68,18 @@
     [self.parent finishedWorkingWithBulletinBoard];
 }
 
--(void) notePinched: (UIPinchGestureRecognizer *) sender{
+-(void) objectPinched: (UIPinchGestureRecognizer *) sender{
     
     if (sender.state == UIGestureRecognizerStateChanged ||
         sender.state == UIGestureRecognizerStateEnded){
         CGFloat scale = sender.scale;
-        if ([sender.view isKindOfClass: [NoteView class]]){
-            NoteView * noteView = (NoteView *) sender.view;
-            noteView.frame = CGRectMake(noteView.frame.origin.x,
-                                        noteView.frame.origin.y, 
-                                        noteView.frame.size.width * scale,
-                                        noteView.frame.size.height * scale);
-            [noteView scale:scale];
+        if ([sender.view conformsToProtocol: @protocol(BulletinBoardObject)]){
+            UIView <BulletinBoardObject> * view = (NoteView *) sender.view;
+            view.frame = CGRectMake(view.frame.origin.x,
+                                        view.frame.origin.y, 
+                                        view.frame.size.width * scale,
+                                        view.frame.size.height * scale);
+            [view scale:scale];
         }
         
         sender.scale = 1 ;
@@ -125,6 +125,10 @@
                                      [mainNote removeFromSuperview];
                                      mainNote.alpha = 1;
                                      stack.alpha =0;
+                                     UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectPanned:)];
+                                     UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(objectPinched:)];
+                                     [stack addGestureRecognizer:gr];
+                                     [stack addGestureRecognizer:pgr];
                                      [self.bulletinboardView addSubview:stack];
                                      [UIView animateWithDuration:0.5 animations:^{stack.alpha = 1;}];
                                      first = NO;
@@ -140,10 +144,16 @@
     
 }
 #define CHECK_TIME 0
--(void) notePanned: (UIPanGestureRecognizer *) sender{
+-(void) objectPanned: (UIPanGestureRecognizer *) sender{
     if( sender.state == UIGestureRecognizerStateChanged ||
        sender.state == UIGestureRecognizerStateEnded){
         CGPoint translation = [sender translationInView:self.bulletinboardView];
+        UIView * pannedView = [sender view];
+        CGPoint newOrigin = CGPointMake(pannedView.frame.origin.x + translation.x,
+                                        pannedView.frame.origin.y + translation.y);
+        pannedView.frame = CGRectMake(newOrigin.x, newOrigin.y, pannedView.frame.size.width,pannedView.frame.size.height);
+        [sender setTranslation:CGPointZero inView:self.bulletinboardView];
+        
         self.panCounter++;
         if (self.panCounter > CHECK_TIME ){
             self.panCounter = 0;
@@ -162,11 +172,7 @@
             }
             self.intersectingViews = intersectingViews;   
         }
-        UIView * pannedView = [sender view];
-        CGPoint newOrigin = CGPointMake(pannedView.frame.origin.x + translation.x,
-                                        pannedView.frame.origin.y + translation.y);
-        pannedView.frame = CGRectMake(newOrigin.x, newOrigin.y, pannedView.frame.size.width,pannedView.frame.size.height);
-        [sender setTranslation:CGPointZero inView:self.bulletinboardView];
+
     }
     
     if (sender.state == UIGestureRecognizerStateEnded){
@@ -195,8 +201,8 @@
     }];
     
     [self.bulletinboardView addSubview:note];
-    UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(notePanned:)];
-    UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(notePinched:)];
+    UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectPanned:)];
+    UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(objectPinched:)];
     [note addGestureRecognizer:gr];
     [note addGestureRecognizer:pgr];
     

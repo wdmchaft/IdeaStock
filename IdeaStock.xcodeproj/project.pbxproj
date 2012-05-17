@@ -153,6 +153,7 @@
 		D7E44BED15643AA90080EF71 /* StackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StackView.m; sourceTree = "<group>"; };
 		D7E44BF0156446CE0080EF71 /* GreenNoteStack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GreenNoteStack.png; sourceTree = "<group>"; };
 		D7E44BF21564607B0080EF71 /* stackedGreenNote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stackedGreenNote.png; sourceTree = "<group>"; };
+		D7E44BF7156476360080EF71 /* BulletinBoardObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BulletinBoardObject.h; path = ../BulletinBoardObject.h; sourceTree = "<group>"; };
 		D7E88ACA154B8FFA003C773F /* blue board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue board.png"; sourceTree = "<group>"; };
 		D7E88ACD154B9A7B003C773F /* metallic board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metallic board.png"; sourceTree = "<group>"; };
 		D7E88ACE154B9A7B003C773F /* lightOrange board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lightOrange board.png"; sourceTree = "<group>"; };
@@ -376,6 +377,7 @@
 		D7BF466315472E0D00F06412 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				D7E44BF7156476360080EF71 /* BulletinBoardObject.h */,
 				D7F1FF2A154D1A3300D07B58 /* NoteView.h */,
 				D7F1FF2B154D1A3300D07B58 /* NoteView.m */,
 				D7A53D021522F39500183CB6 /* dataModelTestBoard.storyboard */,

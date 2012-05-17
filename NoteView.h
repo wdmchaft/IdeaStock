@@ -7,9 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BulletinBoardObject.h"
+@interface NoteView : UIView <BulletinBoardObject>
 
-@interface NoteView : UIView
-
--(void) scale:(CGFloat) scaleFactor;
-@property (strong,nonatomic) NSString * text;
 @end
