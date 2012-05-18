@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "MainScreenDropboxViewController.h"
+#import "StackViewController.h"
 
-@interface BulletinBoardViewController : UIViewController <UIScrollViewDelegate>
-
+@interface BulletinBoardViewController : UIViewController <UIScrollViewDelegate,StackViewDelegate>
 @property (strong,nonatomic) NSString * bulletinBoardName;
 @property (weak,nonatomic) MainScreenDropboxViewController * parent;
 

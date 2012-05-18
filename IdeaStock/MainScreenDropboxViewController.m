@@ -342,7 +342,7 @@
                                                   view.transform = CGAffineTransformScale(transform, 10, 10);
                                                   view.alpha = 0;
                                               }completion:^ (BOOL finished){
-                                                  [self performSegueWithIdentifier:@"Segue" sender:view];
+                                                  [self performSegueWithIdentifier:@"bulletinBoardSegue" sender:view];
                                               }];
                              
                          }
@@ -370,7 +370,7 @@
  --------------------------------------------------------------------------------------------------------*/
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    if ([segue.identifier isEqualToString:@"Segue"]){
+    if ([segue.identifier isEqualToString:@"bulletinBoardSegue"]){
         
         NSString * name = ((UILabel *)[[((UIView *) sender) subviews] objectAtIndex:0]).text;
         ((BulletinBoardViewController *) segue.destinationViewController).bulletinBoardName = name; 
@@ -466,7 +466,7 @@
     
     if (![[DBSession sharedSession] isLinked]) {
         [[DBSession sharedSession] link];
-    }
+    } 
     
     
     [self.mainView setContentSize:self.mainView.bounds.size];

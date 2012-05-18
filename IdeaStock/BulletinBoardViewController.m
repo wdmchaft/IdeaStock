@@ -10,6 +10,7 @@
 #import "DropBoxAssociativeBulletinBoard.h"
 #import "NoteView.h"
 #import "StackView.h"
+#import "StackViewController.h"
 
 @interface BulletinBoardViewController ()
 
@@ -100,6 +101,18 @@
     return ans;
 }
 
+-(void) stackTapped: (UIPanGestureRecognizer *) sender{
+    StackViewController * stackViewer = [self.storyboard instantiateViewControllerWithIdentifier:@"StackView"];
+    stackViewer.delegate = self;
+    stackViewer.notes = ((StackView *) sender.view).views;
+    [self presentModalViewController:stackViewer animated:YES];
+}
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    ((StackViewController *) segue.destinationViewController).delegate = self;
+    NSArray * notes = ((StackView *) sender).views;
+    ((StackViewController *) segue.destinationViewController).notes = notes;
+}
 
 #define STACKING_SCALING_WIDTH 1.1
 #define STACKING_SCALING_HEIGHT 1.2
@@ -107,7 +120,6 @@
 -(void) stackNotes: (NSArray *) items into: (UIView *) mainView{
     __block BOOL first = YES;
     
-    NSLog(@"item Count: %d", [items count]);
     for (UIView * view in items){
         if (view != mainView){
             [UIView animateWithDuration:0.5
@@ -138,9 +150,10 @@
                                      stack.alpha =0;
                                      UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectPanned:)];
                                      UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(objectPinched:)];
+                                     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(stackTapped:)];
                                      [stack addGestureRecognizer:gr];
                                      [stack addGestureRecognizer:pgr];
-                                     NSLog(@"items in stacking: %d", [stack.views count]);
+                                     [stack addGestureRecognizer:tgr];
                                      [self.bulletinboardView addSubview:stack];
                                      [UIView animateWithDuration:0.5 animations:^{stack.alpha = 1;}];
                                      first = NO;
@@ -251,9 +264,6 @@
     
     [self.bulletinboardView addGestureRecognizer:gr];
     self.bulletinboardView.delegate = self;
-    //    self.bulletinboardView.minimumZoomScale = 0.1;
-    //  self.bulletinboardView.minimumZoomScale = 10;
-	// Do any additional setup after loading the view.
 }
 
 - (void)viewDidUnload
@@ -270,12 +280,16 @@
 	return YES;
 }
 
-/*
- Unlimited space is disable now
- - (UIView *) viewForZoomingInScrollView:(UIScrollView *)scrollView{
- return self.layerView;
- }
- */
+
+
+
+/*----------------
+ Stack View Delegate Methods
+ -------------------*/
+
+-(void) returnedstackViewController:(StackViewController *)sender{
+    [self dismissModalViewControllerAnimated:YES];
+}
 
 
 @end

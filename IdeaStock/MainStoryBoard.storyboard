@@ -35,7 +35,7 @@
                                     <barButtonItem title="BulletinBoards" style="plain" id="SvH-0t-LUt"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="OPE-pZ-Jrg">
                                         <connections>
-                                            <segue destination="9HL-37-GHp" kind="modal" identifier="Segue" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="eq8-da-VHb"/>
+                                            <segue destination="9HL-37-GHp" kind="modal" identifier="bulletinBoardSegue" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="eq8-da-VHb"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Select" id="fbB-rF-pm9"/>
@@ -96,6 +96,46 @@
             </objects>
             <point key="canvasLocation" x="767" y="-1003"/>
         </scene>
+        <!--Stack View Controller-->
+        <scene sceneID="bwM-MX-fXe">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FMP-3d-JA3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="StackView" modalPresentationStyle="formSheet" id="roQ-DY-ZM6" customClass="StackViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Y8o-xz-LjN">
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="zTy-aI-wC0">
+                                <rect key="frame" x="0.0" y="0.0" width="540" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="back" id="Nkp-pn-qUR">
+                                        <connections>
+                                            <action selector="backPressed:" destination="roQ-DY-ZM6" id="Zk0-xD-RIM"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" id="jWv-aN-rSC">
+                                <rect key="frame" x="0.0" y="42" width="540" height="578"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="900" height="540"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="stackView" destination="jWv-aN-rSC" id="e30-Gj-JFp"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="1872" y="-1065"/>
+        </scene>
     </scenes>
     <resources>
         <image name="trashcan.png" width="86" height="87"/>
@@ -113,6 +153,12 @@
             <relationships>
                 <relationship kind="outlet" name="mainView" candidateClass="UIScrollView"/>
                 <relationship kind="outlet" name="prototypeView" candidateClass="UIView"/>
+            </relationships>
+        </class>
+        <class className="StackViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StackViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="stackView" candidateClass="UIScrollView"/>
             </relationships>
         </class>
     </classes>
