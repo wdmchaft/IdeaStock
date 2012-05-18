@@ -618,19 +618,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "NoteView.m"
-         timestampString = "359067443.202282"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "66"
-         endingLineNumber = "66"
-         landmarkName = "-initWithFrame:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
          timestampString = "359064419.169845"
          startingColumnNumber = "9223372036854775807"
@@ -691,6 +678,19 @@
          endingLineNumber = "104"
          landmarkName = "-stackTapped:"
          landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "StackViewController.h"
+         timestampString = "359076909.09513"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "25"
+         endingLineNumber = "25"
+         landmarkName = "@protocol StackViewDelegate"
+         landmarkType = "2">
       </FileBreakpoint>
    </FileBreakpoints>
    <ExceptionBreakpoints>

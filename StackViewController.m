@@ -41,12 +41,7 @@
 -(void) notePressed: (UIGestureRecognizer *) sender{
     
     ((NoteView *) sender.view).highlighted = !((NoteView *) sender.view).highlighted;
-    if (((NoteView *) sender.view).highlighted){
-        [((NoteView *) sender.view) scale:1.1];
-    }
-    else {
-        [((NoteView *) sender.view) scale:1/1.1];
-    }
+    
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -84,10 +79,10 @@
     
     float pageWidth = self.stackView.frame.size.width;
     float pageHeight = self.stackView.frame.size.height;
-    float noteWidth = pageWidth / COL_COUNT ;
-    float noteHeight = pageHeight / ROW_COUNT;
+    float noteWidth = (pageWidth / COL_COUNT ) * 0.82;
+    float noteHeight = (pageHeight / ROW_COUNT ) * 0.75;
     float colSeperator = noteWidth / 7;
-    float rowSeperator = noteHeight / 6;
+    float rowSeperator = noteHeight / 5;
     
     BOOL needResizing = NO;
     for (UIView * view in self.notes){
@@ -96,10 +91,11 @@
             CGSize size = CGSizeMake(self.stackView.frame.size.width * (page+1), self.stackView.frame.size.height);
             [self.stackView setContentSize:size];
         }
-        CGFloat startX = (page * pageWidth) + (col * noteWidth * 0.8) + ((col+1) * colSeperator);
-        CGFloat startY = (row * noteHeight * 0.7) + ((row + 1) * rowSeperator);
+        CGFloat startX = (page * pageWidth) + (col * noteWidth) + ((col+1) * colSeperator);
+        CGFloat startY = (row * noteHeight) + ((row + 1) * rowSeperator);
         CGRect viewFrame = CGRectMake(startX, startY, noteWidth, noteHeight);
-        [view setFrame:viewFrame];
+        
+        [((NoteView *) view) resizeToRect:viewFrame];
         [self.stackView addSubview:view];
         
         col++;
