@@ -10,4 +10,7 @@
 #import "BulletinBoardObject.h"
 @interface NoteView : UIView <BulletinBoardObject>
 
+-(void) resetSize;
+@property (nonatomic) BOOL highlighted;
+
 @end

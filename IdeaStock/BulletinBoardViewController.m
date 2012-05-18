@@ -76,10 +76,6 @@
         CGFloat scale = sender.scale;
         if ([sender.view conformsToProtocol: @protocol(BulletinBoardObject)]){
             UIView <BulletinBoardObject> * view = (NoteView *) sender.view;
-            view.frame = CGRectMake(view.frame.origin.x,
-                                    view.frame.origin.y, 
-                                    view.frame.size.width * scale,
-                                    view.frame.size.height * scale);
             [view scale:scale];
         }
         

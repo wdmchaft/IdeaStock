@@ -7,6 +7,7 @@
 //
 
 #import "StackViewController.h"
+#import "NoteView.h"
 
 @interface StackViewController ()
 
@@ -21,6 +22,7 @@
 @synthesize notes = _notes;
 @synthesize delegate = _delegate;
 
+
 -(void) setNotes:(NSArray *)notes{
     _notes = notes;
     
@@ -28,9 +30,25 @@
     for(UIView * view in _notes){
         for (UIGestureRecognizer * gr in [view gestureRecognizers]){
             [view removeGestureRecognizer:gr];
+            [((NoteView *) view) resetSize];
         }
+        UILongPressGestureRecognizer * pgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(notePressed:)];
+        [view addGestureRecognizer:pgr];
+        
     }
 }
+
+-(void) notePressed: (UIGestureRecognizer *) sender{
+    
+    ((NoteView *) sender.view).highlighted = !((NoteView *) sender.view).highlighted;
+    if (((NoteView *) sender.view).highlighted){
+        [((NoteView *) sender.view) scale:1.1];
+    }
+    else {
+        [((NoteView *) sender.view) scale:1/1.1];
+    }
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     

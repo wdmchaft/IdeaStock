@@ -463,11 +463,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/MainScreenDropboxViewController.m"
-         timestampString = "357363491.175631"
+         timestampString = "359058234.283664"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "398"
-         endingLineNumber = "398"
+         startingLineNumber = "399"
+         endingLineNumber = "399"
          landmarkName = "-layoutBulletinBoards"
          landmarkType = "5">
       </FileBreakpoint>
@@ -476,11 +476,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/MainScreenDropboxViewController.m"
-         timestampString = "357363491.175631"
+         timestampString = "359058234.283664"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "457"
-         endingLineNumber = "457"
+         startingLineNumber = "458"
+         endingLineNumber = "458"
          landmarkName = "-viewWillAppear:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -489,11 +489,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/MainScreenDropboxViewController.m"
-         timestampString = "357362334.565539"
+         timestampString = "359058234.283664"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "323"
-         endingLineNumber = "323"
+         startingLineNumber = "324"
+         endingLineNumber = "324"
          landmarkName = "-animateSelect:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -502,11 +502,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/MainScreenDropboxViewController.m"
-         timestampString = "357362334.565539"
+         timestampString = "359058234.283664"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "338"
-         endingLineNumber = "338"
+         startingLineNumber = "339"
+         endingLineNumber = "339"
          landmarkName = "-animateSelect:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -541,11 +541,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/MainScreenDropboxViewController.m"
-         timestampString = "357362334.565539"
+         timestampString = "359058234.283664"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "132"
-         endingLineNumber = "132"
+         startingLineNumber = "133"
+         endingLineNumber = "133"
          landmarkName = "-layoutBulletinBoards:withDuration:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -554,11 +554,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/MainScreenDropboxViewController.m"
-         timestampString = "357362334.565539"
+         timestampString = "359058234.283664"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "134"
-         endingLineNumber = "134"
+         startingLineNumber = "135"
+         endingLineNumber = "135"
          landmarkName = "-layoutBulletinBoards:withDuration:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -567,11 +567,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/MainScreenDropboxViewController.m"
-         timestampString = "357363491.175631"
+         timestampString = "359058234.283664"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "375"
-         endingLineNumber = "375"
+         startingLineNumber = "376"
+         endingLineNumber = "376"
          landmarkName = "-prepareForSegue:sender:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -619,11 +619,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "NoteView.m"
-         timestampString = "358895489.739819"
+         timestampString = "359067443.202282"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "35"
-         endingLineNumber = "35"
+         startingLineNumber = "66"
+         endingLineNumber = "66"
          landmarkName = "-initWithFrame:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -632,11 +632,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "358969805.834755"
+         timestampString = "359064419.169845"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "92"
-         endingLineNumber = "92"
+         startingLineNumber = "88"
+         endingLineNumber = "88"
          landmarkName = "-checkForOverlapWithView:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -645,11 +645,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "358978922.473946"
+         timestampString = "359064419.169845"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "202"
-         endingLineNumber = "202"
+         startingLineNumber = "198"
+         endingLineNumber = "198"
          landmarkName = "-objectPanned:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -658,11 +658,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "358978922.473946"
+         timestampString = "359064419.169845"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "112"
-         endingLineNumber = "112"
+         startingLineNumber = "108"
+         endingLineNumber = "108"
          landmarkName = "-prepareForSegue:sender:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -671,11 +671,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "358978922.473946"
+         timestampString = "359064419.169845"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "105"
-         endingLineNumber = "105"
+         startingLineNumber = "101"
+         endingLineNumber = "101"
          landmarkName = "-stackTapped:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -684,11 +684,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "358978922.473946"
+         timestampString = "359064419.169845"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "108"
-         endingLineNumber = "108"
+         startingLineNumber = "104"
+         endingLineNumber = "104"
          landmarkName = "-stackTapped:"
          landmarkType = "5">
       </FileBreakpoint>

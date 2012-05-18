@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *mainView;
 @property (weak, nonatomic) UIView * lastView;
 @property CGRect lastFrame;
+
 //Maybe change this to a more graceful way of cycling through colors
 @property int colorOrder;
 

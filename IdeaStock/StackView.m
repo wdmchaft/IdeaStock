@@ -60,6 +60,10 @@
 
 -(void) scale:(CGFloat) scaleFactor{
     
+    self.frame = CGRectMake(self.frame.origin.x,
+                            self.frame.origin.y, 
+                            self.frame.size.width * scaleFactor,
+                            self.frame.size.height * scaleFactor);
     for (UIView * subView in self.subviews){
         if ([subView isKindOfClass:[UIImageView class]]){
             subView.frame = CGRectMake(subView.frame.origin.x, subView.frame.origin.y, subView.frame.size.width * scaleFactor, subView.frame.size.height * scaleFactor);
