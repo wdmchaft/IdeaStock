@@ -17,6 +17,7 @@
 @property (nonatomic) CGRect lastFrame;
 @property (nonatomic) BOOL isLocked;
 @property (nonatomic) int currentPage;
+@property (weak,nonatomic) UIView * lastOverlappedView;
 @end
 
 @implementation StackViewController
@@ -26,6 +27,7 @@
 @synthesize isInEditMode = _isInEditMode;
 @synthesize lastFrame = _lastFrame;
 @synthesize currentPage = _currentPage;
+@synthesize lastOverlappedView = _lastOverlappedView;
 
 @synthesize notes = _notes;
 @synthesize delegate = _delegate;
@@ -51,26 +53,30 @@
     self.isLocked = false;
     NSLog(@"Timer Fired");
 }
+
+- (UIView *) checkForOverlapWithView: (UIView *) senderView{
+    for (UIView * view in self.notes){
+        if (view != senderView && view != self.lastOverlappedView){
+            if (CGRectIntersectsRect(view.frame,senderView.frame)){
+                return view;
+            }
+        }
+    }
+    return nil;
+}
+
 #define FLIP_PERIOD 2
 -(BOOL) checkScrollToNextPage: (CGRect) rect forView: (UIView *) view{
     
     BOOL movingRight = rect.origin.x > view.frame.origin.x ? YES : NO;
-    if (movingRight ) NSLog(@"moving Right");
-    else NSLog(@"moving left");
     int totalPages = self.stackView.contentSize.width / self.stackView.frame.size.width;
     totalPages-- ;
-    NSLog(@"Total Pages: %d", totalPages);
     int leftCornerPage = rect.origin.x/ self.stackView.frame.size.width;
-    NSLog(@"left corner Page: %d", leftCornerPage);
     int rightCornerPage = (rect.origin.x + rect.size.width)/self.stackView.frame.size.width;
-    NSLog(@"right corner page : %d", rightCornerPage);
     int middleCornerPage = (rect.origin.x + (rect.size.width/2))/self.stackView.frame.size.width;
-    NSLog(@"middle corner page : %d", middleCornerPage);
     if ( leftCornerPage == middleCornerPage && middleCornerPage == rightCornerPage ){
         self.currentPage = leftCornerPage;
     }
-    NSLog(@"Current Page : %d", self.currentPage);
-
 
     if ( movingRight && 
         middleCornerPage > leftCornerPage &&
@@ -83,8 +89,7 @@
                                            selector:@selector(fireTimer:) 
                                            userInfo:nil 
                                             repeats:NO];
-//        CGRect newRect = CGRectMake(self.stackView.frame.size.width,rect.origin.y,rect.size.width,rect.size.height);
-  //      view.frame = newRect;
+
         CGPoint offset = CGPointMake(self.stackView.frame.size.width + self.stackView.contentOffset.x, self.stackView.contentOffset.y);
         [self.stackView setContentOffset:offset animated:YES];
         NSLog(@"content size after offset : %f", self.stackView.contentSize.width);
@@ -157,11 +162,19 @@
         CGPoint newStart = [sender locationInView:self.stackView];
         
         CGRect newRect = CGRectMake(newStart.x, newStart.y, sender.view.bounds.size.width, sender.view.bounds.size.height);
+        
         if ([self checkScrollToNextPage: newRect forView: sender.view]){
             newRect = CGRectMake(newRect.origin.x + self.stackView.frame.size.width, newRect.origin.y, newRect.size.width, newRect.size.height)  ;
         }
 
         [sender.view setFrame:newRect];
+        UIView * overlappingView = [self checkForOverlapWithView:sender.view];
+        if (overlappingView){
+            self.lastOverlappedView = overlappingView;
+            CGRect tempFrame = overlappingView.frame;
+            [UIView animateWithDuration:0.25 animations:^{ overlappingView.frame = self.lastFrame;}];
+            self.lastFrame = tempFrame;
+        }
         
     }
     else if (sender.state == UIGestureRecognizerStateEnded){
