@@ -18,6 +18,9 @@
 @property (nonatomic) BOOL isLocked;
 @property (nonatomic) int currentPage;
 @property (weak,nonatomic) UIView * lastOverlappedView;
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (strong,nonatomic) UIBarButtonItem * deleteButton;
+@property (strong,nonatomic) UIBarButtonItem * removeButton;
 @end
 
 @implementation StackViewController
@@ -28,12 +31,16 @@
 @synthesize lastFrame = _lastFrame;
 @synthesize currentPage = _currentPage;
 @synthesize lastOverlappedView = _lastOverlappedView;
+@synthesize toolbar = _toolbar;
+@synthesize deleteButton = _deleteButton;
+@synthesize removeButton = _removeButton;
+
 
 @synthesize notes = _notes;
 @synthesize delegate = _delegate;
 
 
--(void) setNotes:(NSArray *)notes{
+-(void) setNotes:(NSMutableArray *)notes{
     _notes = notes;
     
     //remove the gesture recognizor from all the notes
@@ -135,10 +142,13 @@
 }
 -(void) notePressed: (UILongPressGestureRecognizer *) sender{
     if (sender.state == UIGestureRecognizerStateBegan){
+        
         ((NoteView *) sender.view).highlighted = !((NoteView *) sender.view).highlighted;
         if ( ((NoteView *) sender.view).highlighted){
             if (self.highLightedNote) {
+                [self removeToolbarItems];
                 self.highLightedNote.highlighted = NO;
+                
             }
             self.lastFrame = sender.view.frame;
             UIPanGestureRecognizer * pgr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(notePanned:)];
@@ -147,10 +157,12 @@
             [self.stackView addGestureRecognizer:tgr];
             self.highLightedNote = (NoteView *) sender.view;
             self.isInEditMode = YES;
+            [self addToolbarItems];
         }
         else{
             self.highLightedNote = nil;
             self.isInEditMode = NO;
+            [self removeToolbarItems];
             for (UIGestureRecognizer * gr in [sender.view gestureRecognizers]){
                 if ([gr isKindOfClass:[UIPanGestureRecognizer class]]){
                     [sender.view removeGestureRecognizer:gr];
@@ -202,8 +214,20 @@
 #define COL_COUNT 2
 
 
+-(void) addToolbarItems{
+    NSMutableArray * currentItems = [self.toolbar.items mutableCopy];
+    [currentItems addObject:self.removeButton];
+    [currentItems addObject:self.deleteButton];
+    self.toolbar.items = [currentItems copy];
+}
 
--(void) layoutNotes{
+-(void) removeToolbarItems{
+    NSMutableArray * currentItems = [self.toolbar.items mutableCopy];
+    [currentItems removeLastObject];
+    [currentItems removeLastObject];
+    self.toolbar.items = currentItems;
+}
+-(void) layoutNotes: (BOOL) animated{
     
     int pageNotes = ROW_COUNT * COL_COUNT;
     int totalNotes = [self.notes count];
@@ -234,7 +258,7 @@
         CGFloat startY = (row * noteHeight) + ((row + 1) * rowSeperator);
         CGRect viewFrame = CGRectMake(startX, startY, noteWidth, noteHeight);
         
-        [((NoteView *) view) resizeToRect:viewFrame];
+        [((NoteView *) view) resizeToRect:viewFrame Animate:YES];
         [self.stackView addSubview:view];
         
         col++;
@@ -255,6 +279,9 @@
     if (self.isInEditMode){
         self.isInEditMode = NO;
         self.highLightedNote.highlighted = NO;
+        if ([self.toolbar.items count] > 2){
+            [self removeToolbarItems];
+        }
         for (UIGestureRecognizer * gr in [self.highLightedNote gestureRecognizers]){
             if ([gr isKindOfClass:[UIPanGestureRecognizer class]]){
                 [self.highLightedNote removeGestureRecognizer:gr];
@@ -270,14 +297,39 @@
     [super viewDidLoad];
     [self.stackView setContentSize:self.stackView.bounds.size];
     NSLog(@"Notes here: %d", [self.notes count]);
-    [self layoutNotes];
+    
+    NSMutableArray * toolbar = [self.toolbar.items mutableCopy];
+    self.deleteButton = [toolbar lastObject];
+    [toolbar removeLastObject];
+    self.removeButton = [toolbar lastObject];
+    [toolbar removeLastObject];
+    
+    self.toolbar.items = [toolbar copy];
+    [self layoutNotes:NO];
 }
 
 - (void)viewDidUnload
 {
     [self setStackView:nil];
+    [self setToolbar:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+}
+- (IBAction)deletePressed:(id)sender {
+    
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        self.highLightedNote.transform = CGAffineTransformScale(self.highLightedNote.transform, 0.05, 0.05);
+    }completion:^ (BOOL didFinish){
+        [self.notes removeObject:self.highLightedNote];
+        [self.highLightedNote removeFromSuperview];
+        [self removeToolbarItems];
+        self.editing = NO;
+        self.highLightedNote = nil;
+        [self layoutNotes: YES];
+
+    }];
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

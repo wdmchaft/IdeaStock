@@ -632,11 +632,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "359151217.40579"
+         timestampString = "359161480.029466"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "266"
-         endingLineNumber = "266"
+         startingLineNumber = "265"
+         endingLineNumber = "265"
          landmarkName = "-objectPanned:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -697,11 +697,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "359149732.741053"
+         timestampString = "359161480.029466"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "187"
-         endingLineNumber = "187"
+         startingLineNumber = "186"
+         endingLineNumber = "186"
          landmarkName = "-getAllNormalNotesInViews:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -710,11 +710,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "359151217.40579"
+         timestampString = "359161480.029466"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "238"
-         endingLineNumber = "238"
+         startingLineNumber = "237"
+         endingLineNumber = "237"
          landmarkName = "-objectPressed:"
          landmarkType = "5">
       </FileBreakpoint>

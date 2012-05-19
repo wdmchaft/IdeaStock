@@ -11,7 +11,7 @@
 @interface NoteView : UIView <BulletinBoardObject>
 
 -(void) resetSize;
--(void) resizeToRect:(CGRect) rect;
+-(void) resizeToRect:(CGRect) rect Animate: (BOOL) animate;
 
 
 @end

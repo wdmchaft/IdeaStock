@@ -118,8 +118,7 @@
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     ((StackViewController *) segue.destinationViewController).delegate = self;
-    NSArray * notes = ((StackView *) sender).views;
-    ((StackViewController *) segue.destinationViewController).notes = notes;
+    ((StackViewController *) segue.destinationViewController).notes = ((StackView *) sender).views;
 }
 
 #define STACKING_SCALING_WIDTH 1.1
@@ -147,7 +146,7 @@
                                          stackFrame = mainView.frame;
                                      }
                                      
-                                     NSArray * allNotes = [self getAllNormalNotesInViews:items];
+                                     NSMutableArray * allNotes = [self getAllNormalNotesInViews:items];
                                      StackView * stack = [[StackView alloc] initWithViews:allNotes
                                                                               andMainView:(NoteView *)mainView
                                                                                 withFrame:
@@ -177,7 +176,7 @@
 }
 
 
-- (NSArray *) getAllNormalNotesInViews: (NSArray *) views{
+- (NSMutableArray *) getAllNormalNotesInViews: (NSArray *) views{
     NSMutableArray * ans = [[NSMutableArray alloc] init];
     for (UIView * view in views){
         if ([view isKindOfClass: [NoteView class]]){
@@ -351,23 +350,29 @@
     [self.bulletinboardView addGestureRecognizer:tgr];
     self.bulletinboardView.delegate = self;
 }
+
+
 - (IBAction)deletePressed:(id)sender {
     if(!self.editMode) return;
     
     
     [self removeContextualToolbarItems:self.highlightedView];
-    if ([self.highlightedView isKindOfClass:[NoteView class]]){
-        [self.highlightedView removeFromSuperview];        
-    }
-    else if ([self.highlightedView isKindOfClass:[StackView class]]){
+    
+    if ([self.highlightedView isKindOfClass:[StackView class]]){
         for (UIView * view in ((StackView *) self.highlightedView).views){
             [view removeFromSuperview];
         }
-    [self.highlightedView removeFromSuperview ];
-}
-
-self.editMode = NO;
-self.highlightedView = nil;
+    }
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        self.highlightedView.transform = CGAffineTransformScale(self.highlightedView.transform, 0.05, 0.05);
+    }completion:^ (BOOL didFinish){
+        [self.highlightedView removeFromSuperview];
+        self.editMode = NO;
+        self.highlightedView = nil;
+    }];
+    
+    
 }
 
 - (void)viewDidUnload

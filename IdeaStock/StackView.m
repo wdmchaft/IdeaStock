@@ -73,7 +73,7 @@ return _highlightedImage;
     }
 }
 
--(id) initWithViews: (NSArray *) views 
+-(id) initWithViews: (NSMutableArray *) views 
         andMainView: (NoteView *) mainView 
           withFrame:(CGRect) frame{
     

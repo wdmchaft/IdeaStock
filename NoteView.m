@@ -147,27 +147,56 @@
 }
 
 
--(void) resizeToRect:(CGRect)rect{
-    self.frame = rect;
-    for (UIView * subView in self.subviews){
-        if ([subView isKindOfClass:[UIImageView class]]){
-            subView.frame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, self.bounds.size.height);
+-(void) resizeToRect:(CGRect)rect Animate: (BOOL) animate{
+    if (animate){
+        [UIView animateWithDuration:0.5 animations:^{
+            self.frame = rect;
+            for (UIView * subView in self.subviews){
+                if ([subView isKindOfClass:[UIImageView class]]){
+                    subView.frame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, self.bounds.size.height);
+                }
+                else if ([subView isKindOfClass:[UITextView class]]){
+                    //doing this to make the text clearer instead of resizing an existing UITextView
+                    NSString * oldText = ((UITextView *)subView).text;
+                    CGRect textFrame = CGRectMake(self.bounds.origin.x + self.bounds.size.width * STARTING_POS_OFFSET_X ,
+                                                  self.bounds.origin.y + self.bounds.size.height * STARTING_POS_OFFSET_Y,
+                                                  self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
+                    UITextView * textView = [[UITextView alloc] initWithFrame:textFrame];
+                    textView.text = oldText;
+                    
+                    
+                    [subView removeFromSuperview];
+                    
+                    [self addSubview:textView];
+                }
+            }
+            
         }
-        else if ([subView isKindOfClass:[UITextView class]]){
-            //doing this to make the text clearer instead of resizing an existing UITextView
-            NSString * oldText = ((UITextView *)subView).text;
-            CGRect textFrame = CGRectMake(self.bounds.origin.x + self.bounds.size.width * STARTING_POS_OFFSET_X ,
-                                          self.bounds.origin.y + self.bounds.size.height * STARTING_POS_OFFSET_Y,
-                                          self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
-            UITextView * textView = [[UITextView alloc] initWithFrame:textFrame];
-            textView.text = oldText;
-            
-            
-            [subView removeFromSuperview];
-            
-            [self addSubview:textView];
+         ];
+    }
+    else {
+        self.frame = rect;
+        for (UIView * subView in self.subviews){
+            if ([subView isKindOfClass:[UIImageView class]]){
+                subView.frame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, self.bounds.size.height);
+            }
+            else if ([subView isKindOfClass:[UITextView class]]){
+                //doing this to make the text clearer instead of resizing an existing UITextView
+                NSString * oldText = ((UITextView *)subView).text;
+                CGRect textFrame = CGRectMake(self.bounds.origin.x + self.bounds.size.width * STARTING_POS_OFFSET_X ,
+                                              self.bounds.origin.y + self.bounds.size.height * STARTING_POS_OFFSET_Y,
+                                              self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
+                UITextView * textView = [[UITextView alloc] initWithFrame:textFrame];
+                textView.text = oldText;
+                
+                
+                [subView removeFromSuperview];
+                
+                [self addSubview:textView];
+            }
         }
     }
+
 }
 
 @end

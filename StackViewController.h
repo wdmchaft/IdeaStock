@@ -12,7 +12,7 @@
 @protocol StackViewDelegate;
 @interface StackViewController : UIViewController
 
-@property (weak,nonatomic) NSArray * notes;
+@property (weak,nonatomic) NSMutableArray * notes;
 @property (weak, nonatomic) UIViewController<StackViewDelegate> * delegate;
 
 @end

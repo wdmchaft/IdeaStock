@@ -11,8 +11,8 @@
 
 @interface StackView : UIView <BulletinBoardObject>
 
-@property (strong,nonatomic) NSArray * views;
--(id) initWithViews: (NSArray *) views 
+@property (strong,nonatomic) NSMutableArray * views;
+-(id) initWithViews: (NSMutableArray *) views 
         andMainView: (NoteView *) mainView
           withFrame: (CGRect) frame;
 
