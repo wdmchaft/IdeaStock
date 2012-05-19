@@ -202,8 +202,8 @@
 }
 
 -(void) addContextualToolbarItems: (UIView *) contextView{
-        NSMutableArray * newToolbarItems = [self.toolbar.items mutableCopy];
-        if ( [contextView isKindOfClass:[StackView class]]){
+    NSMutableArray * newToolbarItems = [self.toolbar.items mutableCopy];
+    if ( [contextView isKindOfClass:[StackView class]]){
         [newToolbarItems addObject:self.expandButton];
     }
     [newToolbarItems addObject:self.deleteButton];
@@ -215,7 +215,7 @@
     
     
     if ( sender.state == UIGestureRecognizerStateBegan){
-     
+        
         if (self.highlightedView && self.highlightedView != sender.view){
             self.highlightedView.highlighted = NO;
             [self removeContextualToolbarItems:self.highlightedView];
@@ -323,13 +323,13 @@
         self.highlightedView.highlighted = NO;
         [self removeContextualToolbarItems:self.highlightedView];
         self.highlightedView = nil;
-
+        
     }
 }
 
 - (void)viewDidLoad
 {
-
+    
     int len = [[self.toolbar items] count];
     self.deleteButton = [[self.toolbar items] objectAtIndex:len - 1];
     self.expandButton = [[self.toolbar items] objectAtIndex:len - 2];
@@ -350,6 +350,24 @@
     [self.bulletinboardView addGestureRecognizer:gr];
     [self.bulletinboardView addGestureRecognizer:tgr];
     self.bulletinboardView.delegate = self;
+}
+- (IBAction)deletePressed:(id)sender {
+    if(!self.editMode) return;
+    
+    
+    [self removeContextualToolbarItems:self.highlightedView];
+    if ([self.highlightedView isKindOfClass:[NoteView class]]){
+        [self.highlightedView removeFromSuperview];        
+    }
+    else if ([self.highlightedView isKindOfClass:[StackView class]]){
+        for (UIView * view in ((StackView *) self.highlightedView).views){
+            [view removeFromSuperview];
+        }
+    [self.highlightedView removeFromSuperview ];
+}
+
+self.editMode = NO;
+self.highlightedView = nil;
 }
 
 - (void)viewDidUnload

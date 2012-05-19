@@ -81,6 +81,9 @@
                                     <barButtonItem title="expand" id="3Cp-b8-UFf"/>
                                     <barButtonItem systemItem="trash" id="x4X-3T-v6V">
                                         <color key="tintColor" red="0.5" green="0.0" blue="0.005894328071" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="deletePressed:" destination="9HL-37-GHp" id="Wrs-LS-9us"/>
+                                        </connections>
                                     </barButtonItem>
                                 </items>
                             </toolbar>
