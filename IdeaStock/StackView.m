@@ -11,7 +11,8 @@
 @interface StackView()
 
 @property (weak, nonatomic) NoteView * mainView;
-
+@property (strong,nonatomic) UIImage * normalImage;
+@property (strong, nonatomic) UIImage * highlightedImage;
 @end
 
 @implementation StackView
@@ -19,12 +20,50 @@
 @synthesize views = _views;
 @synthesize mainView = _mainView;
 @synthesize text = _text;
+@synthesize highlighted = _highlighted;
+@synthesize normalImage = _normalImage;
+@synthesize highlightedImage = _highlightedImage;
 
 #define STARTING_POS_OFFSET_X 0.10
 #define STARTING_POS_OFFSET_Y 0.20
 #define TEXT_WIDHT_RATIO 0.83
 #define TEXT_HEIGHT_RATIO 0.60
 
+- (UIImage *) normalImage{
+    if (!_normalImage){
+        _normalImage = [UIImage imageNamed:@"stackedGreenNote.png"];
+    }
+    return _normalImage;
+}
+
+-(UIImage *) highlightedImage{
+    if (!_highlightedImage){
+        _highlightedImage = [UIImage imageNamed:@"highlightedstackedgreennote.png"];
+    }
+return _highlightedImage;
+}
+
+-(void) setHighlighted:(BOOL)highlighted{
+    
+    _highlighted = highlighted;
+
+    for (UIView * subView in self.subviews){
+        if (highlighted){
+
+            if ([subView isKindOfClass:[UIImageView class]]){
+                [((UIImageView *) subView) setImage:self.highlightedImage];
+                [UIView animateWithDuration:0.20 animations:^{[subView setTransform:CGAffineTransformMakeScale(1.3, 1.4)];}];                              
+            }
+        }
+        else{
+            if ([subView isKindOfClass:[UIImageView class]]){
+                [((UIImageView *) subView) setImage:self.normalImage];
+                [UIView animateWithDuration:0.20 animations:^{[subView setTransform:CGAffineTransformIdentity];}];
+            }
+
+        }
+    }
+}
 - (void) setText:(NSString *)text{
     _text = text;
     for(UIView * view in self.subviews){
@@ -33,6 +72,7 @@
         }
     }
 }
+
 -(id) initWithViews: (NSArray *) views 
         andMainView: (NoteView *) mainView 
           withFrame:(CGRect) frame{
@@ -42,7 +82,7 @@
     if (self){
         self.mainView = mainView;
         self.views = views;
-        UIImage * image = [UIImage imageNamed:@"stackedGreenNote.png"];
+        UIImage * image = self.normalImage;
         UIImageView * imageView = [[UIImageView alloc]initWithImage:image];
         imageView.frame = self.bounds;
         CGRect textFrame = CGRectMake(self.bounds.origin.x + self.bounds.size.width * STARTING_POS_OFFSET_X ,

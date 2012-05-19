@@ -15,6 +15,7 @@
 
 @property (strong, nonatomic) UIImage * highLightedImage;
 @property (strong, nonatomic) UIImage * normalImage;
+
 @end
 
 @implementation NoteView
@@ -57,7 +58,7 @@
             if ([subView isKindOfClass:[UIImageView class]]){
                 
                 [((UIImageView *) subView) setImage:self.highLightedImage];
-                [UIView animateWithDuration:0.20 animations:^{                [subView setTransform:CGAffineTransformMakeScale(1.3, 1.4)];}];                             
+                [UIView animateWithDuration:0.20 animations:^{                [subView setTransform:CGAffineTransformMakeScale(1.4, 1.5)];}];                             
             }
         }
         else{

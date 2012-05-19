@@ -12,6 +12,6 @@
 
 -(void) resetSize;
 -(void) resizeToRect:(CGRect) rect;
-@property (nonatomic) BOOL highlighted;
+
 
 @end

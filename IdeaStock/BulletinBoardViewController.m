@@ -18,7 +18,13 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *bulletinboardView;
 @property (strong, nonatomic) DropBoxAssociativeBulletinBoard * board;
 @property (strong, nonatomic) NSArray * intersectingViews;
+@property (strong, nonatomic) UIBarButtonItem * deleteButton;
+@property (strong, nonatomic) UIBarButtonItem * expandButton;
+@property (weak, nonatomic) UIView<BulletinBoardObject> * highlightedView;
+
 @property int panCounter ;
+@property (nonatomic) BOOL editMode;
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 
 
 @end
@@ -29,7 +35,12 @@
 @synthesize parent = _parent;
 @synthesize board = _board;
 @synthesize panCounter = _panCounter;
+@synthesize toolbar = _toolbar;
 @synthesize intersectingViews = _intersectingViews;
+@synthesize deleteButton = _deleteButton;
+@synthesize expandButton = _expandButton;
+@synthesize editMode = _editMode;
+@synthesize highlightedView = _highlightedView;
 
 
 
@@ -71,6 +82,7 @@
 
 -(void) objectPinched: (UIPinchGestureRecognizer *) sender{
     
+    if (self.editMode) return;
     if (sender.state == UIGestureRecognizerStateChanged ||
         sender.state == UIGestureRecognizerStateEnded){
         CGFloat scale = sender.scale;
@@ -126,10 +138,10 @@
                                  if (first){
                                      CGRect stackFrame;
                                      if ([mainView isKindOfClass:[NoteView class]]){
-                                      stackFrame = CGRectMake(mainView.frame.origin.x - ((STACKING_SCALING_WIDTH -1)/4) * mainView.frame.origin.x,
-                                                                    mainView.frame.origin.y - ((STACKING_SCALING_HEIGHT -1)/4) * mainView.frame.origin.y,
-                                                                    mainView.frame.size.width * STACKING_SCALING_WIDTH,
-                                                                    mainView.frame.size.height * STACKING_SCALING_HEIGHT );
+                                         stackFrame = CGRectMake(mainView.frame.origin.x - ((STACKING_SCALING_WIDTH -1)/4) * mainView.frame.origin.x,
+                                                                 mainView.frame.origin.y - ((STACKING_SCALING_HEIGHT -1)/4) * mainView.frame.origin.y,
+                                                                 mainView.frame.size.width * STACKING_SCALING_WIDTH,
+                                                                 mainView.frame.size.height * STACKING_SCALING_HEIGHT );
                                      }
                                      else if ([mainView isKindOfClass:[StackView class]]){
                                          stackFrame = mainView.frame;
@@ -147,9 +159,11 @@
                                      UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectPanned:)];
                                      UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(objectPinched:)];
                                      UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(stackTapped:)];
+                                     UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(objectPressed:)];
                                      [stack addGestureRecognizer:gr];
                                      [stack addGestureRecognizer:pgr];
                                      [stack addGestureRecognizer:tgr];
+                                     [stack addGestureRecognizer:lpgr];
                                      [self.bulletinboardView addSubview:stack];
                                      [UIView animateWithDuration:0.5 animations:^{stack.alpha = 1;}];
                                      first = NO;
@@ -158,9 +172,6 @@
                              }];
         }
     }
-    
-    
-    
     
     
 }
@@ -180,6 +191,61 @@
     return ans;
 }
 
+-(void) removeContextualToolbarItems:(UIView *) contextView{
+    
+    NSMutableArray * newToolbarItems = [self.toolbar.items mutableCopy];
+    [newToolbarItems removeLastObject];
+    if( [contextView isKindOfClass:[StackView class]]){
+        [newToolbarItems removeLastObject];
+    }
+    self.toolbar.items = newToolbarItems;
+}
+
+-(void) addContextualToolbarItems: (UIView *) contextView{
+        NSMutableArray * newToolbarItems = [self.toolbar.items mutableCopy];
+        if ( [contextView isKindOfClass:[StackView class]]){
+        [newToolbarItems addObject:self.expandButton];
+    }
+    [newToolbarItems addObject:self.deleteButton];
+    self.toolbar.items = newToolbarItems;
+    
+    
+}
+-(void) objectPressed: (UILongPressGestureRecognizer *) sender{
+    
+    
+    if ( sender.state == UIGestureRecognizerStateBegan){
+     
+        if (self.highlightedView && self.highlightedView != sender.view){
+            self.highlightedView.highlighted = NO;
+            [self removeContextualToolbarItems:self.highlightedView];
+            self.highlightedView = (UIView <BulletinBoardObject> *) sender.view;
+            [self addContextualToolbarItems:self.highlightedView];
+            self.highlightedView.highlighted = YES;
+            
+        }
+        else if (self.editMode){
+            self.editMode = NO;
+            self.highlightedView = nil;
+            [self removeContextualToolbarItems:sender.view];
+            
+            if ([sender.view conformsToProtocol:@protocol(BulletinBoardObject)]){
+                ((UIView <BulletinBoardObject> * ) sender.view).highlighted = NO;
+            }
+        }
+        else{
+            self.editMode = YES;
+            self.highlightedView = (UIView <BulletinBoardObject> *) sender.view;
+            
+            [self addContextualToolbarItems:sender.view];
+            
+            if ([sender.view conformsToProtocol:@protocol(BulletinBoardObject)]){
+                ((UIView <BulletinBoardObject> * ) sender.view).highlighted = YES;
+            }
+        }
+    }
+    
+}
 #define CHECK_TIME 0
 -(void) objectPanned: (UIPanGestureRecognizer *) sender{
     if( sender.state == UIGestureRecognizerStateChanged ||
@@ -190,6 +256,8 @@
                                         pannedView.frame.origin.y + translation.y);
         pannedView.frame = CGRectMake(newOrigin.x, newOrigin.y, pannedView.frame.size.width,pannedView.frame.size.height);
         [sender setTranslation:CGPointZero inView:self.bulletinboardView];
+        
+        if (self.editMode) return;
         
         self.panCounter++;
         if (self.panCounter > CHECK_TIME ){
@@ -225,6 +293,8 @@
 }
 -(void) mainScreenDoubleTapped:(UITapGestureRecognizer *)sender{
     
+    if (self.editMode) return;
+    
     CGPoint location = [sender locationOfTouch:0 inView:self.bulletinboardView];
     CGRect frame = CGRectMake(location.x, location.y, 200, 200);
     UIView * note = [[NoteView alloc] initWithFrame:frame];
@@ -239,16 +309,35 @@
     [self.bulletinboardView addSubview:note];
     UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectPanned:)];
     UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(objectPinched:)];
+    UILongPressGestureRecognizer * lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(objectPressed:)];
+    
+    [note addGestureRecognizer:lpgr];
     [note addGestureRecognizer:gr];
     [note addGestureRecognizer:pgr];
     
 }
 
+-(void) screenTapped: (UIGestureRecognizer *)sender{
+    if (self.editMode){
+        self.editMode = NO;
+        self.highlightedView.highlighted = NO;
+        [self removeContextualToolbarItems:self.highlightedView];
+        self.highlightedView = nil;
+
+    }
+}
+
 - (void)viewDidLoad
 {
-    
-    //load and display notes and groupings
-    //...
+
+    int len = [[self.toolbar items] count];
+    self.deleteButton = [[self.toolbar items] objectAtIndex:len - 1];
+    self.expandButton = [[self.toolbar items] objectAtIndex:len - 2];
+    NSMutableArray * toolBarItems = [[NSMutableArray alloc] init];
+    for ( int i = 0 ; i < 4 ; i++){
+        [toolBarItems addObject:[[self.toolbar items] objectAtIndex:i]];
+    }
+    self.toolbar.items = [toolBarItems copy];
     
     [super viewDidLoad];
     self.label.title = self.bulletinBoardName;
@@ -257,8 +346,9 @@
     
     UITapGestureRecognizer * gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainScreenDoubleTapped:)];
     gr.numberOfTapsRequired = 2;
-    
+    UITapGestureRecognizer * tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(screenTapped:)];
     [self.bulletinboardView addGestureRecognizer:gr];
+    [self.bulletinboardView addGestureRecognizer:tgr];
     self.bulletinboardView.delegate = self;
 }
 
@@ -267,6 +357,7 @@
     [self setLabel:nil];
     [self setView:nil];
     [self setBulletinboardView:nil];
+    [self setToolbar:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
