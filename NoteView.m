@@ -57,20 +57,14 @@
             if ([subView isKindOfClass:[UIImageView class]]){
                 
                 [((UIImageView *) subView) setImage:self.highLightedImage];
-                [subView setTransform:CGAffineTransformMakeScale(1.3, 1.4)];
-                                           
+                [UIView animateWithDuration:0.20 animations:^{                [subView setTransform:CGAffineTransformMakeScale(1.3, 1.4)];}];                             
             }
-           /* else if ([subView isKindOfClass:[UITextView class]]){
-                subView.frame = CGRectMake(self.bounds.origin.x + self.bounds.size.width * STARTING_POS_OFFSET_X * 2 ,
-                                           self.bounds.origin.y + self.bounds.size.height * STARTING_POS_OFFSET_Y * 1.3,
-                                           self.bounds.size.width * TEXT_WIDHT_RATIO * 0.82, self.bounds.size.height * TEXT_HEIGHT_RATIO * 0.8);
-            }*/
         }
         else{
             if ([subView isKindOfClass:[UIImageView class]]){
                 [((UIImageView *) subView) setImage:self.normalImage];
-                [subView setTransform:CGAffineTransformIdentity];
-               // subView.frame = self.bounds;
+                [UIView animateWithDuration:0.20 animations:^{[subView setTransform:CGAffineTransformIdentity];}];
+             
             }
 
         }

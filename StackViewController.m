@@ -14,13 +14,18 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *stackView;
 @property (nonatomic) BOOL isInEditMode; 
 @property (weak, nonatomic) NoteView * highLightedNote;
-
+@property (nonatomic) CGRect lastFrame;
+@property (nonatomic) BOOL isLocked;
+@property (nonatomic) int currentPage;
 @end
 
 @implementation StackViewController
 @synthesize stackView = _stackView;
+@synthesize isLocked = _isLocked;
 @synthesize highLightedNote = _highLightedNote;
 @synthesize isInEditMode = _isInEditMode;
+@synthesize lastFrame = _lastFrame;
+@synthesize currentPage = _currentPage;
 
 @synthesize notes = _notes;
 @synthesize delegate = _delegate;
@@ -37,23 +42,90 @@
         }
         UILongPressGestureRecognizer * pgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(notePressed:)];
         [view addGestureRecognizer:pgr];
-        
+
     }
+}
+
+- (void) fireTimer:(NSTimer *) timer{
+    
+    self.isLocked = false;
+    NSLog(@"Timer Fired");
+}
+#define FLIP_PERIOD 2
+-(BOOL) checkScrollToNextPage: (CGRect) rect forView: (UIView *) view{
+    
+    BOOL movingRight = rect.origin.x > view.frame.origin.x ? YES : NO;
+    if (movingRight ) NSLog(@"moving Right");
+    else NSLog(@"moving left");
+    int totalPages = self.stackView.contentSize.width / self.stackView.frame.size.width;
+    totalPages-- ;
+    NSLog(@"Total Pages: %d", totalPages);
+    int leftCornerPage = rect.origin.x/ self.stackView.frame.size.width;
+    NSLog(@"left corner Page: %d", leftCornerPage);
+    int rightCornerPage = (rect.origin.x + rect.size.width)/self.stackView.frame.size.width;
+    NSLog(@"right corner page : %d", rightCornerPage);
+    int middleCornerPage = (rect.origin.x + (rect.size.width/2))/self.stackView.frame.size.width;
+    NSLog(@"middle corner page : %d", middleCornerPage);
+    if ( leftCornerPage == middleCornerPage && middleCornerPage == rightCornerPage ){
+        self.currentPage = leftCornerPage;
+    }
+    NSLog(@"Current Page : %d", self.currentPage);
+
+
+    if ( movingRight && 
+        middleCornerPage > leftCornerPage &&
+        middleCornerPage > self.currentPage &&
+         middleCornerPage <= totalPages && 
+        !self.isLocked){ 
+        self.isLocked = true;
+        [NSTimer scheduledTimerWithTimeInterval: FLIP_PERIOD 
+                                             target:self 
+                                           selector:@selector(fireTimer:) 
+                                           userInfo:nil 
+                                            repeats:NO];
+//        CGRect newRect = CGRectMake(self.stackView.frame.size.width,rect.origin.y,rect.size.width,rect.size.height);
+  //      view.frame = newRect;
+        CGPoint offset = CGPointMake(self.stackView.frame.size.width + self.stackView.contentOffset.x, self.stackView.contentOffset.y);
+        [self.stackView setContentOffset:offset animated:YES];
+        NSLog(@"content size after offset : %f", self.stackView.contentSize.width);
+        return YES;
+    }
+    else if ( !movingRight && 
+             middleCornerPage  < rightCornerPage &&
+             middleCornerPage < self.currentPage &&
+             middleCornerPage >= 0 &&
+             !self.isLocked){
+        self.isLocked = true;
+        [NSTimer scheduledTimerWithTimeInterval: FLIP_PERIOD 
+                                         target:self 
+                                       selector:@selector(fireTimer:) 
+                                       userInfo:nil 
+                                        repeats:NO];
+        CGPoint offset = CGPointMake(self.stackView.contentOffset.x- self.stackView.frame.size.width, self.stackView.contentOffset.y);
+        [self.stackView setContentOffset:offset animated:YES];
+        NSLog(@"content size after offset : %f", self.stackView.contentSize.width);
+        return YES;
+
+    }
+    return NO;
 }
 
 -(void) notePanned: (UIPanGestureRecognizer *) sender{
     
-    
-        NSLog( @"Hallo");
     if (sender.state == UIGestureRecognizerStateEnded || sender.state ==UIGestureRecognizerStateChanged){
         CGPoint translation = [sender translationInView:self.stackView];
         UIView * pannedView = [sender view];
         CGPoint newOrigin = CGPointMake(pannedView.frame.origin.x + translation.x,
                                         pannedView.frame.origin.y + translation.y);
-        pannedView.frame = CGRectMake(newOrigin.x, newOrigin.y, pannedView.frame.size.width,pannedView.frame.size.height);
+        CGRect newRect = CGRectMake(newOrigin.x, newOrigin.y, pannedView.frame.size.width,pannedView.frame.size.height);
+        [self checkScrollToNextPage: newRect forView:sender.view];
+        
+        pannedView.frame = newRect;
         [sender setTranslation:CGPointZero inView:self.stackView];
         
-        
+    }
+    if (sender.state == UIGestureRecognizerStateEnded){
+        [UIView animateWithDuration:0.25 animations:^{sender.view.frame = self.lastFrame;}];
     }
 }
 -(void) notePressed: (UILongPressGestureRecognizer *) sender{
@@ -63,6 +135,7 @@
             if (self.highLightedNote) {
                 self.highLightedNote.highlighted = NO;
             }
+            self.lastFrame = sender.view.frame;
             UIPanGestureRecognizer * pgr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(notePanned:)];
             [sender.view addGestureRecognizer:pgr];
             UITapGestureRecognizer * tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(screenTapped:)];
@@ -82,10 +155,17 @@
     }
     else if (sender.state == UIGestureRecognizerStateChanged){
         CGPoint newStart = [sender locationInView:self.stackView];
+        
         CGRect newRect = CGRectMake(newStart.x, newStart.y, sender.view.bounds.size.width, sender.view.bounds.size.height);
+        if ([self checkScrollToNextPage: newRect forView: sender.view]){
+            newRect = CGRectMake(newRect.origin.x + self.stackView.frame.size.width, newRect.origin.y, newRect.size.width, newRect.size.height)  ;
+        }
+
         [sender.view setFrame:newRect];
+        
     }
     else if (sender.state == UIGestureRecognizerStateEnded){
+        [UIView animateWithDuration:0.25 animations:^{sender.view.frame = self.lastFrame;}];
     }
     
 }
@@ -168,6 +248,8 @@
             }
             
         }
+        [UIView animateWithDuration:0.25 animations:^{ self.highLightedNote.frame = self.lastFrame;}];
+        self.highLightedNote = nil;
     }
 }
 - (void)viewDidLoad
