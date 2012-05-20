@@ -63,7 +63,7 @@
     self.lastOverlappedView = nil;
 }
 
-#define OVERLAP_PERIOD 1
+#define OVERLAP_PERIOD 2
 - (UIView *) checkForOverlapWithView: (UIView *) senderView{
     for (UIView * view in self.notes){
         if (view != senderView && view != self.lastOverlappedView){
@@ -84,7 +84,7 @@
     totalPages-- ;
     int leftCornerPage = rect.origin.x/ self.stackView.frame.size.width;
     int rightCornerPage = (rect.origin.x + rect.size.width)/self.stackView.frame.size.width;
-    int middleCornerPage = (rect.origin.x + (2*rect.size.width/3))/self.stackView.frame.size.width;
+    int middleCornerPage = (rect.origin.x + rect.size.width/2)/self.stackView.frame.size.width;
     if ( leftCornerPage == middleCornerPage && middleCornerPage == rightCornerPage ){
         self.currentPage = leftCornerPage;
     }
@@ -102,14 +102,18 @@
                                             repeats:NO];
 
         CGPoint offset = CGPointMake(self.stackView.frame.size.width + self.stackView.contentOffset.x, self.stackView.contentOffset.y);
+                NSLog(@"content size after offset : %f", self.stackView.contentSize.width);
         [self.stackView setContentOffset:offset animated:YES];
         return YES;
     }
+
     else if ( !movingRight && 
              middleCornerPage  < rightCornerPage &&
              middleCornerPage < self.currentPage &&
              middleCornerPage >= 0 &&
              !self.isLocked){
+        
+        NSLog(@"HERE");
         self.isLocked = true;
         [NSTimer scheduledTimerWithTimeInterval: FLIP_PERIOD 
                                          target:self 
@@ -125,18 +129,32 @@
     return NO;
 }
 
+
 -(void) notePanned: (UIPanGestureRecognizer *) sender{
     
     if (sender.state == UIGestureRecognizerStateEnded || sender.state ==UIGestureRecognizerStateChanged){
-        CGPoint translation = [sender translationInView:self.stackView];
-        UIView * pannedView = [sender view];
-        CGPoint newOrigin = CGPointMake(pannedView.frame.origin.x + translation.x,
-                                        pannedView.frame.origin.y + translation.y);
-        CGRect newRect = CGRectMake(newOrigin.x, newOrigin.y, pannedView.frame.size.width,pannedView.frame.size.height);
-        [self checkScrollToNextPage: newRect forView:sender.view];
         
-        pannedView.frame = newRect;
-        [sender setTranslation:CGPointZero inView:self.stackView];
+        CGPoint newStart = [sender locationInView:self.stackView];
+        CGRect newRect = CGRectMake(newStart.x, newStart.y, sender.view.bounds.size.width, sender.view.bounds.size.height);
+        
+        if ([self checkScrollToNextPage: newRect forView: sender.view]){
+            if ( newRect.origin.x > sender.view.frame.origin.x){
+                newRect = CGRectMake(newRect.origin.x + self.stackView.frame.size.width, newRect.origin.y, newRect.size.width, newRect.size.height)  ;
+            }
+            else {
+                newRect = CGRectMake(newRect.origin.x - self.stackView.frame.size.width, newRect.origin.y, newRect.size.width, newRect.size.height)  ;
+            }
+        }
+        
+        [sender.view setFrame:newRect];
+        UIView * overlappingView = [self checkForOverlapWithView:sender.view];
+        if (overlappingView){
+            self.lastOverlappedView = overlappingView;
+            [NSTimer scheduledTimerWithTimeInterval:OVERLAP_PERIOD target:self selector:@selector(fireOverlapTimer:) userInfo:nil repeats:NO];
+            CGRect tempFrame = overlappingView.frame;
+            [UIView animateWithDuration:0.25 animations:^{ overlappingView.frame = self.lastFrame;}];
+            self.lastFrame = tempFrame;
+        }
         
     }
     if (sender.state == UIGestureRecognizerStateEnded){
@@ -179,7 +197,12 @@
         CGRect newRect = CGRectMake(newStart.x, newStart.y, sender.view.bounds.size.width, sender.view.bounds.size.height);
         
         if ([self checkScrollToNextPage: newRect forView: sender.view]){
-            newRect = CGRectMake(newRect.origin.x + self.stackView.frame.size.width, newRect.origin.y, newRect.size.width, newRect.size.height)  ;
+            if ( newRect.origin.x > sender.view.frame.origin.x){
+                newRect = CGRectMake(newRect.origin.x + self.stackView.frame.size.width, newRect.origin.y, newRect.size.width, newRect.size.height)  ;
+            }
+            else {
+                newRect = CGRectMake(newRect.origin.x - self.stackView.frame.size.width, newRect.origin.y, newRect.size.width, newRect.size.height)  ;
+            }
         }
 
         [sender.view setFrame:newRect];
