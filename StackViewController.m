@@ -56,15 +56,19 @@
 }
 
 - (void) fireTimer:(NSTimer *) timer{
-    
     self.isLocked = false;
-    NSLog(@"Timer Fired");
 }
 
+-(void) fireOverlapTimer: (NSTimer *) timer{
+    self.lastOverlappedView = nil;
+}
+
+#define OVERLAP_PERIOD 1
 - (UIView *) checkForOverlapWithView: (UIView *) senderView{
     for (UIView * view in self.notes){
         if (view != senderView && view != self.lastOverlappedView){
-            if (CGRectIntersectsRect(view.frame,senderView.frame)){
+            CGRect halfViewFrame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width/2, view.frame.size.height/2);
+            if (CGRectIntersectsRect(halfViewFrame,senderView.frame)){
                 return view;
             }
         }
@@ -72,7 +76,7 @@
     return nil;
 }
 
-#define FLIP_PERIOD 2
+#define FLIP_PERIOD 1.5
 -(BOOL) checkScrollToNextPage: (CGRect) rect forView: (UIView *) view{
     
     BOOL movingRight = rect.origin.x > view.frame.origin.x ? YES : NO;
@@ -80,7 +84,7 @@
     totalPages-- ;
     int leftCornerPage = rect.origin.x/ self.stackView.frame.size.width;
     int rightCornerPage = (rect.origin.x + rect.size.width)/self.stackView.frame.size.width;
-    int middleCornerPage = (rect.origin.x + (rect.size.width/2))/self.stackView.frame.size.width;
+    int middleCornerPage = (rect.origin.x + (2*rect.size.width/3))/self.stackView.frame.size.width;
     if ( leftCornerPage == middleCornerPage && middleCornerPage == rightCornerPage ){
         self.currentPage = leftCornerPage;
     }
@@ -99,7 +103,6 @@
 
         CGPoint offset = CGPointMake(self.stackView.frame.size.width + self.stackView.contentOffset.x, self.stackView.contentOffset.y);
         [self.stackView setContentOffset:offset animated:YES];
-        NSLog(@"content size after offset : %f", self.stackView.contentSize.width);
         return YES;
     }
     else if ( !movingRight && 
@@ -183,6 +186,7 @@
         UIView * overlappingView = [self checkForOverlapWithView:sender.view];
         if (overlappingView){
             self.lastOverlappedView = overlappingView;
+            [NSTimer scheduledTimerWithTimeInterval:OVERLAP_PERIOD target:self selector:@selector(fireOverlapTimer:) userInfo:nil repeats:NO];
             CGRect tempFrame = overlappingView.frame;
             [UIView animateWithDuration:0.25 animations:^{ overlappingView.frame = self.lastFrame;}];
             self.lastFrame = tempFrame;
