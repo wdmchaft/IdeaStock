@@ -567,6 +567,12 @@
     //layout stack in the empty rect
     [self layoutStackView:(StackView *) self.highlightedView inRect:fittingRect ];
     
+    //clean up
+    [self removeContextualToolbarItems:self.highlightedView];
+    self.highlightedView = nil;
+    self.editMode = NO;
+
+    
 }
 
 - (IBAction)deletePressed:(id)sender {
