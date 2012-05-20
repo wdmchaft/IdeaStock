@@ -352,6 +352,223 @@
 }
 
 
+
+#define EXPAND_COL_SIZE 4
+#define SEPERATOR_RATIO 0.1
+
+-(CGSize) getRectSizeForStack: (StackView *) stack{
+    
+    int notesInStack = [stack.views count];
+    
+    //get the number of rows in expanded state
+    int numberOfRows = notesInStack / EXPAND_COL_SIZE;
+    if (notesInStack % EXPAND_COL_SIZE != 0 ) numberOfRows++;
+    
+    //get a single note size from the main note in stack
+    NoteView * dummyNote = ((NoteView *)[stack.views lastObject]);
+    [dummyNote resetSize];
+    float noteWidth = dummyNote.bounds.size.width ;
+    float noteHeight = dummyNote.bounds.size.height ;
+    
+    //calculate the rectangle size before adding seperators
+    int rowItems = notesInStack >= EXPAND_COL_SIZE ? EXPAND_COL_SIZE : notesInStack;
+    float rectWidth = noteWidth + ( (noteWidth/3) * (rowItems - 1)) + ((numberOfRows-1) * (MAX(noteWidth,noteHeight)) * SEPERATOR_RATIO);
+    float rectHeight= noteHeight + ( (noteHeight/3) * (numberOfRows - 1));
+    
+    //add seperator sizes
+    // float biggerSize = MAX(rectWidth, rectHeight);
+    // float seperatorSize = SEPERATOR_RATIO * biggerSize;
+    //rectWidth += (EXPAND_COL_SIZE + 1) * seperatorSize;
+    //rectHeight += (numberOfRows + 1) * seperatorSize;
+    
+    return CGSizeMake(rectWidth, rectHeight);
+}
+- (CGRect) findFittingRectangle: (StackView *) stack{
+    
+    //find the size
+    CGSize rectSize = [self getRectSizeForStack:stack];
+    
+    //now find the starting position
+    float stackMiddleX = stack.frame.origin.x + stack.frame.size.width/2;
+    float stackMiddleY = stack.frame.origin.y + stack.frame.size.height/2;
+    
+    //first find the starting x
+    float startX = 0;
+    float startY = 0;
+    if (stackMiddleX + rectSize.width/2 > self.bulletinboardView.bounds.origin.x + self.bulletinboardView.bounds.size.width){
+        //rect goes out of the right side of screen so fit it in a way that the right side of rect is on the right side of 
+        //the screen
+        startX = (self.bulletinboardView.bounds.origin.x + self.bulletinboardView.bounds.size.width) - rectSize.width;
+    }
+    else if (stackMiddleX - rectSize.width/2 < self.bulletinboardView.bounds.origin.x){
+        //rect goes out of the left side of screen so fit it in a way that the left side of rect is on the left side of 
+        //the screen
+        startX = self.bulletinboardView.bounds.origin.x;
+    }
+    else{
+        //rect fits around the stack 
+        startX = stackMiddleX - rectSize.width/2;
+    }
+    
+    //do the same thing to find starting y
+    if (stackMiddleY + rectSize.height/2 > self.bulletinboardView.bounds.origin.y + self.bulletinboardView.bounds.size.height){
+        startY  = (self.bulletinboardView.bounds.origin.y + self.bulletinboardView.bounds.size.height) - rectSize.height;
+    }
+    else if (stackMiddleY - rectSize.height/2 < self.bulletinboardView.bounds.origin.y){
+        startY = self.bulletinboardView.bounds.origin.y;
+    }
+    else {
+        startY = stackMiddleY - rectSize.height/2;
+    }
+
+    return CGRectMake(startX, startY, rectSize.width, rectSize.height);
+}
+
+-(void) clearRectangle: (CGRect) rect{
+    for (UIView * subView in self.bulletinboardView.subviews){
+        if ([subView isKindOfClass:[NoteView class]]){
+            if (CGRectIntersectsRect(subView.frame, rect)){
+                
+                float newStartX = subView.frame.origin.x;
+                float newStartY = subView.frame.origin.y;
+                
+                //find the closest point for the view to exit
+                float rectMid = rect.origin.x + rect.size.width/2;
+                if (subView.frame.origin.x < rectMid){
+                    //view is in the left side of the rect 
+                    //find the distance to move the view come out of the rect
+                    //it will first try to see if the view fits the screen if it exits from the right side rect
+                    //if this is not possible it tries the lower side of the rect and if that doesnt work either
+                    //it should definetly fit the top side ( given that the rect is not bigger than the screen)
+                    //we try each case in order
+                    
+                    //first the left side. This distance is the distance between the left edge of the rect and the right edge of view
+                    float distanceToExitX = rect.origin.x - (subView.frame.origin.x + subView.frame.size.width) ;
+                    
+                    //check to see if traveling this distance makes the subView fall out of screen on the left side
+                    if ( subView.frame.origin.x - distanceToExitX > self.bulletinboardView.bounds.origin.x){
+                        //the view doesn't fall out of the screen so move make its starting point there
+                        newStartX = subView.frame.origin.x - distanceToExitX;
+                    }
+                    else{
+                        //the view falls out of the screen if we move left, try moving down
+                        //the distance is between the top edge of the subview and low buttom of the rect
+                        float distanceToExitY = (rect.origin.y + rect.size.height) - subView.frame.origin.y;
+                        if (subView.frame.origin.y + distanceToExitY < self.bulletinboardView.bounds.origin.y + self.bulletinboardView.bounds.size.height){
+                            //the view can be fit outside the lower edge of the rect
+                            newStartY = subView.frame.origin.y + distanceToExitY;
+                        }
+                        else {
+                            //the view cannot be fit in the left side of rect or the down side of the rect, surely it can fit in the upper side of the rect
+                            //find the distance to exit from the top side. the distance is between the low edge of the view and the top edge of the rect
+                            distanceToExitY = (subView.frame.origin.y + subView.frame.size.height) - rect.origin.y;
+                            newStartY = subView.frame.origin.y - distanceToExitY;
+                        }
+                    }
+                    
+                }
+                
+                
+                //we follow the same algorithm if the view is in the right side of the rect
+                else {
+                    
+                    //try the rightside. The distance is between the right edge of rect and left edge of view
+                    float distanceToExitX = (rect.origin.x + rect.size.width) - subView.frame.origin.x;
+                    if (subView.frame.origin.x + distanceToExitX < self.bulletinboardView.bounds.origin.x + self.bulletinboardView.bounds.size.width){
+                        //fits in the right side 
+                        newStartX = subView.frame.origin.x + distanceToExitX;
+                    }
+                    else{
+                        //try the lower side
+                        float distanceToExitY = (rect.origin.y + rect.size.height) - subView.frame.origin.y;
+                        if (subView.frame.origin.y + distanceToExitY < self.bulletinboardView.bounds.origin.y + self.bulletinboardView.bounds.size.height){
+                            newStartY = subView.frame.origin.y + distanceToExitY;
+                        }
+                        else{
+                            //use the top side
+                            distanceToExitY = (subView.frame.origin.y + subView.frame.size.height) - rect.origin.y;
+                            newStartY = subView.frame.origin.y - distanceToExitY;
+                        }
+                    }
+                }
+                
+                [UIView animateWithDuration:0.25 animations:^{subView.frame = CGRectMake(newStartX, newStartY, subView.frame.size.width, subView.frame.size.height);}];
+            }
+        }
+    }
+}
+
+-(void) layoutStackView: (StackView *) stack inRect: (CGRect) rect{
+    
+    NSArray * items = stack.views;
+    
+    //now find the size of the seperator from any note
+    [((NoteView *) [items lastObject]) resetSize];
+    float noteWidth = ((NoteView *)[items lastObject]).frame.size.width  ;
+    float noteHeight = ((NoteView *)[items lastObject]).frame.size.height;
+
+    //remove all existing gesture recognizers and add the new ones. 
+    //finally position all the notes in the center of the stackView
+    for (NoteView * view in items){
+        for (UIGestureRecognizer * gr in view.gestureRecognizers){
+            [view removeGestureRecognizer:gr];
+        }
+        UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectPanned:)];
+        UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(objectPinched:)];
+        UILongPressGestureRecognizer * lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(objectPressed:)];
+        
+        [view addGestureRecognizer:lpgr];
+        [view addGestureRecognizer:gr];
+        [view addGestureRecognizer:pgr];
+        [view resetSize];
+        [view removeFromSuperview];
+        [self.bulletinboardView addSubview:view];
+        view.frame = stack.frame;
+
+    }
+    
+    //now remove the stack itself
+    [UIView animateWithDuration:0.25 animations:^{ stack.alpha = 0 ;} completion:^(BOOL finished){[stack removeFromSuperview];}];
+    
+    
+    float seperator = SEPERATOR_RATIO * MAX(noteWidth, noteHeight);
+    
+    float startX = rect.origin.x;
+    float startY = rect.origin.y;
+    
+    int rowCount = 0;
+    int colCount = 0;
+    for (NoteView * view in items){
+        [UIView animateWithDuration:0.5 animations:^{view.frame = CGRectMake(startX, startY, view.frame.size.width, view.frame.size.height);}];
+        rowCount++;
+        if (rowCount > EXPAND_COL_SIZE){
+            rowCount = 0;
+            colCount++;
+            startX = rect.origin.x + seperator * (colCount+1);
+            startY += noteHeight/3;
+        }
+        else{
+            startX += noteWidth/3;
+        }
+        
+    }
+}
+- (IBAction)expandPressed:(id)sender {
+    if (!self.editMode) return;
+    
+    if (![self.highlightedView isKindOfClass:[StackView class]]) return;
+    
+    
+    CGRect fittingRect = [self findFittingRectangle: (StackView *) self.highlightedView];
+    
+    //move stuff that is in the rectangle out of it
+    [self clearRectangle: fittingRect];
+    
+    //layout stack in the empty rect
+    [self layoutStackView:(StackView *) self.highlightedView inRect:fittingRect ];
+    
+}
+
 - (IBAction)deletePressed:(id)sender {
     if(!self.editMode) return;
     
