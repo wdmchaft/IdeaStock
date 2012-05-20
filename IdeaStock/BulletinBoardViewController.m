@@ -353,7 +353,7 @@
 
 
 
-#define EXPAND_COL_SIZE 4
+#define EXPAND_COL_SIZE 5
 #define SEPERATOR_RATIO 0.1
 
 -(CGSize) getRectSizeForStack: (StackView *) stack{
@@ -372,8 +372,9 @@
     
     //calculate the rectangle size before adding seperators
     int rowItems = notesInStack >= EXPAND_COL_SIZE ? EXPAND_COL_SIZE : notesInStack;
-    float rectWidth = noteWidth + ( (noteWidth/3) * (rowItems - 1)) + ((numberOfRows-1) * (MAX(noteWidth,noteHeight)) * SEPERATOR_RATIO);
-    float rectHeight= noteHeight + ( (noteHeight/3) * (numberOfRows - 1));
+    float seperatorSpace = MAX(noteWidth,noteHeight) * SEPERATOR_RATIO;
+    float rectWidth = noteWidth + ( (noteWidth/3) * (rowItems - 1)) + ((numberOfRows) * seperatorSpace);
+    float rectHeight= (2* seperatorSpace) + noteHeight + ( (noteHeight/3) * (numberOfRows - 1));
     
     //add seperator sizes
     // float biggerSize = MAX(rectWidth, rectHeight);
@@ -533,15 +534,15 @@
     
     float seperator = SEPERATOR_RATIO * MAX(noteWidth, noteHeight);
     
-    float startX = rect.origin.x;
-    float startY = rect.origin.y;
+    float startX = rect.origin.x + seperator;
+    float startY = rect.origin.y + seperator;
     
     int rowCount = 0;
     int colCount = 0;
     for (NoteView * view in items){
         [UIView animateWithDuration:0.5 animations:^{view.frame = CGRectMake(startX, startY, view.frame.size.width, view.frame.size.height);}];
         rowCount++;
-        if (rowCount > EXPAND_COL_SIZE){
+        if (rowCount >= EXPAND_COL_SIZE){
             rowCount = 0;
             colCount++;
             startX = rect.origin.x + seperator * (colCount+1);
