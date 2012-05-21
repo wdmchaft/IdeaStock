@@ -431,6 +431,7 @@
     return CGRectMake(startX, startY, rectSize.width, rectSize.height);
 }
 
+#define EXIT_OFFSET_RATIO 0.1
 -(void) clearRectangle: (CGRect) rect{
     for (UIView * subView in self.bulletinboardView.subviews){
         if ([subView isKindOfClass:[NoteView class]]){
@@ -438,6 +439,9 @@
                 
                 float newStartX = subView.frame.origin.x;
                 float newStartY = subView.frame.origin.y;
+                
+                float offsetX = EXIT_OFFSET_RATIO * subView.frame.size.width;
+                float offsetY = EXIT_OFFSET_RATIO * subView.frame.size.height;
                 
                 //find the closest point for the view to exit
                 float rectMid = rect.origin.x + rect.size.width/2;
@@ -450,7 +454,7 @@
                     //we try each case in order
                     
                     //first the left side. This distance is the distance between the left edge of the rect and the right edge of view
-                    float distanceToExitX = rect.origin.x - (subView.frame.origin.x + subView.frame.size.width) ;
+                    float distanceToExitX = (subView.frame.origin.x + subView.frame.size.width + offsetX) - rect.origin.x;
                     
                     //check to see if traveling this distance makes the subView fall out of screen on the left side
                     if ( subView.frame.origin.x - distanceToExitX > self.bulletinboardView.bounds.origin.x){
@@ -460,15 +464,15 @@
                     else{
                         //the view falls out of the screen if we move left, try moving down
                         //the distance is between the top edge of the subview and low buttom of the rect
-                        float distanceToExitY = (rect.origin.y + rect.size.height) - subView.frame.origin.y;
-                        if (subView.frame.origin.y + distanceToExitY < self.bulletinboardView.bounds.origin.y + self.bulletinboardView.bounds.size.height){
+                        float distanceToExitY = (rect.origin.y + rect.size.height + offsetY) - (subView.frame.origin.y);
+                        if (subView.frame.origin.y + subView.frame.size.height +distanceToExitY < self.bulletinboardView.bounds.origin.y + self.bulletinboardView.bounds.size.height){
                             //the view can be fit outside the lower edge of the rect
                             newStartY = subView.frame.origin.y + distanceToExitY;
                         }
                         else {
                             //the view cannot be fit in the left side of rect or the down side of the rect, surely it can fit in the upper side of the rect
                             //find the distance to exit from the top side. the distance is between the low edge of the view and the top edge of the rect
-                            distanceToExitY = (subView.frame.origin.y + subView.frame.size.height) - rect.origin.y;
+                            distanceToExitY = (subView.frame.origin.y + subView.frame.size.height + offsetY) - rect.origin.y;
                             newStartY = subView.frame.origin.y - distanceToExitY;
                         }
                     }
@@ -480,20 +484,20 @@
                 else {
                     
                     //try the rightside. The distance is between the right edge of rect and left edge of view
-                    float distanceToExitX = (rect.origin.x + rect.size.width) - subView.frame.origin.x;
-                    if (subView.frame.origin.x + distanceToExitX < self.bulletinboardView.bounds.origin.x + self.bulletinboardView.bounds.size.width){
+                    float distanceToExitX = (rect.origin.x + rect.size.width + offsetX) - (subView.frame.origin.x );
+                    if (subView.frame.origin.x + subView.frame.size.width + distanceToExitX < self.bulletinboardView.bounds.origin.x + self.bulletinboardView.bounds.size.width){
                         //fits in the right side 
                         newStartX = subView.frame.origin.x + distanceToExitX;
                     }
                     else{
                         //try the lower side
-                        float distanceToExitY = (rect.origin.y + rect.size.height) - subView.frame.origin.y;
-                        if (subView.frame.origin.y + distanceToExitY < self.bulletinboardView.bounds.origin.y + self.bulletinboardView.bounds.size.height){
+                        float distanceToExitY = (rect.origin.y + rect.size.height + offsetY) - (subView.frame.origin.y);
+                        if (subView.frame.origin.y +subView.frame.size.height + distanceToExitY < self.bulletinboardView.bounds.origin.y + self.bulletinboardView.bounds.size.height){
                             newStartY = subView.frame.origin.y + distanceToExitY;
                         }
                         else{
                             //use the top side
-                            distanceToExitY = (subView.frame.origin.y + subView.frame.size.height) - rect.origin.y;
+                            distanceToExitY = (subView.frame.origin.y + subView.frame.size.height + offsetY) - rect.origin.y;
                             newStartY = subView.frame.origin.y - distanceToExitY;
                         }
                     }
