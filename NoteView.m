@@ -121,7 +121,7 @@
         [self addSubview:imageView];
         [self addSubview:textView];
         self.text = @"Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. All rights reserved.Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. ";
-        //self.backgroundColor = [UIColor blueColor];
+        self.backgroundColor = [UIColor blueColor];
     }
     return self;
 }

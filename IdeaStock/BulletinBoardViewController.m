@@ -524,7 +524,9 @@
         [view resetSize];
         [view removeFromSuperview];
         [self.bulletinboardView addSubview:view];
-        view.frame = stack.frame;
+        CGRect viewTempFrame = CGRectMake(stack.frame.origin.x, stack.frame.origin.y, view.frame.size.width, view.frame.size.height);
+        view.frame = viewTempFrame;
+        
 
     }
     
