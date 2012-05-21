@@ -139,8 +139,8 @@
                                      if ([mainView isKindOfClass:[NoteView class]]){
                                          stackFrame = CGRectMake(mainView.frame.origin.x - ((STACKING_SCALING_WIDTH -1)/4) * mainView.frame.origin.x,
                                                                  mainView.frame.origin.y - ((STACKING_SCALING_HEIGHT -1)/4) * mainView.frame.origin.y,
-                                                                 mainView.frame.size.width * STACKING_SCALING_WIDTH,
-                                                                 mainView.frame.size.height * STACKING_SCALING_HEIGHT );
+                                                                 mainView.bounds.size.width * STACKING_SCALING_WIDTH,
+                                                                 mainView.bounds.size.height * STACKING_SCALING_HEIGHT );
                                      }
                                      else if ([mainView isKindOfClass:[StackView class]]){
                                          stackFrame = mainView.frame;

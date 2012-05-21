@@ -73,7 +73,6 @@
     }
 }
 - (void) setText:(NSString *)text{
-    _text = text;
     for (UIView * subView in self.subviews){
         if ([subView isKindOfClass:[UITextView class]]){
             ((UITextView *) subView).text = text;
@@ -82,6 +81,16 @@
     }
 }
 
+-(NSString *) text{
+    for (UIView * subView in self.subviews){
+        if ([subView isKindOfClass:[UITextView class]]){
+            return ((UITextView *) subView).text;
+        }
+    }
+    return nil;
+
+    
+}
 -(void) resetSize{
     [self setFrame: self.originalFrame];
     for (UIView * subView in self.subviews){

@@ -66,6 +66,7 @@ return _highlightedImage;
 }
 - (void) setText:(NSString *)text{
     _text = text;
+    NSLog(@"text: %@", text);
     for(UIView * view in self.subviews){
         if ([view isKindOfClass:[UITextView class]]){
             ((UITextView *) view).text = text;
