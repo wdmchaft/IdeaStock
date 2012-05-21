@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (strong,nonatomic) UIBarButtonItem * deleteButton;
 @property (strong,nonatomic) UIBarButtonItem * removeButton;
+@property (nonatomic) int unstackCounter;
 @end
 
 @implementation StackViewController
@@ -35,7 +36,7 @@
 @synthesize deleteButton = _deleteButton;
 @synthesize removeButton = _removeButton;
 @synthesize openStack = _openStack;
-
+@synthesize unstackCounter = _unstackCounter;
 
 @synthesize notes = _notes;
 @synthesize delegate = _delegate;
@@ -307,7 +308,6 @@
 }
 
 -(void) screenTapped: (UITapGestureRecognizer *) sender{
-    NSLog(@"%@", ((NoteView *) self.notes.lastObject).delegate);
     if (self.isInEditMode){
         self.isInEditMode = NO;
         self.highLightedNote.highlighted = NO;
@@ -364,6 +364,24 @@
 
     }];
     
+}
+- (IBAction)unstackPressed:(id)sender {
+    
+    [UIView animateWithDuration:0.5 animations:^{self.highLightedNote.alpha = 0;} completion:^(BOOL finished){
+        [self.notes removeObject:self.highLightedNote];
+        self.highLightedNote.highlighted = NO;
+        [self.highLightedNote removeFromSuperview];
+        self.unstackCounter++;
+        [self.delegate unstackItem:self.highLightedNote
+                          fromView:self.openStack 
+                     withPastCount:self.unstackCounter];
+        [self removeToolbarItems];
+        self.editing = NO;
+        self.highLightedNote = nil;
+        [self layoutNotes: YES];
+        
+        
+    }];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

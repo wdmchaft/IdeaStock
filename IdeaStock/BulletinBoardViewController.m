@@ -639,6 +639,46 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
+-(void) unstackItem:(UIView *) item
+           fromView: (UIView *) stackView 
+      withPastCount: (int) count{
+    if (!item) NSLog(@"Fuck you nill item");
+    if ( [item isKindOfClass:[NoteView class]]){
+        NoteView * noteItem = (NoteView *) item;
+        
+        for (UIGestureRecognizer * gr in noteItem.gestureRecognizers){
+            [noteItem removeGestureRecognizer:gr];
+        }
+    
+        UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectPanned:)];
+        UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(objectPinched:)];
+        UILongPressGestureRecognizer * lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(objectPressed:)];
+    
+        [noteItem addGestureRecognizer:lpgr];
+        [noteItem addGestureRecognizer:gr];
+        [noteItem addGestureRecognizer:pgr];
+    
+        noteItem.delegate = self;
+        [noteItem resetSize];
+
+        [noteItem resetSize];
+        float offset = SEPERATOR_RATIO * noteItem.frame.size.width;
+        CGRect tempRect = CGRectMake (self.bulletinboardView.frame.origin.x + offset,
+                                      self.bulletinboardView.frame.origin.y + self.bulletinboardView.frame.size.height - (noteItem.frame.size.height + offset),
+                                      noteItem.frame.size.width,
+                                      noteItem.frame.size.height);
+        noteItem.frame = tempRect;
+        [self.bulletinboardView addSubview:noteItem];
+        [UIView animateWithDuration:0.5 animations:^{ noteItem.alpha = 1;} completion:^(BOOL isFinished){
+            CGRect finalRect = CGRectMake(stackView.frame.origin.x + (count * offset * 2), 
+                                          stackView.frame.origin.y + (count * offset * 2), 
+                                          noteItem.frame.size.width,
+                                          noteItem.frame.size.height);
+            [UIView animateWithDuration:1 animations:^{noteItem.frame = finalRect;}];
+        }];
+        
+    }
+}
 
 /*----------------
  Note View Delegate Methods

@@ -684,11 +684,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "StackViewController.h"
-         timestampString = "359264222.847173"
+         timestampString = "359279993.949483"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "29"
-         endingLineNumber = "29"
+         startingLineNumber = "32"
+         endingLineNumber = "32"
          landmarkName = "@protocol StackViewDelegate"
          landmarkType = "2">
       </FileBreakpoint>
@@ -866,11 +866,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "StackViewController.m"
-         timestampString = "359264222.847173"
+         timestampString = "359279993.949483"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "48"
-         endingLineNumber = "48"
+         startingLineNumber = "49"
+         endingLineNumber = "49"
          landmarkName = "-setNotes:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -879,11 +879,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "StackViewController.m"
-         timestampString = "359264294.042501"
+         timestampString = "359279993.949483"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "381"
-         endingLineNumber = "381"
+         startingLineNumber = "399"
+         endingLineNumber = "399"
          landmarkName = "-textViewDidEndEditing:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -944,11 +944,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "StackViewController.m"
-         timestampString = "359268867.273763"
+         timestampString = "359279993.949483"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "57"
-         endingLineNumber = "57"
+         startingLineNumber = "58"
+         endingLineNumber = "58"
          landmarkName = "-setNotes:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -963,6 +963,19 @@
          startingLineNumber = "440"
          endingLineNumber = "440"
          landmarkName = "-clearRectangle:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "IdeaStock/BulletinBoardViewController.m"
+         timestampString = "359279993.949483"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "645"
+         endingLineNumber = "645"
+         landmarkName = "-unstackItem:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

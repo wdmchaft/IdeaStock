@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.1" toolsVersion="2182" systemVersion="11E53" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="C4k-Gx-gPL">
     <dependencies>
+        <deployment defaultVersion="1296" identifier="iOS"/>
         <development defaultVersion="4200" identifier="xcode"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
     </dependencies>
@@ -127,7 +128,11 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="1nr-ws-QbI"/>
-                                    <barButtonItem title="unstack" id="YGo-ca-dtz"/>
+                                    <barButtonItem title="unstack" id="YGo-ca-dtz">
+                                        <connections>
+                                            <action selector="unstackPressed:" destination="roQ-DY-ZM6" id="3Mc-ZV-cTV"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem systemItem="trash" id="TKt-9e-sZG">
                                         <color key="tintColor" red="0.77096619899999996" green="0.0085596043070000002" blue="0.025293316020000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
@@ -161,6 +166,30 @@
     <resources>
         <image name="trashcan.png" width="86" height="87"/>
     </resources>
+    <classes>
+        <class className="BulletinBoardViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BulletinBoardViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="bulletinboardView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="label" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+            </relationships>
+        </class>
+        <class className="MainScreenDropboxViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainScreenDropboxViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="mainView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="prototypeView" candidateClass="UIView"/>
+            </relationships>
+        </class>
+        <class className="StackViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StackViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="stackView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
