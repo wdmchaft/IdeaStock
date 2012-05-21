@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "BulletinBoardObject.h"
+#import "NoteViewDelegate.h"
+
 @interface NoteView : UIView <BulletinBoardObject>
+
+@property (weak,nonatomic) id<NoteViewDelegate> delegate;
 
 -(void) resetSize;
 -(void) resizeToRect:(CGRect) rect Animate: (BOOL) animate;

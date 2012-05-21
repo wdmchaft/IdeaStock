@@ -32,8 +32,27 @@
 @synthesize highLightedImage = _highLightedImage;
 @synthesize normalImage = _normalImage;
 @synthesize lastFrame = _lastFrame;
+@synthesize delegate = _delegate;
 
 
+-(void) setDelegate:(id<NoteViewDelegate>)delegate{
+    _delegate = delegate;
+    for (UIView * subView in self.subviews){
+        if ([subView isKindOfClass:[UITextView class]]){
+            ((UITextView *)subView).delegate = delegate;
+        }
+    }
+}
+/*
+-(id <NoteViewDelegate>) delegate{
+    for (UIView * subView in self.subviews){
+        if ([subView isKindOfClass:[UITextView class]]){
+            return (id<NoteViewDelegate>) ((UITextView *)subView).delegate;
+        }
+    }
+    return nil;
+}
+*/
 -(UIImage *) normalImage{
     if (!_normalImage){
         _normalImage = [UIImage imageNamed:@"green note3.png"];
@@ -118,6 +137,7 @@
                                       self.bounds.origin.y + self.bounds.size.height * STARTING_POS_OFFSET_Y,
                                       self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
         UITextView * textView = [[UITextView alloc] initWithFrame:textFrame];
+        textView.delegate = self.delegate;
         [self addSubview:imageView];
         [self addSubview:textView];
         self.text = @"Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. All rights reserved.Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. ";
@@ -133,6 +153,7 @@
                             self.frame.size.width * scaleFactor,
                             self.frame.size.height * scaleFactor);
     for (UIView * subView in self.subviews){
+        
         if ([subView isKindOfClass:[UIImageView class]]){
             subView.frame = CGRectMake(subView.frame.origin.x, subView.frame.origin.y, subView.frame.size.width * scaleFactor, subView.frame.size.height * scaleFactor);
             
@@ -145,6 +166,7 @@
                                           self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
             UITextView * textView = [[UITextView alloc] initWithFrame:textFrame];
             textView.text = oldText;
+            textView.delegate = self.delegate;
             
             
             [subView removeFromSuperview];
@@ -172,6 +194,7 @@
                                                   self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
                     UITextView * textView = [[UITextView alloc] initWithFrame:textFrame];
                     textView.text = oldText;
+                    textView.delegate = self.delegate;
                     
                     
                     [subView removeFromSuperview];

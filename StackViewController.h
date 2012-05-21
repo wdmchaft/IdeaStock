@@ -8,12 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "BulletinBoardObject.h"
+#import "NoteViewDelegate.h"
+#import "StackView.h"
 
 @protocol StackViewDelegate;
-@interface StackViewController : UIViewController
+
+@interface StackViewController : UIViewController <NoteViewDelegate>
 
 @property (weak,nonatomic) NSMutableArray * notes;
-@property (weak, nonatomic) UIViewController<StackViewDelegate> * delegate;
+@property (weak, nonatomic) id<StackViewDelegate>  delegate;
+@property (weak,nonatomic) StackView * openStack;
 
 @end
 

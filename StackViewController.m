@@ -34,6 +34,7 @@
 @synthesize toolbar = _toolbar;
 @synthesize deleteButton = _deleteButton;
 @synthesize removeButton = _removeButton;
+@synthesize openStack = _openStack;
 
 
 @synthesize notes = _notes;
@@ -44,11 +45,13 @@
     _notes = notes;
     
     //remove the gesture recognizor from all the notes
-    for(UIView * view in _notes){
+    for(NoteView * view in _notes){
         for (UIGestureRecognizer * gr in [view gestureRecognizers]){
             [view removeGestureRecognizer:gr];
-            [((NoteView *) view) resetSize];
+            [view resetSize];
+            
         }
+        
         UILongPressGestureRecognizer * pgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(notePressed:)];
         [view addGestureRecognizer:pgr];
 
@@ -276,6 +279,7 @@
     
     BOOL needResizing = NO;
     for (UIView * view in self.notes){
+        
         if (needResizing){
             needResizing = NO;
             CGSize size = CGSizeMake(self.stackView.frame.size.width * (page+1), self.stackView.frame.size.height);
@@ -303,6 +307,7 @@
 }
 
 -(void) screenTapped: (UITapGestureRecognizer *) sender{
+    NSLog(@"%@", ((NoteView *) self.notes.lastObject).delegate);
     if (self.isInEditMode){
         self.isInEditMode = NO;
         self.highLightedNote.highlighted = NO;
@@ -324,7 +329,9 @@
     [super viewDidLoad];
     [self.stackView setContentSize:self.stackView.bounds.size];
     NSLog(@"Notes here: %d", [self.notes count]);
-    
+    for (NoteView * view in self.notes){
+        view.delegate = self;
+    }
     NSMutableArray * toolbar = [self.toolbar.items mutableCopy];
     self.deleteButton = [toolbar lastObject];
     [toolbar removeLastObject];
@@ -364,4 +371,18 @@
 	return YES;
 }
 
+
+/*-------------
+ Note View Delegate
+ -----------------*/
+
+-(void) textViewDidEndEditing:(UITextView *)textView{
+    NSLog(@"%@", textView.text);
+    [self.openStack setText: textView.text];
+}
+
+
+-(NSString *) description{
+    return @"stackViewController";
+}
 @end

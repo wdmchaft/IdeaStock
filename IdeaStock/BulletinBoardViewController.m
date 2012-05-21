@@ -12,6 +12,7 @@
 #import "StackView.h"
 #import "StackViewController.h"
 
+
 @interface BulletinBoardViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *label;
@@ -113,13 +114,17 @@
     StackViewController * stackViewer = [self.storyboard instantiateViewControllerWithIdentifier:@"StackView"];
     stackViewer.delegate = self;
     stackViewer.notes = ((StackView *) sender.view).views;
+    stackViewer.openStack = (StackView *) sender.view;
     [self presentModalViewController:stackViewer animated:YES];
 }
 
+/*
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     ((StackViewController *) segue.destinationViewController).delegate = self;
     ((StackViewController *) segue.destinationViewController).notes = ((StackView *) sender).views;
+    ((StackViewController *) segue.destinationViewController).openStack = (StackView *) sender;
 }
+*/
 
 #define STACKING_SCALING_WIDTH 1.1
 #define STACKING_SCALING_HEIGHT 1.2
@@ -296,9 +301,10 @@
     
     CGPoint location = [sender locationOfTouch:0 inView:self.bulletinboardView];
     CGRect frame = CGRectMake(location.x, location.y, 200, 200);
-    UIView * note = [[NoteView alloc] initWithFrame:frame];
+    NoteView * note = [[NoteView alloc] initWithFrame:frame];
     note.transform = CGAffineTransformScale(note.transform, 10, 10);
     note.alpha = 0;
+    note.delegate = self;
     
     [UIView animateWithDuration:0.25 animations:^{
         note.transform = CGAffineTransformScale(note.transform, 0.1, 0.1);
@@ -521,6 +527,8 @@
         [view addGestureRecognizer:lpgr];
         [view addGestureRecognizer:gr];
         [view addGestureRecognizer:pgr];
+        
+         view.delegate = self;
         [view resetSize];
         [view removeFromSuperview];
         [self.bulletinboardView addSubview:view];
@@ -627,5 +635,13 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
+
+/*----------------
+ Note View Delegate Methods
+ -------------------*/
+
+-(void) textViewDidEndEditing:(UITextView *)textView{
+    NSLog(@"synchronize dropbox");
+}
 
 @end

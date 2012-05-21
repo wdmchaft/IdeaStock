@@ -70,7 +70,7 @@ loadMetadataFailedWithError:(NSError *)error {
 }
 - (IBAction)buttonPressed:(id)sender {
     
-    id board = self.board;
+   // id board = self.board;
 }
 - (IBAction)savePressed:(id)sender {
     [self.board saveBulletinBoard];
