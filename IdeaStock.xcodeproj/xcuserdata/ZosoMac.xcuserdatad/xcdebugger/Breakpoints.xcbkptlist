@@ -21,7 +21,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/DropBoxAssociativeBulletinBoard.m"
-         timestampString = "359417451.236648"
+         timestampString = "359422516.453726"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "284"
@@ -47,7 +47,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/DropBoxAssociativeBulletinBoard.m"
-         timestampString = "359417451.236648"
+         timestampString = "359422516.453726"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "424"
@@ -60,7 +60,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/DropBoxAssociativeBulletinBoard.m"
-         timestampString = "359417451.236648"
+         timestampString = "359422516.453726"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "466"
@@ -73,11 +73,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/FileSystemHelper.m"
-         timestampString = "359412542.569806"
+         timestampString = "359422516.453726"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "56"
-         endingLineNumber = "56"
+         startingLineNumber = "58"
+         endingLineNumber = "58"
          landmarkName = "+createMissingDirectoryForPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -86,11 +86,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/FileSystemHelper.m"
-         timestampString = "359412542.569806"
+         timestampString = "359422516.453726"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "48"
-         endingLineNumber = "48"
+         startingLineNumber = "50"
+         endingLineNumber = "50"
          landmarkName = "+createMissingDirectoryForPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -125,7 +125,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/DropBoxAssociativeBulletinBoard.m"
-         timestampString = "359417451.236648"
+         timestampString = "359422516.453726"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "285"
@@ -250,10 +250,23 @@
          landmarkName = "-initiateBulletinBoad"
          landmarkType = "5">
       </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "IdeaStock/DropBoxAssociativeBulletinBoard.m"
+         timestampString = "359421278.651284"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "255"
+         endingLineNumber = "255"
+         landmarkName = "-getNoteDataForNote:"
+         landmarkType = "5">
+      </FileBreakpoint>
    </FileBreakpoints>
    <ExceptionBreakpoints>
       <ExceptionBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          scope = "0"

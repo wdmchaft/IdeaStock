@@ -28,6 +28,8 @@
 + (NSString *) getPathForNoteWithName: (NSString *) noteName inBulletinBoardWithName: (NSString *) bulletinBoardName{
     NSString * bulletinBoardPath = [bulletinBoardName stringByAppendingString:@"/"];
     NSString * noteExtension = [[[bulletinBoardPath stringByAppendingString:noteName] stringByAppendingString:@"/"] stringByAppendingString:NOTE_XOOML_FILE_NAME];
+    
+    noteExtension = [noteExtension lowercaseString];
     NSString * path = [NSTemporaryDirectory() stringByAppendingString:noteExtension];
     return path;
 }

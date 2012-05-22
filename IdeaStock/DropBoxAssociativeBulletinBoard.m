@@ -256,7 +256,7 @@
     NSError * err;
     NSString *data = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
     if (!data){
-        NSLog(@"Failed to read file from disk: %@", err);
+        NSLog(@"Failed to read  file from disk: %@", err);
         return nil;
     }
     

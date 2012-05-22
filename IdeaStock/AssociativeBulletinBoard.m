@@ -157,6 +157,8 @@
     
     id <Note> noteObj = [XoomlParser xoomlNoteFromXML:noteData];
     
+    if ( !noteObj) nil;
+    
     //now set the note object as a noteContent keyed on its id
     [self.noteContents setObject:noteObj forKey:noteID];
     
