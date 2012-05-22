@@ -211,6 +211,12 @@
     NSLog(@"Grouping initiated");
     
     
+    //send notification to the notification objects 
+    //so interested objects can see that the bulletinboard is loaded
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"BulletinBoardLoaded"
+                                                        object:self];
+    
 }
 
 /*--------------------------------------------------

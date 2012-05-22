@@ -9,6 +9,7 @@
 #import "MainScreenDropboxViewController.h"
 #import "XoomlBulletinBoardController.h"
 #import "BulletinBoardViewController.h"
+#import "DropBoxAssociativeBulletinBoard.h"
 
 @interface MainScreenDropboxViewController ()
 
@@ -420,8 +421,10 @@
     if ([segue.identifier isEqualToString:@"bulletinBoardSegue"]){
         
         NSString * name = ((UILabel *)[[((UIView *) sender) subviews] objectAtIndex:0]).text;
+        DropBoxAssociativeBulletinBoard * board = [[DropBoxAssociativeBulletinBoard alloc] initBulletinBoardFromXoomlWithName:name];
         ((BulletinBoardViewController *) segue.destinationViewController).bulletinBoardName = name; 
         ((BulletinBoardViewController *) segue.destinationViewController).parent = self;
+        ((BulletinBoardViewController *) segue.destinationViewController).board = board;
     }
 }
 -(void) selectBulletinBoard: (UITapGestureRecognizer *) sender{

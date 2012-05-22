@@ -7,7 +7,7 @@
 //
 
 #import "BulletinBoardViewController.h"
-#import "DropBoxAssociativeBulletinBoard.h"
+
 #import "NoteView.h"
 #import "StackView.h"
 #import "StackViewController.h"
@@ -33,7 +33,6 @@
 /*-----------------------------------------------------------
                             Model
  -----------------------------------------------------------*/
-@property (strong, nonatomic) DropBoxAssociativeBulletinBoard * board;
 @property int noteCount;
 /*-----------------------------------------------------------
                         Modal Properties
@@ -211,9 +210,13 @@
     note.ID = noteID;
 }
 
--(void) loadSavedNotes{
-    NSDictionary * notes = [self.board getAllNotes];
-    NSLog(@"%@", notes);
+/*-----------------------------------------------------------
+                            Notification
+ -----------------------------------------------------------*/
+
+-(void) loadSavedNotes: (NSNotification *) notificatoin{
+    
+    NSLog(@"Got Notified of Bulletinboard load");
 }
 /*-----------------------------------------------------------
                         Layout Methods
@@ -625,7 +628,10 @@
     [self.bulletinboardView addGestureRecognizer:tgr];
     self.bulletinboardView.delegate = self;
     
-    [self loadSavedNotes];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loadSavedNotes:)
+                                                 name:@"BulletinBoardLoaded" 
+                                               object:self.board];
 }
 
 -(IBAction) expandPressed:(id) sender {
@@ -686,6 +692,8 @@
     [self setView:nil];
     [self setBulletinboardView:nil];
     [self setToolbar:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

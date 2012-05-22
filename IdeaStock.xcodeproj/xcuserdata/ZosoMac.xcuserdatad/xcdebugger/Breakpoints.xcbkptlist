@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "359362469.703045"
+         timestampString = "359403623.392808"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "210"
-         endingLineNumber = "210"
+         startingLineNumber = "209"
+         endingLineNumber = "209"
          landmarkName = "-addNoteToModel:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/DropBoxAssociativeBulletinBoard.m"
-         timestampString = "359362051.674762"
+         timestampString = "359403623.392808"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "270"
-         endingLineNumber = "270"
+         startingLineNumber = "276"
+         endingLineNumber = "276"
          landmarkName = "-addNoteContent:andProperties:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -34,12 +34,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "359365090.137535"
+         timestampString = "359403623.392808"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "215"
-         endingLineNumber = "215"
-         landmarkName = "-loadSavedNotes"
+         startingLineNumber = "218"
+         endingLineNumber = "218"
+         landmarkName = "-loadSavedNotes:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/DropBoxAssociativeBulletinBoard.m"
-         timestampString = "359366067.87124"
+         timestampString = "359403623.392808"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "410"
-         endingLineNumber = "410"
+         startingLineNumber = "416"
+         endingLineNumber = "416"
          landmarkName = "-restClient:loadedMetadata:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -60,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/DropBoxAssociativeBulletinBoard.m"
-         timestampString = "359366605.675267"
+         timestampString = "359403623.392808"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "452"
-         endingLineNumber = "452"
+         startingLineNumber = "458"
+         endingLineNumber = "458"
          landmarkName = "-restClient:loadedFile:"
          landmarkType = "5">
       </FileBreakpoint>
