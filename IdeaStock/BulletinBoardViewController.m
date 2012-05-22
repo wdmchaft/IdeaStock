@@ -229,10 +229,33 @@
     self.noteCount = [allNotes count];
     NSLog(@"Read %d notes",[allNotes count]);
     for(NSString* noteID in [allNotes allKeys]){
-        BulletinBoardNote * note = [allNotes objectForKey:noteID];
+        BulletinBoardNote * noteObj = [allNotes objectForKey:noteID];
         NSDictionary * noteAttributes = [self.board getAllNoteAttributesForNote:noteID];
-        NSLog(@"%@",noteAttributes);
+        NSDictionary * position = [noteAttributes objectForKey:@"position"];
+        float positionX = [[[position objectForKey:@"positionX"] lastObject] floatValue];
+        float positionY = [[[position objectForKey:@"positionY"] lastObject] floatValue];
         
+        CGRect noteFrame = CGRectMake(positionX, positionY, NOTE_WIDTH, NOTE_HEIGHT);
+        NoteView * note = [[NoteView alloc] initWithFrame:noteFrame];
+        note.transform = CGAffineTransformScale(note.transform, 10, 10);
+        note.alpha = 0;
+        note.delegate = self;
+        
+        [UIView animateWithDuration:0.25 animations:^{
+            note.transform = CGAffineTransformScale(note.transform, 0.1, 0.1);
+            note.alpha = 1;
+        }];
+        
+        [self.bulletinboardView addSubview:note];
+        UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectPanned:)];
+        UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(objectPinched:)];
+        UILongPressGestureRecognizer * lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(objectPressed:)];
+        
+        [note addGestureRecognizer:lpgr];
+        [note addGestureRecognizer:gr];
+        [note addGestureRecognizer:pgr];
+
+
     }
 }
 

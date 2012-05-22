@@ -190,7 +190,6 @@
     //from the delegate.
     
     NSDictionary * noteInfo = [self.delegate getAllNoteBasicInfo];
-    NSLog(@"read notes: %@",noteInfo);
     
     //set up note contents
     for(NSString * noteID in noteInfo){
