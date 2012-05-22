@@ -15,7 +15,7 @@
 #import "XoomlAttributeHelper.h"
 
 
-#define SYNCHRONIZATION_PERIOD 200
+#define SYNCHRONIZATION_PERIOD 15
 @interface DropBoxAssociativeBulletinBoard()
 
 /*--------------------------------------------------
@@ -95,7 +95,11 @@
  Every SYNCHRONIZATION_PERIOD seconds we try to synchrnoize. 
  If the synchronize flag is set the bulletin board is updated from
  the internal datastructures.
+ 
+ 
  */
+
+
 -(void) startTimer{
     [NSTimer scheduledTimerWithTimeInterval: SYNCHRONIZATION_PERIOD 
                                      target:self 
@@ -117,7 +121,12 @@
     }
 }
 
+
 -(void) saveBulletinBoard{
+    if ([self.dataModel isKindOfClass:[DropboxDataModel class]]){
+        ((DropboxDataModel *) self.dataModel).delegate = self;
+    }
+    
     [self.dataModel updateBulletinBoardWithName: self.bulletinBoardName
                            andBulletinBoardInfo:[self.dataSource data]];
     
@@ -181,7 +190,7 @@
     //from the delegate.
     
     NSDictionary * noteInfo = [self.delegate getAllNoteBasicInfo];
-    
+    NSLog(@"read notes: %@",noteInfo);
     
     //set up note contents
     for(NSString * noteID in noteInfo){
@@ -288,7 +297,7 @@
                     forNote:noteID 
                   andValues:values];
     
-    self.needSynchronization  = YES;
+    self.needSynchronization = YES;
 }
 
 -(void) addNote: (NSString *) targetNoteID
@@ -322,7 +331,7 @@ toBulletinBoardAttribute:attributeName
 -(void) removeNoteWithID:(NSString *)delNoteID{
     [super removeNoteWithID:delNoteID];
     
-    self.needSynchronization = YES;
+    [self saveBulletinBoard];
 }
 
 -(void) removeNote: (NSString *) targetNoteID

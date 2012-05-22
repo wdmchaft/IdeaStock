@@ -207,6 +207,9 @@ fromBulletinBoardAttribute: (NSString *) attributeName
 /*
  Returns an array of strings containing the name of all the attributes of type attributeType in the bulletin board. 
  */
+
+- (NSDictionary *) getAllNoteAttributesForNote: (NSString *) noteID;
+
 - (NSDictionary *) getAllBulletinBoardAttributeNamesOfType: (NSString *) attributeType;
 
 /*

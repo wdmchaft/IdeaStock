@@ -14,6 +14,10 @@
 
 @property (weak,nonatomic) id<NoteViewDelegate> delegate;
 
+-(id) initNoteWithFrame:(CGRect) frame 
+                  andText: (NSString *)text
+                    andID:(NSString *)ID;
+
 -(void) resetSize;
 
 -(void) resizeToRect:(CGRect) rect Animate: (BOOL) animate;

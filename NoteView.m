@@ -124,7 +124,7 @@
                         Initializers
  -----------------------------------------------------------*/
 
-- (id)initWithFrame:(CGRect)frame
+-(id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -142,6 +142,16 @@
         self.text = @"Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. All rights reserved.Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. ";
         // self.backgroundColor = [UIColor blueColor];
     }
+    return self;
+}
+
+-(id) initNoteWithFrame:(CGRect) frame 
+                  andText: (NSString *)text
+                    andID:(NSString *)ID{
+    self = [self initWithFrame:frame];
+    self.text = text;
+    self.ID = ID;
+    
     return self;
 }
 

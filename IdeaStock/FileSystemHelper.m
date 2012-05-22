@@ -19,8 +19,6 @@
     
     NSString * pathExtension = [[bulletinBoardName stringByAppendingString:@"/"] stringByAppendingString:BULLETINBOARD_XOOML_FILE_NAME];
     pathExtension = [pathExtension lowercaseString];
-    NSString * tempDir = NSTemporaryDirectory();
-    NSLog(@"Temp Dir Is: %@", tempDir);
     NSString *path = [NSTemporaryDirectory() stringByAppendingString:pathExtension];
     return path;
 
@@ -57,7 +55,8 @@
     BOOL shouldCreateDirectory = YES;
     if (rootDirectories){
         for (NSString * dir in rootDirectories){
-            if ([dir isEqualToString:directoryName]){
+            if ([dir isEqualToString:directoryName] || [dir isEqualToString:[directoryName lowercaseString]]){
+                
                 shouldCreateDirectory =NO;
                 break;
             }

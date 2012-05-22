@@ -239,7 +239,7 @@
     DDXMLElement * xoomlAssociation = [[DDXMLElement alloc] initWithName: XOOML_ASSOCIATION];
     
     [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:NOTE_ID stringValue:noteID]];
-    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:ASSOCIATED_ITEM stringValue:@""]];
+    [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:ASSOCIATED_ITEM stringValue:name]];
     [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:ASSOCIATED_ICON stringValue:@""]];
     [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:ASSOCIATED_XOOML_FRAGMENT stringValue:@""]];
     [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:LEVEL_OF_SYNCHRONIZATION stringValue:@""]];
@@ -249,7 +249,7 @@
     [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:CREATED_ON stringValue:[XoomlAttributeHelper generateCurrentTimeForXooml]]];
     [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:MODIFIED_BY stringValue:APP_NAME]];
     [xoomlAssociation addAttribute:[DDXMLNode attributeWithName:MODIFIED_ON stringValue:[XoomlAttributeHelper generateCurrentTimeForXooml]]];
-
+    
     return xoomlAssociation;
     
 }
@@ -299,6 +299,10 @@
 
 + (NSString *) xPathForAllNotes{
     return @"//xooml:association";
+}
+
++ (NSString *) xPathForBulletinBoard{
+    return @"//xooml:fragment";
 }
 
 @end

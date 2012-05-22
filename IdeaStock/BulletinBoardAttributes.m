@@ -96,6 +96,10 @@
     
 }
 
+-(NSDictionary *) getAllAttributes{
+    return [self.attributes copy];
+}
+
 /*--------------------------------------------------
  
                         Deletion

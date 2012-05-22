@@ -44,6 +44,8 @@
 
 @end
 
+#define NOTE_WIDTH 200
+#define NOTE_HEIGHT 200
 
 /*========================================================================*/
 
@@ -216,11 +218,23 @@
 
 -(void) loadSavedNotes: (NSNotification *) notificatoin{
     
-    NSLog(@"Got Notified of Bulletinboard load");
+    [self layoutNotes];
 }
 /*-----------------------------------------------------------
                         Layout Methods
  -----------------------------------------------------------*/
+
+-(void) layoutNotes{
+    NSDictionary * allNotes = [self.board getAllNotes];
+    self.noteCount = [allNotes count];
+    NSLog(@"Read %d notes",[allNotes count]);
+    for(NSString* noteID in [allNotes allKeys]){
+        BulletinBoardNote * note = [allNotes objectForKey:noteID];
+        NSDictionary * noteAttributes = [self.board getAllNoteAttributesForNote:noteID];
+        NSLog(@"%@",noteAttributes);
+        
+    }
+}
 
 #define EXPAND_COL_SIZE 5
 #define SEPERATOR_RATIO 0.1
@@ -467,12 +481,13 @@
     }
 }
 
+
 -(void) mainScreenDoubleTapped:(UITapGestureRecognizer *) sender{
     
     if (self.editMode) return;
     
     CGPoint location = [sender locationOfTouch:0 inView:self.bulletinboardView];
-    CGRect frame = CGRectMake(location.x, location.y, 200, 200);
+    CGRect frame = CGRectMake(location.x, location.y, NOTE_WIDTH, NOTE_HEIGHT);
     NoteView * note = [[NoteView alloc] initWithFrame:frame];
     note.transform = CGAffineTransformScale(note.transform, 10, 10);
     note.alpha = 0;

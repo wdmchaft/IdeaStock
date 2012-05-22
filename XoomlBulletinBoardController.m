@@ -111,7 +111,7 @@
 #define NOTE_NAME_KEY @"name"
 #define NOTE_POSITION_X_KEY @"positionX"
 #define NOTE_POSITION_Y_KEY @"positionY"
-#define NOTE_IS_VISIBLE @"isVisbile"
+#define NOTE_IS_VISIBLE @"isVisible"
 #define NOTE_LINKAGE_KEY @"linkage"
 #define POSITION_TYPE @"position"
 #define XOOML_POSITION_X @"positionX"
@@ -150,6 +150,7 @@
     return [notes lastObject];
     
 }
+
 
 /*
  Returns a dictionary of all the linkage info for the note with noteID. 
@@ -552,6 +553,7 @@ WithReferenceToNote: (NSString *) refNoteID{
     //create the note node
     DDXMLElement * noteNode = [XoomlParser xoomlForBulletinBoardNote:noteId andName:noteName];
     
+
     //create the position attribute
     DDXMLElement * associationAttribute = [XoomlParser xoomlForAssociationToolAttributeWithType:POSITION_TYPE];
     //create the position property itself
@@ -560,6 +562,8 @@ WithReferenceToNote: (NSString *) refNoteID{
     [associationAttribute addChild:noteProperty];
     [noteNode addChild: associationAttribute];
     
+    DDXMLElement * root = [self.document rootElement];
+    [root addChild:noteNode];
     //add the linkage information if there are any
     NSDictionary * linkageRefs = [properties objectForKey:LINKAGE_TYPE];
     if (!linkageRefs) return;

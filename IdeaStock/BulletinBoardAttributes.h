@@ -92,6 +92,7 @@
 -(NSArray *) getAttributeWithName: (NSString *) attributeName
                   forAttributeType: (NSString *) attributeType;
 
+-(NSDictionary *) getAllAttributes;
 /*--------------------------------------------------
  
                         Deletion

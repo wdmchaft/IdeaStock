@@ -153,7 +153,7 @@
 -(void) initiateNoteContent: (NSData *) noteData 
                   forNoteID: (NSString *) noteID
                     andName: (NSString *) noteName
-              andProperties: (NSDictionary *) noteInfo{
+              andProperties: (NSDictionary *) noteInfos{
     
     id <Note> noteObj = [XoomlParser xoomlNoteFromXML:noteData];
     
@@ -164,6 +164,8 @@
     //note specific attributes for that note
     BulletinBoardAttributes * noteAttribute = [self createBulletinBoardAttributeForNotes];
     //get the note specific info from the note basic info
+    NSDictionary * noteInfo = [noteInfos objectForKey:noteID];
+    
     NSString * positionX = [noteInfo objectForKey: POSITION_X];
     if (!positionX ) positionX = DEFAULT_X_POSITION;
     NSString * positionY = [noteInfo objectForKey: POSITION_Y];
@@ -352,6 +354,7 @@
     [noteAttribute createAttributeWithName:POSITION_Y forAttributeType:POSITION_TYPE andValues:[NSArray arrayWithObject:positionY]];
     [noteAttribute createAttributeWithName:IS_VISIBLE forAttributeType:VISIBILITY_TYPE andValues:[NSArray arrayWithObject:isVisible]];
     
+    NSLog(@"%@",[noteAttribute getAllAttributes]);
     [self.noteAttributes setObject:noteAttribute forKey:noteID];
     
     //update the datamodel
@@ -589,6 +592,12 @@ fromBulletinBoardAttribute: (NSString *) attributeName
 
 - (NSDictionary *) getAllNotes{
     return [self.noteContents copy];
+}
+
+- (NSDictionary *) getAllNoteAttributesForNote: (NSString *) noteID{
+    
+    BulletinBoardAttributes * noteAttributes = [self.noteAttributes objectForKey:noteID];
+    return [noteAttributes getAllAttributes];
 }
 
 - (NSDictionary *) getAllBulletinBoardAttributeNamesOfType: (NSString *) attributeType{
