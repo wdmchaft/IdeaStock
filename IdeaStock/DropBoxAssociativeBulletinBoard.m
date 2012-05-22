@@ -408,8 +408,10 @@ fromBulletinBoardAttribute:attributeName
 - (void)restClient:(DBRestClient*)client loadedMetadata:(DBMetadata*)metadata{
     
     NSString * tempDir = [NSTemporaryDirectory() stringByDeletingPathExtension];
-    // NSString * rootFolder = [tempDir stringByAppendingString:[metadata path]];
-    //NSLog(@"Creating root directory: %@",rootFolder);
+    
+     NSString * rootFolder = [tempDir stringByAppendingString:[metadata path]];
+    [FileSystemHelper createMissingDirectoryForPath:rootFolder];
+    NSLog(@"Creating root directory: %@",rootFolder);
     //handle this error later
     NSError * err;
     NSFileManager * fileManager =  [NSFileManager defaultManager];

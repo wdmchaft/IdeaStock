@@ -18,9 +18,23 @@
 
 //Constructor for creating an empty note with the creationDate
 -(BulletinBoardNote *) initWithCreationDate: (NSString *) date{
-    BulletinBoardNote * note = [[BulletinBoardNote alloc] init];
-    note.creationDate = date;
-    return note;
+    self = [[BulletinBoardNote alloc] init];
+    self.creationDate = date;
+    return self;
+}
+
+-(BulletinBoardNote *) initEmptyNoteWithID: (NSString *) noteID{
+    self = [[BulletinBoardNote alloc] init];
+    self.noteTextID = noteID;
+    return self;
+}
+
+-(BulletinBoardNote *) initEmptyNoteWithID:(NSString *)noteID 
+                                   andDate: (NSString *)date{
+    self = [[BulletinBoardNote alloc] init];
+    self.noteTextID = noteID;
+    self.creationDate = date;
+    return self;
 }
 
 - (NSString *) description{

@@ -14,4 +14,5 @@
 
 + (NSString *) getPathForNoteWithName: (NSString *) noteName inBulletinBoardWithName: (NSString *) bulletinBoardName;        
 
++ (void) createMissingDirectoryForPath: (NSString *) path;
 @end

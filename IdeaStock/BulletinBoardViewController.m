@@ -12,6 +12,7 @@
 #import "StackView.h"
 #import "StackViewController.h"
 #import "BulletinBoardNote.h"
+#import "XoomlAttributeHelper.h"
 
 
 @interface BulletinBoardViewController ()
@@ -33,7 +34,7 @@
                             Model
  -----------------------------------------------------------*/
 @property (strong, nonatomic) DropBoxAssociativeBulletinBoard * board;
-
+@property int noteCount;
 /*-----------------------------------------------------------
                         Modal Properties
  -----------------------------------------------------------*/
@@ -65,6 +66,7 @@
 @synthesize editMode = _editMode;
 @synthesize highlightedView = _highlightedView;
 @synthesize bulletinBoardName = _bulletinBoardName;
+@synthesize noteCount = _noteCount;
 
 -(DropBoxAssociativeBulletinBoard *) board{
     
@@ -187,6 +189,32 @@
     return ans;
 }
 
+/*-----------------------------------------------------------
+                        Model Manipulation
+ -----------------------------------------------------------*/
+
+-(void) addNoteToModel: (NoteView *) note{
+    NSString * noteTextID = [XoomlAttributeHelper generateUUID];
+    NSString * creationDate = [XoomlAttributeHelper generateCurrentTimeForXooml];
+    NSString * noteID = [XoomlAttributeHelper generateUUID];
+    
+    NSString * noteName = [NSString stringWithFormat:@"Note%d",self.noteCount];
+    self.noteCount++;
+    NSString * positionX = [NSString stringWithFormat:@"%f", note.frame.origin.x];
+    NSStream * positionY = [NSString stringWithFormat:@"%f", note.frame.origin.y];
+    
+    NSLog(@"%@",positionX);
+    NSDictionary * noteProperties =[[NSDictionary alloc] initWithObjectsAndKeys:noteName,@"name",noteID,@"ID",positionX,@"positionX",positionY, @"positionY",@"true", @"isVisible",nil];
+    BulletinBoardNote * noteItem = [[BulletinBoardNote alloc] initEmptyNoteWithID:noteTextID andDate:creationDate];
+    
+    [self.board addNoteContent:noteItem andProperties:noteProperties];
+    note.ID = noteID;
+}
+
+-(void) loadSavedNotes{
+    NSDictionary * notes = [self.board getAllNotes];
+    NSLog(@"%@", notes);
+}
 /*-----------------------------------------------------------
                         Layout Methods
  -----------------------------------------------------------*/
@@ -461,9 +489,7 @@
     [note addGestureRecognizer:gr];
     [note addGestureRecognizer:pgr];
     
-    //add note to dropbox
-    
-    
+    [self addNoteToModel:note];
 }
 
 -(void) objectPressed: (UILongPressGestureRecognizer *) sender{
@@ -598,6 +624,8 @@
     [self.bulletinboardView addGestureRecognizer:gr];
     [self.bulletinboardView addGestureRecognizer:tgr];
     self.bulletinboardView.delegate = self;
+    
+    [self loadSavedNotes];
 }
 
 -(IBAction) expandPressed:(id) sender {

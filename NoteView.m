@@ -47,6 +47,7 @@
 @synthesize normalImage = _normalImage;
 @synthesize lastFrame = _lastFrame;
 @synthesize delegate = _delegate;
+@synthesize ID = _ID;
 
 -(void) setDelegate:(id<NoteViewDelegate>) delegate{
     _delegate = delegate;

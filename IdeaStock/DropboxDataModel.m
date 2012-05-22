@@ -83,36 +83,6 @@
  
  -------------------------------------------------*/
 
--(void) createMissingDirectoryForPath: (NSString *) path{
-    
-    NSString * directory = [path stringByDeletingLastPathComponent];
-    NSString * directoryName = [directory lastPathComponent];
-    NSFileManager * fileManager = [NSFileManager defaultManager];
-    NSError * err;
-    //check to see if directory exists
-    NSString * root = [directory stringByDeletingLastPathComponent];
-    NSArray * rootDirectories = [fileManager contentsOfDirectoryAtPath:root  error:&err];
-    BOOL shouldCreateDirectory = YES;
-    if (rootDirectories){
-        for (NSString * dir in rootDirectories){
-            if ([dir isEqualToString:directoryName]){
-                shouldCreateDirectory =NO;
-                break;
-            }
-        }
-    }
-    if (shouldCreateDirectory){
-        
-
-        BOOL didCreate = [fileManager createDirectoryAtPath:directory withIntermediateDirectories:NO attributes:nil error: &err];
-        if(!didCreate){
-            NSLog(@"Failed To create Direcjjjtory: %@",err);
-        }
-        
-    }
-    
-}
-
 
 /*--------------------------------------------------
  
@@ -129,7 +99,7 @@
 
     NSError * err;
     NSString * path = [FileSystemHelper getPathForBulletinBoardWithName:bulletinBoardName];
-    [self createMissingDirectoryForPath:path];
+    [FileSystemHelper createMissingDirectoryForPath:path];
     BOOL didWrite = [content writeToFile:path options:NSDataWritingAtomic error:&err];
     if (!didWrite){
         NSLog(@"Error in writing to file system: %@", err);
@@ -162,7 +132,7 @@
     NSError * err;
     //first write the note to the disk
     NSString * path = [FileSystemHelper getPathForNoteWithName:noteName inBulletinBoardWithName:bulletinBoardName];
-    [self createMissingDirectoryForPath:path];
+    [FileSystemHelper createMissingDirectoryForPath:path];
     BOOL didWrite = [note writeToFile:path options:NSDataWritingAtomic error:&err];
     if (!didWrite){
         NSLog(@"Error in writing to file system: %@", err);
@@ -204,7 +174,7 @@
     
     NSError * err;
     NSString * path = [FileSystemHelper getPathForBulletinBoardWithName:bulletinBoardName];
-    [self createMissingDirectoryForPath:path];
+    [FileSystemHelper createMissingDirectoryForPath:path];
     
     BOOL didWrite = [content writeToFile:path options:NSDataWritingAtomic error:&err];
     if (!didWrite){
@@ -239,7 +209,7 @@
     
     NSError *err;
     NSString *path = [FileSystemHelper getPathForNoteWithName:noteName inBulletinBoardWithName:bulletinBoardName];
-    [self createMissingDirectoryForPath:path];
+    [FileSystemHelper createMissingDirectoryForPath:path];
     
     BOOL didWrite = [content writeToFile:path options:NSDataWritingAtomic error:&err];
     if (!didWrite){

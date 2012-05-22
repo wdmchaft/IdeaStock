@@ -10,6 +10,10 @@
 #import "Note.h"
 @interface BulletinBoardNote : NSObject <Note>
 
-- (BulletinBoardNote *) initWithCreationDate: (NSString *) date;
+-(BulletinBoardNote *) initWithCreationDate: (NSString *) date;
 
+-(BulletinBoardNote *) initEmptyNoteWithID:(NSString *)noteID 
+                                   andDate: (NSString *)date;
+
+-(BulletinBoardNote *) initEmptyNoteWithID: (NSString *) noteID;
 @end

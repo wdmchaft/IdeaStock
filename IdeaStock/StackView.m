@@ -40,6 +40,7 @@
 @synthesize highlighted = _highlighted;
 @synthesize normalImage = _normalImage;
 @synthesize highlightedImage = _highlightedImage;
+@synthesize ID = _ID;
 
 #define STARTING_POS_OFFSET_X 0.10
 #define STARTING_POS_OFFSET_Y 0.20
