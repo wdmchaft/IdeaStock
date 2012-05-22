@@ -8,14 +8,31 @@
 
 #import "StackView.h"
 
+
 @interface StackView()
+
+/*========================================================================*/
+
+
+/*------------------------------------------------
+                    UI properties
+ -------------------------------------------------*/
 
 @property (weak, nonatomic) NoteView * mainView;
 @property (strong,nonatomic) UIImage * normalImage;
 @property (strong, nonatomic) UIImage * highlightedImage;
+
 @end
 
+/*========================================================================*/
+
+
 @implementation StackView
+
+
+/*------------------------------------------------
+                    Synthesizers
+ -------------------------------------------------*/
 
 @synthesize views = _views;
 @synthesize mainView = _mainView;
@@ -29,7 +46,7 @@
 #define TEXT_WIDHT_RATIO 0.83
 #define TEXT_HEIGHT_RATIO 0.60
 
-- (UIImage *) normalImage{
+-(UIImage *) normalImage{
     if (!_normalImage){
         _normalImage = [UIImage imageNamed:@"stackedGreenNote.png"];
     }
@@ -43,7 +60,7 @@
 return _highlightedImage;
 }
 
--(void) setHighlighted:(BOOL)highlighted{
+-(void) setHighlighted:(BOOL) highlighted{
     
     _highlighted = highlighted;
 
@@ -64,7 +81,8 @@ return _highlightedImage;
         }
     }
 }
-- (void) setText:(NSString *)text{
+
+-(void) setText:(NSString *) text{
     _text = text;
     for(UIView * view in self.subviews){
         if ([view isKindOfClass:[UITextView class]]){
@@ -72,6 +90,14 @@ return _highlightedImage;
         }
     }
 }
+
+
+/*========================================================================*/
+
+
+/*------------------------------------------------
+                    Initializers
+ -------------------------------------------------*/
 
 -(id) initWithViews: (NSMutableArray *) views 
         andMainView: (NoteView *) mainView 
@@ -97,6 +123,10 @@ return _highlightedImage;
     return self;    
     
 }
+
+/*------------------------------------------------
+                    Layout Methods
+ -------------------------------------------------*/
 
 -(void) scale:(CGFloat) scaleFactor{
     

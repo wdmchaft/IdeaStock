@@ -10,21 +10,35 @@
 
 @interface NoteView()
 
-@property (nonatomic) CGRect originalFrame;
-@property (nonatomic) CGRect lastFrame;
+/*========================================================================*/
+
+/*-----------------------------------------------------------
+                        UI Properties
+ -----------------------------------------------------------*/
 
 @property (strong, nonatomic) UIImage * highLightedImage;
 @property (strong, nonatomic) UIImage * normalImage;
 
+/*-----------------------------------------------------------
+                         Modal Properties
+ -----------------------------------------------------------*/
+
+@property (nonatomic) CGRect originalFrame;
+@property (nonatomic) CGRect lastFrame;
+
 @end
+
+/*========================================================================*/
 
 @implementation NoteView
 
+/*-----------------------------------------------------------
+                        Synthesizers
+ -----------------------------------------------------------*/
 #define STARTING_POS_OFFSET_X 0.07
 #define STARTING_POS_OFFSET_Y 0.13
 #define TEXT_WIDHT_RATIO 0.9
 #define TEXT_HEIGHT_RATIO 0.75
-
 
 @synthesize text = _text;
 @synthesize highlighted = _highlighted;
@@ -34,8 +48,7 @@
 @synthesize lastFrame = _lastFrame;
 @synthesize delegate = _delegate;
 
-
--(void) setDelegate:(id<NoteViewDelegate>)delegate{
+-(void) setDelegate:(id<NoteViewDelegate>) delegate{
     _delegate = delegate;
     for (UIView * subView in self.subviews){
         if ([subView isKindOfClass:[UITextView class]]){
@@ -43,16 +56,7 @@
         }
     }
 }
-/*
--(id <NoteViewDelegate>) delegate{
-    for (UIView * subView in self.subviews){
-        if ([subView isKindOfClass:[UITextView class]]){
-            return (id<NoteViewDelegate>) ((UITextView *)subView).delegate;
-        }
-    }
-    return nil;
-}
-*/
+
 -(UIImage *) normalImage{
     if (!_normalImage){
         _normalImage = [UIImage imageNamed:@"green note3.png"];
@@ -68,7 +72,8 @@
     }
     return _highLightedImage;
 }
--(void) setHighlighted:(BOOL)highlighted{
+
+-(void) setHighlighted:(BOOL) highlighted{
     _highlighted = highlighted;
     
     for (UIView * subView in self.subviews){
@@ -91,7 +96,8 @@
         
     }
 }
-- (void) setText:(NSString *)text{
+
+-(void) setText:(NSString *) text{
     for (UIView * subView in self.subviews){
         if ([subView isKindOfClass:[UITextView class]]){
             ((UITextView *) subView).text = text;
@@ -110,20 +116,12 @@
 
     
 }
--(void) resetSize{
-    [self setFrame: self.originalFrame];
-    for (UIView * subView in self.subviews){
-        if ([subView isKindOfClass:[UIImageView class]]){
-            subView.frame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, self.bounds.size.height);
-            
-        }
-        else if ([subView isKindOfClass:[UITextView class]]){
-            subView.frame = CGRectMake(self.bounds.origin.x + self.bounds.size.width * STARTING_POS_OFFSET_X ,
-                                       self.bounds.origin.y + self.bounds.size.height * STARTING_POS_OFFSET_Y,
-                                       self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
-        }
-    }
-}
+
+/*========================================================================*/
+
+/*-----------------------------------------------------------
+                        Initializers
+ -----------------------------------------------------------*/
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -141,9 +139,28 @@
         [self addSubview:imageView];
         [self addSubview:textView];
         self.text = @"Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. All rights reserved.Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. ";
-       // self.backgroundColor = [UIColor blueColor];
+        // self.backgroundColor = [UIColor blueColor];
     }
     return self;
+}
+
+/*-----------------------------------------------------------
+                        Layout Methods
+ -----------------------------------------------------------*/
+
+-(void) resetSize{
+    [self setFrame: self.originalFrame];
+    for (UIView * subView in self.subviews){
+        if ([subView isKindOfClass:[UIImageView class]]){
+            subView.frame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, self.bounds.size.height);
+            
+        }
+        else if ([subView isKindOfClass:[UITextView class]]){
+            subView.frame = CGRectMake(self.bounds.origin.x + self.bounds.size.width * STARTING_POS_OFFSET_X ,
+                                       self.bounds.origin.y + self.bounds.size.height * STARTING_POS_OFFSET_Y,
+                                       self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
+        }
+    }
 }
 
 -(void) scale:(CGFloat) scaleFactor{
@@ -176,7 +193,6 @@
         }
     }
 }
-
 
 -(void) resizeToRect:(CGRect)rect Animate: (BOOL) animate{
     if (animate){

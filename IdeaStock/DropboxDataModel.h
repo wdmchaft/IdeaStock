@@ -15,8 +15,6 @@
 
 @property  (nonatomic, strong) DBRestClient *restClient;
 
-
-
 /*
  This class is an implementation of the data model. 
  The main feature of this class is that it provides asynch communication with 
@@ -32,7 +30,6 @@
 
 //TODO I am not sure whether this is really an implementation of the DataModel protocol
 //because it is somehow changing its behavior . 
-
 
 
 -(void) getAllBulletinBoardsAsynch;

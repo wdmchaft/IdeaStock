@@ -15,6 +15,7 @@
 @property (weak,nonatomic) id<NoteViewDelegate> delegate;
 
 -(void) resetSize;
+
 -(void) resizeToRect:(CGRect) rect Animate: (BOOL) animate;
 
 

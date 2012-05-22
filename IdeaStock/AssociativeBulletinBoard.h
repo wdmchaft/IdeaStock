@@ -8,21 +8,27 @@
 
 #import <Foundation/Foundation.h>
 #import "BulletinBoard.h"
-
 #import "DataModel.h"
-
 #import "BulletinBoardDelegate.h"
 #import "BulletinBoardDatasource.h"
 
+
+
 #define STACKING @"stacking"
 #define GROUPING @"grouping"
-
-
 #define LINKAGE @"linkage"
 #define POSITION @"position"
 
-
 @interface AssociativeBulletinBoard : NSObject <BulletinBoard>
+
+/*====================================================================*/
+
+
+/*--------------------------------------------------
+ 
+                    Data Structure Properties
+ 
+ -------------------------------------------------*/
 
 @property (nonatomic,strong) NSString * bulletinBoardName;
 /*
@@ -38,7 +44,6 @@
  */
 @property (nonatomic,strong) BulletinBoardAttributes * bulletinBoardAttributes;
 
-
 /*
  This is an NSDictionary of BulletinBoardAttributes. Its keyed on the noteIDs.
  
@@ -47,7 +52,11 @@
  */
 @property (nonatomic,strong) NSMutableDictionary * noteAttributes;
 
-
+/*--------------------------------------------------
+ 
+                Delegatation Properties
+ 
+ -------------------------------------------------*/
 
 /*
  This is the datamodel that the bulletin board uses for retrieval and storage of itself. 
@@ -62,10 +71,17 @@
  */
 @property (nonatomic,strong) id <BulletinBoardDelegate> delegate;
 
-
 @property (nonatomic,strong) id <BulletinBoardDatasource> dataSource;
 
 
+/*====================================================================*/
+
+
+/*--------------------------------------------------
+ 
+                    Initializiation
+ 
+ -------------------------------------------------*/
 /*
  Creates an internal model for the bulletin board which is empty 
  and updates the data model for to have an external representation of
@@ -80,7 +96,6 @@
 - (id)initBulletinBoardFromXoomlWithDatamodel: (id <DataModel>) datamodel 
                                       andName: (NSString *) bulletinBoardName;
 
-
 /*
  TODO These should be protected but until I find a way to do that let them staty public
  */
@@ -90,6 +105,9 @@
                 andProperties: (NSDictionary *) noteInfo;
 
 -(void) initiateLinkages;
+
 -(void) initiateStacking;
+
 -(void) initiateGrouping;
+
 @end

@@ -10,11 +10,11 @@
 #import "XoomlParser.h"
 
 @implementation BulletinBoardNote
+
 @synthesize noteText = _noteText;
 @synthesize noteTextID = _noteID;
 @synthesize  creationDate = _creationDate;
 @synthesize modificationDate = _modificationDate;
-
 
 //Constructor for creating an empty note with the creationDate
 -(BulletinBoardNote *) initWithCreationDate: (NSString *) date{
@@ -22,7 +22,6 @@
     note.creationDate = date;
     return note;
 }
-
 
 - (NSString *) description{
     return self.noteText;

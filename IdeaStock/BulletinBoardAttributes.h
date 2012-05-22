@@ -25,14 +25,17 @@
 
 @interface BulletinBoardAttributes : NSObject
 
-/*------------
- Creation
- -------------- */
+/*--------------------------------------------------
+
+                    Creation
+ 
+ -------------------------------------------------*/
+
 /*
  Create empty dictionaries to hold attribute names . Each dictionary is keyed on
  attribute type and is stored in attribtues.
  */
-- (id) initWithAttributes: (NSArray *)attributeTypes;
+-(id) initWithAttributes: (NSArray *)attributeTypes;
 
 /*
  Creates an attribute with Name attributeName and attributeType and stores all the values
@@ -42,7 +45,7 @@
  
  If the attributeType is not valid the method returns without doing anything.
  */
-- (void) createAttributeWithName: (NSString *) attributeName
+-(void) createAttributeWithName: (NSString *) attributeName
                 forAttributeType:(NSString *) attributeType
                        andValues: (NSArray *)values;
 
@@ -63,9 +66,12 @@
        ToAttribute: (NSString *)attributeName
   forAttributeType: (NSString *) attributeType;
 
-/*------------
- Query
- -------------- */
+
+/*--------------------------------------------------
+                       
+                        Query
+ 
+ -------------------------------------------------*/
 
 /*
  returns all the attributes of Type attributeType as an NSArray of
@@ -73,7 +79,7 @@
  
  If attributeType is not valid the method returns nil. 
  */
-- (NSDictionary *) getAllAttributeNamesForAttributeType: (NSString *) attributeType;
+-(NSDictionary *) getAllAttributeNamesForAttributeType: (NSString *) attributeType;
 
 /*
  Returns an array of NSString containing all the values of that attribtue name 
@@ -83,12 +89,14 @@
  
  If attributeNAme and attributeType are not valid, the method returns nil. 
  */
-- (NSArray *) getAttributeWithName: (NSString *) attributeName
+-(NSArray *) getAttributeWithName: (NSString *) attributeName
                   forAttributeType: (NSString *) attributeType;
 
-/*-----------
- Deletion
- *-----------*/
+/*--------------------------------------------------
+ 
+                        Deletion
+ 
+ -------------------------------------------------*/
 
 /*
  Removes all the values specified in the values array (which is an array of NSString)
@@ -101,7 +109,7 @@
  values for the attribute specified with attributeName and attributeType , then
  the method ignores that value. 
  */
-- (void) removeValues: (NSArray *) values
+-(void) removeValues: (NSArray *) values
         fromAttribute: (NSString *) attributeName
      forAttributeType: (NSString *) attributeType;
 
@@ -113,7 +121,7 @@
  If attributeName and attributeType are not valid. The method returns without
  doing anything
  */
-- (void) removeAttribute: (NSString *) attributeName
+-(void) removeAttribute: (NSString *) attributeName
         forAttributeType: (NSString *)AttributeType;
 
 /*
@@ -121,9 +129,12 @@
  of any attribute with any name and type.
  */
 -(void) removeAllOccurancesOfValue: (NSString *) value;
-/*------------
- Updating
- ------------*/
+
+/*--------------------------------------------------
+ 
+                    Updating
+ 
+ -------------------------------------------------*/
 
 /*
  Updates the name of the attribue with attributeName and the type attributeType 
@@ -145,4 +156,5 @@
 - (void) updateAttribute: (NSString *) attributeName 
                  ofType: (NSString *) attributeType 
            withNewValue: (NSArray *) newValues;
+
 @end

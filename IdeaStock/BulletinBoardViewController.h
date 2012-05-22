@@ -12,7 +12,9 @@
 #import "NoteViewDelegate.h"
 
 @interface BulletinBoardViewController : UIViewController <UIScrollViewDelegate,StackViewDelegate, NoteViewDelegate>
+
 @property (strong,nonatomic) NSString * bulletinBoardName;
+
 @property (weak,nonatomic) MainScreenDropboxViewController * parent;
 
 @end

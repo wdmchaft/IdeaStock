@@ -12,12 +12,26 @@
 
 @interface MainScreenDropboxViewController ()
 
-//this is the main model that will be initialized from dropbox. 
-@property (nonatomic,strong) NSMutableArray * bulletinBoardNames;
-@property (strong, nonatomic) NSMutableArray * bulletinBoardViews; 
+/*========================================================================*/
+
+/*------------------------------------------------
+                    UI properties
+ -------------------------------------------------*/
 @property (weak, nonatomic) IBOutlet UIView *prototypeView;
 @property (weak, nonatomic) IBOutlet UIScrollView *mainView;
 @property (weak, nonatomic) UIView * lastView;
+@property (strong, nonatomic) NSMutableArray * bulletinBoardViews; 
+
+/*------------------------------------------------
+                    Model
+ -------------------------------------------------*/
+
+//this is the main model that will be initialized from dropbox. 
+@property (nonatomic,strong) NSMutableArray * bulletinBoardNames;
+
+/*------------------------------------------------
+                    Modal Properties
+ -------------------------------------------------*/
 @property CGRect lastFrame;
 
 //Maybe change this to a more graceful way of cycling through colors
@@ -25,9 +39,12 @@
 
 @end
 
-/*--------------------------------------------------------------------------------------
- Synthesizers
- ----------------------------------------------------------------------------------------*/
+/*========================================================================*/
+
+
+/*------------------------------------------------
+                Synthesizers
+ -------------------------------------------------*/
 
 
 @implementation MainScreenDropboxViewController
@@ -43,7 +60,7 @@
 @synthesize lastFrame = _lastFrame;
 
 
-- (NSMutableArray *) bulletinBoardViews{
+-(NSMutableArray *) bulletinBoardViews{
     
     if (!_bulletinBoardViews){
         _bulletinBoardViews = [NSMutableArray array];
@@ -51,7 +68,7 @@
     return _bulletinBoardViews;
 }
 
-- (NSMutableArray *) bulletinBoardNames{
+-(NSMutableArray *) bulletinBoardNames{
     
     if (!_bulletinBoardNames){
         _bulletinBoardNames = [NSMutableArray array];
@@ -59,7 +76,7 @@
     return _bulletinBoardNames;
 }
 
-- (DropboxDataModel *) dropBox{
+-(DropboxDataModel *) dropBox{
     
     if (!_dropBox){
         _dropBox = [[DropboxDataModel alloc] init];
@@ -67,12 +84,28 @@
     return _dropBox;
 }
 
-/*---------------------------------------------------------------------------------------------------
- Layout methods
- --------------------------------------------------------------------------------------------------*/
+/*========================================================================*/
 
 
--(UIView *) createBulletinBoardPreviewWithName: (NSString *) name inFrame: (CGRect) frame{
+/*------------------------------------------------
+                    Initializers
+ -------------------------------------------------*/
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+/*------------------------------------------------
+                    Layout Methods
+ -------------------------------------------------*/
+
+-(UIView *) createBulletinBoardPreviewWithName: (NSString *) name 
+                                       inFrame: (CGRect) frame{
     
     UIImage * image;
     
@@ -280,10 +313,9 @@
     }
 }
 
-/*---------------------------------------------------------------------------------------------------
- Animations
- --------------------------------------------------------------------------------------------------*/
-
+/*------------------------------------------------
+                   Animation methods
+ -------------------------------------------------*/
 
 -(void) animateAdd: (UIView *) view{
     
@@ -366,11 +398,25 @@
                      }completion:nil];
 }
 
-/*---------------------------------------------------------------------------------------------------------
- Event responsers
- --------------------------------------------------------------------------------------------------------*/
+-(void) layoutBulletinBoards{
+    
+    CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.29;
+    CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.22;
+    
+    for (NSString * name in self.bulletinBoardNames){
+        CGRect frame = CGRectMake(0, 0, bulletinBoardWidth, bulletinBoardHeight);
+        UIView * view = [self createBulletinBoardPreviewWithName:name inFrame:frame];
+        [self.mainView addSubview:view];
+        [self.bulletinBoardViews addObject:view];
+    }
+    [self layoutBulletinBoards:YES withDuration:0.2];
+}
 
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+/*------------------------------------------------
+                    UI Event helpers
+ -------------------------------------------------*/
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"bulletinBoardSegue"]){
         
         NSString * name = ((UILabel *)[[((UIView *) sender) subviews] objectAtIndex:0]).text;
@@ -386,20 +432,6 @@
     [self animateSelect: touchedView];
     
     
-}
-
--(void) layoutBulletinBoards{
-    
-    CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.29;
-    CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.22;
-    
-    for (NSString * name in self.bulletinBoardNames){
-        CGRect frame = CGRectMake(0, 0, bulletinBoardWidth, bulletinBoardHeight);
-        UIView * view = [self createBulletinBoardPreviewWithName:name inFrame:frame];
-        [self.mainView addSubview:view];
-        [self.bulletinBoardViews addObject:view];
-    }
-    [self layoutBulletinBoards:YES withDuration:0.2];
 }
 
 -(void) createNewBulletinBoard: (NSString *) name{
@@ -425,28 +457,18 @@
     [self animateAdd:view];
 }
 
-/*---------------------------------------------------------------------------------------------------------
- View Events
- --------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------
+                    UI Events
+ -------------------------------------------------*/
 
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
-    
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (IBAction)AddPressed:(id)sender {
+-(IBAction) AddPressed:(id)sender {
     
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Create New Bulletinboard" message: @"Enter the name of the the BulletinBoard" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [alert show];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+-(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
     if (buttonIndex == 1){
         NSString * name = [[alertView textFieldAtIndex:0] text];  
@@ -461,7 +483,7 @@
     NSLog(@"Generating orientation notification");
 }
 
-- (void)viewDidLoad{
+-(void) viewDidLoad{
     
     [super viewDidLoad];
     
@@ -482,7 +504,7 @@
     
 }
 
-- (void)viewDidUnload{
+-(void) viewDidUnload{
     
     [self setMainView:nil];
     [self setPrototypeView:nil];
@@ -496,20 +518,15 @@
     [self layoutBulletinBoards:NO withDuration:0];    
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
+-(BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
     return YES;
 }
 
--(NSString *) description{
-    return @"Its me the MainScreenViewController";
-}
+/*------------------------------------------------
+            Dropbox Delegate Protocol
+ -------------------------------------------------*/
 
-/*----------------------------------------------------------------------------------------------------
- Dropbox Datamodel delegate methods
- -----------------------------------------------------------------------------------------------------*/
-
-
-- (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata{
+-(void) restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata{
     
     for (DBMetadata * child in metadata.contents){
         if (child.isDirectory){
@@ -524,24 +541,24 @@
     
 }
 
-- (void)restClient:(DBRestClient*)client loadMetadataFailedWithError:(NSError*)error{
+-(void) restClient:(DBRestClient*)client loadMetadataFailedWithError:(NSError*)error{
     
     NSLog(@"Failutre: %@",error);
 }
 
-/*---------------------------------------------------------------------------------------------------------
- BulletinBoard Delegate Methods
- --------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------
+            Bulletinboard Delegate Protocol
+ -------------------------------------------------*/
 
 -(void) finishedWorkingWithBulletinBoard{
     [self dismissModalViewControllerAnimated:YES];
     [self animateReturn];
 }
 
-/*---------------------------------------------------------------------------------------------------------
- Queue Delegate Methods
- --------------------------------------------------------------------------------------------------------*/
 
+/*------------------------------------------------
+            Queue Delegate Protocol
+ -------------------------------------------------*/
 
 /*
  The queue methods are here for the purpose of multi delete

@@ -12,19 +12,8 @@
 #import "XoomlBulletinBoardController.h"
 #import "CallBackDataModel.h"
 
-@interface AssociativeBulletinBoard()
 
-@end
-@implementation AssociativeBulletinBoard
-
-@synthesize dataModel = _dataModel;
-@synthesize delegate = _delegate;
-@synthesize dataSource = _dataSource;
-@synthesize noteAttributes = _noteAttributes;
-@synthesize bulletinBoardAttributes = _bulletinBoardAttributes;
-@synthesize noteContents = _noteContents;
-@synthesize bulletinBoardName = _bulletinBoardName;
-
+/*====================================================================*/
 
 /*
  These are the default attributes for note
@@ -32,6 +21,13 @@
  */
 //TODO  some of these definition may need to go to a higher level header
 // or even inside a definitions file
+
+/*--------------------------------------------------
+ 
+                    Definations
+ 
+ -------------------------------------------------*/
+
 #define POSITION_X @"positionX"
 #define POSITION_Y @"positionY"
 #define IS_VISIBLE @"isVisible"
@@ -53,6 +49,23 @@
 #define STACKING_NAME @"name"
 #define REF_IDS @"refIDs"
 
+/*====================================================================*/
+
+@implementation AssociativeBulletinBoard
+
+/*--------------------------------------------------
+ 
+                        Synthesis
+ 
+ -------------------------------------------------*/
+
+@synthesize dataModel = _dataModel;
+@synthesize delegate = _delegate;
+@synthesize dataSource = _dataSource;
+@synthesize noteAttributes = _noteAttributes;
+@synthesize bulletinBoardAttributes = _bulletinBoardAttributes;
+@synthesize noteContents = _noteContents;
+@synthesize bulletinBoardName = _bulletinBoardName;
 
 -(BulletinBoardAttributes *) bulletinBoardAttributes{
     if (!_bulletinBoardAttributes){
@@ -74,8 +87,17 @@
     }
     return _noteContents;
 }
-/*---------------------------------------------------------------------*/
 
+
+
+/*====================================================================*/
+
+
+/*--------------------------------------------------
+ 
+                    Initializiation
+ 
+ -------------------------------------------------*/
 
 /*
  Factory method for the bulletin board attributes
@@ -84,19 +106,12 @@
     return [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:STACKING_TYPE,GROUPING_TYPE, nil]];
 }
 
-
-/*---------------------------------------------------------------------*/
-
-
 /*
  Factory method for the note bulletin board attributes
  */
 -(BulletinBoardAttributes *) createBulletinBoardAttributeForNotes{
     return [[BulletinBoardAttributes alloc] initWithAttributes:[NSArray arrayWithObjects:NOTE_NAME_TYPE,LINKAGE_TYPE,POSITION_TYPE, VISIBILITY_TYPE, nil]];
 }
-
-/*---------------------------------------------------------------------*/
-
 
 -(id)initEmptyBulletinBoardWithDataModel: (id <DataModel>) dataModel 
                                  andName:(NSString *) bulletinBoardName{
@@ -130,14 +145,10 @@
     
 }
 
-/*---------------------------------------------------------------------*/
-
-
 /*
  Initilizes the bulletin board with the content of a xooml file for a previously
  created bulletinboard. 
  */
-
 
 -(void) initiateNoteContent: (NSData *) noteData 
                   forNoteID: (NSString *) noteID
@@ -208,7 +219,7 @@
     
 }
 
-- (void) initiateGrouping{
+-(void) initiateGrouping{
     
     //get the grouping information and fill out the grouping info
     NSDictionary *groupingInfo = [self.delegate getBulletinBoardAttributeInfo:GROUPING_TYPE];
@@ -295,11 +306,13 @@
     return self;    
 }
 
+/*--------------------------------------------------
+ 
+                        Addition
+ 
+ -------------------------------------------------*/
 
-/*---------------------------------------------------------------------*/
-
-
-- (void) addNoteContent: (id <Note>) note 
+-(void) addNoteContent: (id <Note>) note 
           andProperties: (NSDictionary *) properties{
     
     //get note Name and note ID if they are not present throw an exception
@@ -347,9 +360,8 @@
     
 }
 
-/*---------------------------------------------------------------------*/
 
-- (void) addNoteAttribute: (NSString *) attributeName
+-(void) addNoteAttribute: (NSString *) attributeName
          forAttributeType: (NSString *) attributeType
                   forNote: (NSString *) noteID 
                 andValues: (NSArray *) values{
@@ -370,9 +382,8 @@
     
 }
 
-/*---------------------------------------------------------------------*/
 
-- (void) addNote: (NSString *) targetNoteID
+-(void) addNote: (NSString *) targetNoteID
  toAttributeName: (NSString *) attributeName
 forAttributeType: (NSString *) attributeType
           ofNote: (NSString *) sourceNoteId{
@@ -387,7 +398,7 @@ forAttributeType: (NSString *) attributeType
     [self.delegate addNoteAttribute:attributeName forType:attributeType forNote:sourceNoteId withValues:[NSArray arrayWithObject:targetNoteID]];
 }
 
-- (void) addBulletinBoardAttribute: (NSString *) attributeName
+-(void) addBulletinBoardAttribute: (NSString *) attributeName
                   forAttributeType: (NSString *) attributeType{
     //add the attribtue to the bulletinBoard attribute list
     [self.bulletinBoardAttributes createAttributeWithName:attributeName forAttributeType:attributeType];
@@ -396,9 +407,7 @@ forAttributeType: (NSString *) attributeType
     [self.delegate addBulletinBoardAttribute:attributeName forType:attributeType withValues:[NSArray array]];
 }
 
-/*---------------------------------------------------------------------*/
-
-- (void) addNoteWithID:(NSString *)noteID 
+-(void) addNoteWithID:(NSString *)noteID 
 toBulletinBoardAttribute:(NSString *)attributeName 
       forAttributeType:(NSString *)attributeType{
     
@@ -412,9 +421,13 @@ toBulletinBoardAttribute:(NSString *)attributeName
     [self.delegate addBulletinBoardAttribute:attributeName forType:attributeType withValues:[NSArray arrayWithObject:noteID]];
 }
 
-/*---------------------------------------------------------------------*/
+/*--------------------------------------------------
+ 
+                        Deletion
+ 
+ -------------------------------------------------*/
 
-- (void) removeNoteWithID:(NSString *)delNoteID{
+-(void) removeNoteWithID:(NSString *)delNoteID{
     
     id <Note> note = [self.noteContents objectForKey:delNoteID];
     //if the note does not exist return
@@ -441,9 +454,7 @@ toBulletinBoardAttribute:(NSString *)attributeName
     
 }
 
-/*---------------------------------------------------------------------*/
-
-- (void) removeNote: (NSString *) targetNoteID
+-(void) removeNote: (NSString *) targetNoteID
       fromAttribute: (NSString *) attributeName
              ofType: (NSString *) attributeType
    fromAttributesOf: (NSString *) sourceNoteID{
@@ -458,9 +469,7 @@ toBulletinBoardAttribute:(NSString *)attributeName
     [self.delegate deleteNote:targetNoteID fromNoteAttribute:attributeName ofType:attributeType forNote:sourceNoteID];
 }
 
-/*---------------------------------------------------------------------*/
-
-- (void) removeNoteAttribute: (NSString *) attributeName
+-(void) removeNoteAttribute: (NSString *) attributeName
                       ofType: (NSString *) attributeType
                     FromNote: (NSString *) noteID{
     //if the noteID is not valid return
@@ -473,7 +482,7 @@ toBulletinBoardAttribute:(NSString *)attributeName
     [self.delegate deleteNoteAttribute:attributeName ofType:attributeType fromNote:noteID];
 }
 
-- (void) removeNote: (NSString *) noteID
+-(void) removeNote: (NSString *) noteID
 fromBulletinBoardAttribute: (NSString *) attributeName 
              ofType: (NSString *) attributeType{
     
@@ -489,7 +498,7 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     [self.delegate deleteNote:noteID fromBulletinBoardAttribute:attributeName ofType:attributeType];
 }
 
-- (void) removeBulletinBoardAttribute:(NSString *)attributeName 
+-(void) removeBulletinBoardAttribute:(NSString *)attributeName 
                                ofType:(NSString *)attributeType{
     
     //remove the attribtue from bulletin board attributes
@@ -500,6 +509,12 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     [self.delegate deleteBulletinBoardAttribute:attributeName ofType:attributeType];
     
 }
+
+/*--------------------------------------------------
+ 
+                        Update
+ 
+ -------------------------------------------------*/
 
 - (void) updateNoteContentOf:(NSString *)noteID 
               withContentsOf:(id<Note>)newNote{
@@ -566,6 +581,12 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     [self.delegate updateBulletinBoardAttributeName:oldAttributeNAme ofType:attributeType withNewName:newAttributeName];
 }
 
+/*--------------------------------------------------
+ 
+                        Query
+ 
+ -------------------------------------------------*/
+
 - (NSDictionary *) getAllNotes{
     return [self.noteContents copy];
 }
@@ -603,6 +624,13 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     
 }
 
+
+/*--------------------------------------------------
+ 
+                    Synchronization
+ 
+ -------------------------------------------------*/
+
 -(void) saveBulletinBoard{
     
     [self.dataModel updateBulletinBoardWithName:self.bulletinBoardName andBulletinBoardInfo:[self.dataSource data]];
@@ -616,7 +644,5 @@ fromBulletinBoardAttribute: (NSString *) attributeName
 }
 
 //TODO Update note name is not provided yet
-
-
 
 @end

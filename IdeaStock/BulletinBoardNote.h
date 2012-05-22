@@ -12,5 +12,4 @@
 
 - (BulletinBoardNote *) initWithCreationDate: (NSString *) date;
 
-
 @end

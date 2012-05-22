@@ -11,20 +11,41 @@
 
 @interface StackViewController ()
 
+/*========================================================================*/
+
+
+/*-----------------------------------------------------------
+                        UI Properties
+ -----------------------------------------------------------*/
+
 @property (weak, nonatomic) IBOutlet UIScrollView *stackView;
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (strong,nonatomic) UIBarButtonItem * deleteButton;
+@property (strong,nonatomic) UIBarButtonItem * removeButton;
+@property (weak,nonatomic) UIView * lastOverlappedView;
+
+/*-----------------------------------------------------------
+                        Modal Properties
+ -----------------------------------------------------------*/
+
 @property (nonatomic) BOOL isInEditMode; 
 @property (weak, nonatomic) NoteView * highLightedNote;
 @property (nonatomic) CGRect lastFrame;
 @property (nonatomic) BOOL isLocked;
 @property (nonatomic) int currentPage;
-@property (weak,nonatomic) UIView * lastOverlappedView;
-@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
-@property (strong,nonatomic) UIBarButtonItem * deleteButton;
-@property (strong,nonatomic) UIBarButtonItem * removeButton;
 @property (nonatomic) int unstackCounter;
+
 @end
 
+/*========================================================================*/
+
+
 @implementation StackViewController
+
+/*-----------------------------------------------------------
+                      Synthesizers
+ -----------------------------------------------------------*/
+
 @synthesize stackView = _stackView;
 @synthesize isLocked = _isLocked;
 @synthesize highLightedNote = _highLightedNote;
@@ -37,10 +58,8 @@
 @synthesize removeButton = _removeButton;
 @synthesize openStack = _openStack;
 @synthesize unstackCounter = _unstackCounter;
-
 @synthesize notes = _notes;
 @synthesize delegate = _delegate;
-
 
 -(void) setNotes:(NSMutableArray *)notes{
     _notes = notes;
@@ -59,7 +78,27 @@
     }
 }
 
-- (void) fireTimer:(NSTimer *) timer{
+/*========================================================================*/
+
+/*-----------------------------------------------------------
+                        Initializers
+ -----------------------------------------------------------*/
+
+-(id) initWithNibName:(NSString *) nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+/*-----------------------------------------------------------
+                        Timer Methods
+ -----------------------------------------------------------*/
+
+-(void) fireTimer:(NSTimer *) timer{
     self.isLocked = false;
 }
 
@@ -67,73 +106,11 @@
     self.lastOverlappedView = nil;
 }
 
+/*-----------------------------------------------------------
+                        Gesture Events
+ -----------------------------------------------------------*/
+
 #define OVERLAP_PERIOD 2
-- (UIView *) checkForOverlapWithView: (UIView *) senderView{
-    for (UIView * view in self.notes){
-        if (view != senderView && view != self.lastOverlappedView){
-            CGRect halfViewFrame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width/2, view.frame.size.height/2);
-            if (CGRectIntersectsRect(halfViewFrame,senderView.frame)){
-                return view;
-            }
-        }
-    }
-    return nil;
-}
-
-#define FLIP_PERIOD 1.5
--(BOOL) checkScrollToNextPage: (CGRect) rect forView: (UIView *) view{
-    
-    BOOL movingRight = rect.origin.x > view.frame.origin.x ? YES : NO;
-    int totalPages = self.stackView.contentSize.width / self.stackView.frame.size.width;
-    totalPages-- ;
-    int leftCornerPage = rect.origin.x/ self.stackView.frame.size.width;
-    int rightCornerPage = (rect.origin.x + rect.size.width)/self.stackView.frame.size.width;
-    int middleCornerPage = (rect.origin.x + rect.size.width/2)/self.stackView.frame.size.width;
-    if ( leftCornerPage == middleCornerPage && middleCornerPage == rightCornerPage ){
-        self.currentPage = leftCornerPage;
-    }
-
-    if ( movingRight && 
-        middleCornerPage > leftCornerPage &&
-        middleCornerPage > self.currentPage &&
-         middleCornerPage <= totalPages && 
-        !self.isLocked){ 
-        self.isLocked = true;
-        [NSTimer scheduledTimerWithTimeInterval: FLIP_PERIOD 
-                                             target:self 
-                                           selector:@selector(fireTimer:) 
-                                           userInfo:nil 
-                                            repeats:NO];
-
-        CGPoint offset = CGPointMake(self.stackView.frame.size.width + self.stackView.contentOffset.x, self.stackView.contentOffset.y);
-                NSLog(@"content size after offset : %f", self.stackView.contentSize.width);
-        [self.stackView setContentOffset:offset animated:YES];
-        return YES;
-    }
-
-    else if ( !movingRight && 
-             middleCornerPage  < rightCornerPage &&
-             middleCornerPage < self.currentPage &&
-             middleCornerPage >= 0 &&
-             !self.isLocked){
-        
-        NSLog(@"HERE");
-        self.isLocked = true;
-        [NSTimer scheduledTimerWithTimeInterval: FLIP_PERIOD 
-                                         target:self 
-                                       selector:@selector(fireTimer:) 
-                                       userInfo:nil 
-                                        repeats:NO];
-        CGPoint offset = CGPointMake(self.stackView.contentOffset.x- self.stackView.frame.size.width, self.stackView.contentOffset.y);
-        [self.stackView setContentOffset:offset animated:YES];
-        NSLog(@"content size after offset : %f", self.stackView.contentSize.width);
-        return YES;
-
-    }
-    return NO;
-}
-
-
 -(void) notePanned: (UIPanGestureRecognizer *) sender{
     
     if (sender.state == UIGestureRecognizerStateEnded || sender.state ==UIGestureRecognizerStateChanged){
@@ -165,6 +142,7 @@
         [UIView animateWithDuration:0.25 animations:^{sender.view.frame = self.lastFrame;}];
     }
 }
+
 -(void) notePressed: (UILongPressGestureRecognizer *) sender{
     if (sender.state == UIGestureRecognizerStateBegan){
         
@@ -226,25 +204,30 @@
     
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+-(void) screenTapped: (UITapGestureRecognizer *) sender{
+    if (self.isInEditMode){
+        self.isInEditMode = NO;
+        self.highLightedNote.highlighted = NO;
+        if ([self.toolbar.items count] > 2){
+            [self removeToolbarItems];
+        }
+        for (UIGestureRecognizer * gr in [self.highLightedNote gestureRecognizers]){
+            if ([gr isKindOfClass:[UIPanGestureRecognizer class]]){
+                [self.highLightedNote removeGestureRecognizer:gr];
+            }
+            
+        }
+        [UIView animateWithDuration:0.25 animations:^{ self.highLightedNote.frame = self.lastFrame;}];
+        self.highLightedNote = nil;
     }
-    return self;
 }
 
-- (IBAction)backPressed:(id)sender{
-    if ( self.highLightedNote) self.highLightedNote.highlighted = NO;
-    [self.delegate returnedstackViewController:self];
-}
+/*-----------------------------------------------------------
+ UI Action Helper
+ -----------------------------------------------------------*/
 
 #define ROW_COUNT 2
 #define COL_COUNT 2
-
-
 -(void) addToolbarItems{
     NSMutableArray * currentItems = [self.toolbar.items mutableCopy];
     [currentItems addObject:self.removeButton];
@@ -258,6 +241,11 @@
     [currentItems removeLastObject];
     self.toolbar.items = currentItems;
 }
+
+/*-----------------------------------------------------------
+                            Layout methods
+ -----------------------------------------------------------*/
+
 -(void) layoutNotes: (BOOL) animated{
     
     int pageNotes = ROW_COUNT * COL_COUNT;
@@ -307,24 +295,75 @@
     
 }
 
--(void) screenTapped: (UITapGestureRecognizer *) sender{
-    if (self.isInEditMode){
-        self.isInEditMode = NO;
-        self.highLightedNote.highlighted = NO;
-        if ([self.toolbar.items count] > 2){
-            [self removeToolbarItems];
-        }
-        for (UIGestureRecognizer * gr in [self.highLightedNote gestureRecognizers]){
-            if ([gr isKindOfClass:[UIPanGestureRecognizer class]]){
-                [self.highLightedNote removeGestureRecognizer:gr];
+- (UIView *) checkForOverlapWithView: (UIView *) senderView{
+    for (UIView * view in self.notes){
+        if (view != senderView && view != self.lastOverlappedView){
+            CGRect halfViewFrame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width/2, view.frame.size.height/2);
+            if (CGRectIntersectsRect(halfViewFrame,senderView.frame)){
+                return view;
             }
-            
         }
-        [UIView animateWithDuration:0.25 animations:^{ self.highLightedNote.frame = self.lastFrame;}];
-        self.highLightedNote = nil;
     }
+    return nil;
 }
-- (void)viewDidLoad
+
+#define FLIP_PERIOD 1.5
+-(BOOL) checkScrollToNextPage: (CGRect) rect forView: (UIView *) view{
+    
+    BOOL movingRight = rect.origin.x > view.frame.origin.x ? YES : NO;
+    int totalPages = self.stackView.contentSize.width / self.stackView.frame.size.width;
+    totalPages-- ;
+    int leftCornerPage = rect.origin.x/ self.stackView.frame.size.width;
+    int rightCornerPage = (rect.origin.x + rect.size.width)/self.stackView.frame.size.width;
+    int middleCornerPage = (rect.origin.x + rect.size.width/2)/self.stackView.frame.size.width;
+    if ( leftCornerPage == middleCornerPage && middleCornerPage == rightCornerPage ){
+        self.currentPage = leftCornerPage;
+    }
+    
+    if ( movingRight && 
+        middleCornerPage > leftCornerPage &&
+        middleCornerPage > self.currentPage &&
+        middleCornerPage <= totalPages && 
+        !self.isLocked){ 
+        self.isLocked = true;
+        [NSTimer scheduledTimerWithTimeInterval: FLIP_PERIOD 
+                                         target:self 
+                                       selector:@selector(fireTimer:) 
+                                       userInfo:nil 
+                                        repeats:NO];
+        
+        CGPoint offset = CGPointMake(self.stackView.frame.size.width + self.stackView.contentOffset.x, self.stackView.contentOffset.y);
+        NSLog(@"content size after offset : %f", self.stackView.contentSize.width);
+        [self.stackView setContentOffset:offset animated:YES];
+        return YES;
+    }
+    
+    else if ( !movingRight && 
+             middleCornerPage  < rightCornerPage &&
+             middleCornerPage < self.currentPage &&
+             middleCornerPage >= 0 &&
+             !self.isLocked){
+        
+        NSLog(@"HERE");
+        self.isLocked = true;
+        [NSTimer scheduledTimerWithTimeInterval: FLIP_PERIOD 
+                                         target:self 
+                                       selector:@selector(fireTimer:) 
+                                       userInfo:nil 
+                                        repeats:NO];
+        CGPoint offset = CGPointMake(self.stackView.contentOffset.x- self.stackView.frame.size.width, self.stackView.contentOffset.y);
+        [self.stackView setContentOffset:offset animated:YES];
+        NSLog(@"content size after offset : %f", self.stackView.contentSize.width);
+        return YES;
+        
+    }
+    return NO;
+}
+
+/*-----------------------------------------------------------
+                            UI Events
+ -----------------------------------------------------------*/
+-(void)viewDidLoad
 {
     [super viewDidLoad];
     [self.stackView setContentSize:self.stackView.bounds.size];
@@ -342,14 +381,20 @@
     [self layoutNotes:NO];
 }
 
-- (void)viewDidUnload
+-(void)viewDidUnload
 {
     [self setStackView:nil];
     [self setToolbar:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
-- (IBAction)deletePressed:(id)sender {
+
+-(IBAction)backPressed:(id)sender{
+    if ( self.highLightedNote) self.highLightedNote.highlighted = NO;
+    [self.delegate returnedstackViewController:self];
+}
+
+-(IBAction)deletePressed:(id)sender {
     
     
     [UIView animateWithDuration:0.5 animations:^{
@@ -365,7 +410,8 @@
     }];
     
 }
-- (IBAction)unstackPressed:(id)sender {
+
+-(IBAction)unstackPressed:(id)sender {
     
     [UIView animateWithDuration:0.5 animations:^{self.highLightedNote.alpha = 0;} completion:^(BOOL finished){
         [self.notes removeObject:self.highLightedNote];
@@ -384,23 +430,18 @@
     }];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
 }
 
-
-/*-------------
- Note View Delegate
- -----------------*/
+/*-----------------------------------------------------------
+                        Note Delegate Protocol
+ -----------------------------------------------------------*/
 
 -(void) textViewDidEndEditing:(UITextView *)textView{
     NSLog(@"%@", textView.text);
     [self.openStack setText: textView.text];
 }
 
-
--(NSString *) description{
-    return @"stackViewController";
-}
 @end

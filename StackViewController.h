@@ -21,10 +21,14 @@
 
 @end
 
+/*-----------------------------------------------------------
+                        Delegates
+ -----------------------------------------------------------*/
 
 @protocol StackViewDelegate
 
 - (void)returnedstackViewController: (StackViewController *) sender;
+
 - (void)unstackItem : (UIView *) item 
             fromView: (UIView *) stackView 
        withPastCount: (int) count;

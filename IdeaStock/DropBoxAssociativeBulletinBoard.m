@@ -12,34 +12,55 @@
 #import "DropboxDataModel.h"
 #import "XoomlParser.h"
 #import "FileSystemHelper.h"
-
-
 #import "XoomlAttributeHelper.h"
 
 
 #define SYNCHRONIZATION_PERIOD 200
 @interface DropBoxAssociativeBulletinBoard()
 
+/*--------------------------------------------------
+ 
+                Private Methods
+ 
+ -------------------------------------------------*/
+
 - (void) synchronize:(NSTimer *) timer;
 
-@property int fileCounter;
+/*--------------------------------------------------
+ 
+                Synchronization Properties
+ 
+ -------------------------------------------------*/
 
+@property int fileCounter;
 //this indicates that we need to synchronize
 //any action that changes the bulletinBoard data model calls
 //this and then nothing else is needed
-
 @property BOOL needSynchronization;
 @property NSTimer * timer;
+
+/*--------------------------------------------------
+ 
+                Dummy Properties
+ 
+ -------------------------------------------------*/
+
 @property NSString * demoBulletinBoardName;
 @property NSString * demoNoteName;
 
 @end
 
-
 @implementation DropBoxAssociativeBulletinBoard
 
-//TODO here I am patrially initializing the class. I think this is bad
+/*=======================================================*/
 
+/*--------------------------------------------------
+ 
+                    Synthesis
+ 
+ -------------------------------------------------*/
+
+//TODO here I am patrially initializing the class. I think this is bad
 @synthesize dataModel = _dataModel;
 @synthesize fileCounter = _fileCounter;
 @synthesize queue = _queue;
@@ -54,6 +75,7 @@
     }
     return _queue;
 }
+
 - (DropboxDataModel *) dataModel{
     if (!_dataModel){
         _dataModel = [[DropboxDataModel alloc] init];
@@ -61,12 +83,20 @@
     return (DropboxDataModel *)_dataModel;
 }
 
+/*=======================================================*/
+
+/*--------------------------------------------------
+ 
+                    Synchronization
+ 
+ -------------------------------------------------*/
+
 /*
  Every SYNCHRONIZATION_PERIOD seconds we try to synchrnoize. 
  If the synchronize flag is set the bulletin board is updated from
  the internal datastructures.
  */
-- (void) startTimer{
+-(void) startTimer{
     [NSTimer scheduledTimerWithTimeInterval: SYNCHRONIZATION_PERIOD 
                                      target:self 
                                    selector:@selector(synchronize:) 
@@ -79,6 +109,25 @@
     [self.timer invalidate];
 }
 
+-(void) synchronize:(NSTimer *) timer{
+    
+    if (self.needSynchronization){
+        self.needSynchronization = NO;
+        [self saveBulletinBoard];
+    }
+}
+
+-(void) saveBulletinBoard{
+    [self.dataModel updateBulletinBoardWithName: self.bulletinBoardName
+                           andBulletinBoardInfo:[self.dataSource data]];
+    
+}
+
+/*--------------------------------------------------
+ 
+                    Initialization
+ 
+ -------------------------------------------------*/
 
 -(id) initEmptyBulletinBoardWithDataModel:(id<DataModel>)dataModel 
                                   andName:(NSString *)bulletinBoardName{
@@ -112,47 +161,12 @@
     return self;
 }
 
-
-
-- (NSData *) getBulletinBoardData{
-    
-    NSString * path = [FileSystemHelper getPathForBulletinBoardWithName:self.bulletinBoardName];
-    NSError * err;
-    NSString *data = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
-    if (!data){
-        NSLog(@"Failed to read file from disk: %@", err);
-        return nil;
-    }
-    
-    NSLog(@"BulletinBoard : %@ read successful", self.bulletinBoardName);
-    
-    return [data dataUsingEncoding:NSUTF8StringEncoding];
-    
-}
-
-
-- (NSData *) getNoteDataForNote: (NSString *) noteName{
-    
-    
-    NSString * path = [FileSystemHelper getPathForNoteWithName:noteName inBulletinBoardWithName:self.bulletinBoardName];
-    NSError * err;
-    NSString *data = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
-    if (!data){
-        NSLog(@"Failed to read file from disk: %@", err);
-        return nil;
-    }
-    
-    NSLog(@"Note: %@ read Successful", noteName);
-    
-    return [data dataUsingEncoding:NSUTF8StringEncoding];
-}
-
 /*
  This methods completely initiates the bulletin board. 
  When this method is called it assumes that the bulletinboard data has been downloadded to disk so it uses disk to initiate itself. 
  */
 #define NOTE_NAME @"name"
-- (void) initiateBulletinBoad{
+-(void) initiateBulletinBoad{
     
     NSData * bulletinBoardData = [self getBulletinBoardData];
     id bulletinBoardController= [[XoomlBulletinBoardController alloc]  initWithData:bulletinBoardData];
@@ -199,18 +213,49 @@
     
 }
 
-- (void) synchronize:(NSTimer *) timer{
+/*--------------------------------------------------
+ 
+                    Query
+ 
+ -------------------------------------------------*/
+
+-(NSData *) getBulletinBoardData{
     
-    if (self.needSynchronization){
-        self.needSynchronization = NO;
-        [self saveBulletinBoard];
+    NSString * path = [FileSystemHelper getPathForBulletinBoardWithName:self.bulletinBoardName];
+    NSError * err;
+    NSString *data = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
+    if (!data){
+        NSLog(@"Failed to read file from disk: %@", err);
+        return nil;
     }
-}
--(void) saveBulletinBoard{
-    [self.dataModel updateBulletinBoardWithName: self.bulletinBoardName
-                           andBulletinBoardInfo:[self.dataSource data]];
+    
+    NSLog(@"BulletinBoard : %@ read successful", self.bulletinBoardName);
+    
+    return [data dataUsingEncoding:NSUTF8StringEncoding];
     
 }
+
+-(NSData *) getNoteDataForNote: (NSString *) noteName{
+    
+    
+    NSString * path = [FileSystemHelper getPathForNoteWithName:noteName inBulletinBoardWithName:self.bulletinBoardName];
+    NSError * err;
+    NSString *data = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
+    if (!data){
+        NSLog(@"Failed to read file from disk: %@", err);
+        return nil;
+    }
+    
+    NSLog(@"Note: %@ read Successful", noteName);
+    
+    return [data dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+/*--------------------------------------------------
+ 
+                    Creation
+ 
+ -------------------------------------------------*/
 
 /*
  For the rest of the methods we use the parent methods. 
@@ -221,14 +266,14 @@
  soon as they happen. 
  */
 
-- (void) addNoteContent: (id <Note>) note 
+-(void) addNoteContent: (id <Note>) note 
           andProperties: (NSDictionary *) properties{
     [super addNoteContent:note andProperties:properties];
     
     self.needSynchronization = YES;
 }
 
-- (void) addNoteAttribute: (NSString *) attributeName
+-(void) addNoteAttribute: (NSString *) attributeName
          forAttributeType: (NSString *) attributeType
                   forNote: (NSString *) noteID 
                 andValues: (NSArray *) values{
@@ -240,7 +285,7 @@
     self.needSynchronization  = YES;
 }
 
-- (void) addNote: (NSString *) targetNoteID
+-(void) addNote: (NSString *) targetNoteID
  toAttributeName: (NSString *) attributeName
 forAttributeType: (NSString *) attributeType
           ofNote: (NSString *) sourceNoteId{
@@ -252,7 +297,7 @@ forAttributeType: (NSString *) attributeType
     self.needSynchronization = YES;
 }
 
-- (void) addNoteWithID:(NSString *)noteID 
+-(void) addNoteWithID:(NSString *)noteID 
 toBulletinBoardAttribute:(NSString *)attributeName 
       forAttributeType:(NSString *)attributeType{
     [super addNoteWithID:noteID 
@@ -262,13 +307,19 @@ toBulletinBoardAttribute:attributeName
     self.needSynchronization = YES;
 }
 
-- (void) removeNoteWithID:(NSString *)delNoteID{
+/*--------------------------------------------------
+ 
+                    Deletion
+ 
+ -------------------------------------------------*/
+
+-(void) removeNoteWithID:(NSString *)delNoteID{
     [super removeNoteWithID:delNoteID];
     
     self.needSynchronization = YES;
 }
 
-- (void) removeNote: (NSString *) targetNoteID
+-(void) removeNote: (NSString *) targetNoteID
       fromAttribute: (NSString *) attributeName
              ofType: (NSString *) attributeType
    fromAttributesOf: (NSString *) sourceNoteID{
@@ -280,7 +331,7 @@ toBulletinBoardAttribute:attributeName
     self.needSynchronization = YES;
 }
 
-- (void) removeNoteAttribute: (NSString *) attributeName
+-(void) removeNoteAttribute: (NSString *) attributeName
                       ofType: (NSString *) attributeType
                     FromNote: (NSString *) noteID{
     [super removeNoteAttribute:attributeName 
@@ -290,7 +341,7 @@ toBulletinBoardAttribute:attributeName
     self.needSynchronization = YES;
 }
 
-- (void) removeNote: (NSString *) noteID
+-(void) removeNote: (NSString *) noteID
 fromBulletinBoardAttribute: (NSString *) attributeName 
              ofType: (NSString *) attributeType{
     [super removeNote:noteID 
@@ -300,14 +351,21 @@ fromBulletinBoardAttribute:attributeName
     self.needSynchronization = YES;
 }
 
-- (void) removeBulletinBoardAttribute:(NSString *)attributeName 
+-(void) removeBulletinBoardAttribute:(NSString *)attributeName 
                                ofType:(NSString *)attributeType{
     [super removeBulletinBoardAttribute:attributeName 
                                  ofType:attributeType];
     self.needSynchronization = YES;
 }
 
-- (void) renameNoteAttribute: (NSString *) oldAttributeName 
+
+/*--------------------------------------------------
+ 
+                    Update 
+ 
+ -------------------------------------------------*/
+
+-(void) renameNoteAttribute: (NSString *) oldAttributeName 
                       ofType: (NSString *) attributeType
                      forNote: (NSString *) noteID 
                     withName: (NSString *) newAttributeName{
@@ -331,7 +389,7 @@ fromBulletinBoardAttribute:attributeName
     self.needSynchronization = YES;
 }
 
-- (void) renameBulletinBoardAttribute: (NSString *) oldAttributeNAme 
+-(void) renameBulletinBoardAttribute: (NSString *) oldAttributeNAme 
                                ofType: (NSString *) attributeType 
                              withName: (NSString *) newAttributeName{
     [super renameBulletinBoardAttribute:oldAttributeNAme
@@ -340,9 +398,12 @@ fromBulletinBoardAttribute:attributeName
     
     self.needSynchronization = YES;
 }
-/*-------------------------------------
- Drop box rest client delegate methods
- --------------------------------------*/
+
+/*--------------------------------------------------
+ 
+                    Dropbox delegate methods
+ 
+ -------------------------------------------------*/
 
 - (void)restClient:(DBRestClient*)client loadedMetadata:(DBMetadata*)metadata{
     
@@ -421,9 +482,12 @@ fromBulletinBoardAttribute:attributeName
 - (void)restClient:(DBRestClient*)client deletePathFailedWithError:(NSError*)error{
     NSLog(@"Failed to delete path: %@", error);
 }
-/*---------------------
- Queue Delegate Methods
- --------------------*/
+
+/*--------------------------------------------------
+ 
+                Queue Delegate methods
+ 
+ -------------------------------------------------*/
 
 -(void) putIntoQueue: (id) item{
     [self.queue addObject:item];    
@@ -451,9 +515,11 @@ fromBulletinBoardAttribute:attributeName
     
 }
 
-/*---------------------
- Dummy methods
- --------------------*/
+/*--------------------------------------------------
+ 
+                    Dummy Methods
+ 
+ -------------------------------------------------*/
 
 -(void) demoAddNewBulletinBoard{
     
@@ -481,7 +547,6 @@ fromBulletinBoardAttribute:attributeName
 -(void) demoDeleteBB{
     [self.dataModel removeBulletinBoard:self.demoBulletinBoardName];
 }
-
 
 -(void) demoDeleteNote{
     [self.dataModel removeNote:self.demoNoteName FromBulletinBoard:self.demoBulletinBoardName];

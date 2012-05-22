@@ -11,6 +11,7 @@
 @protocol BulletinBoardObject <NSObject>
 
 -(void) scale:(CGFloat) scaleFactor;
+
 @property (strong,nonatomic) NSString * text;
 @property (nonatomic) BOOL highlighted;
 

@@ -19,16 +19,30 @@
  
  for example. attribute["Stack"]["StackName1] returns and array of all the noteIDs that bleong to the attribute stackName1 of type Stack. 
  */
+
+/*--------------------------------------------------
+                        Model
+ -------------------------------------------------*/
+
 @property (nonatomic,strong) NSMutableDictionary * attributes;
 
 @end
 
 @implementation BulletinBoardAttributes
 
+/*--------------------------------------------------
+                    Synthesizers
+ -------------------------------------------------*/
+
 @synthesize attributes = _attributes;
 
+/*--------------------------------------------------
+ 
+                    Creation
 
-- (id) initWithAttributes: (NSArray *)attributeTypes{
+ -------------------------------------------------*/
+
+-(id) initWithAttributes: (NSArray *)attributeTypes{
     self = [super init];
     self.attributes = [NSMutableDictionary dictionary];
     for (NSString * attributeType in attributeTypes){
@@ -38,8 +52,7 @@
     return self;
 }
 
-
-- (void) createAttributeWithName: (NSString *) attributeName
+-(void) createAttributeWithName: (NSString *) attributeName
                 forAttributeType:(NSString *) attributeType
                        andValues: (NSArray *)values{
     
@@ -52,7 +65,6 @@
                  forAttributeType:attributeType
                         andValues:[NSArray array]];
 }
-
 
 -(void) addValues:(NSArray *)values
       ToAttribute:(NSString *)attributeName
@@ -67,27 +79,36 @@
     
 }
 
-- (NSDictionary *) getAllAttributeNamesForAttributeType: (NSString *) attributeType{
+/*--------------------------------------------------
+ 
+                        Query
+ 
+ -------------------------------------------------*/
+
+-(NSDictionary *) getAllAttributeNamesForAttributeType: (NSString *) attributeType{
     NSDictionary * result = [[self.attributes objectForKey:attributeType] copy];
     return result;
 }
 
-- (NSArray *) getAttributeWithName: (NSString *) attributeName
+-(NSArray *) getAttributeWithName: (NSString *) attributeName
                   forAttributeType: (NSString *) attributeType{
     return [[[self.attributes objectForKey:attributeType] objectForKey:attributeName] copy];
     
 }
 
+/*--------------------------------------------------
+ 
+                        Deletion
+ 
+ -------------------------------------------------*/
 
-
-
-- (void) removeValues: (NSArray *) values
+-(void) removeValues: (NSArray *) values
         fromAttribute: (NSString *) attributeName
      forAttributeType: (NSString *) attributeType{
     [[[self.attributes objectForKey:attributeType] objectForKey:attributeName] removeObjectsInArray:values];
 }
 
-- (void) removeAttribute: (NSString *) attributeName
+-(void) removeAttribute: (NSString *) attributeName
         forAttributeType: (NSString *)AttributeType{
     
     [[self.attributes objectForKey:AttributeType] removeObjectForKey:attributeName];
@@ -105,7 +126,15 @@
         }
     }
 }
-- (void) updateAttributeName : (NSString *) attributeName 
+
+
+/*--------------------------------------------------
+ 
+                        Updating
+ 
+ -------------------------------------------------*/
+
+-(void) updateAttributeName : (NSString *) attributeName 
                        ofType: (NSString *) attributeType 
                   withNewName: (NSString *) newAttributeName{
     NSArray * values = [self getAttributeWithName:attributeName forAttributeType:attributeType];
@@ -114,7 +143,7 @@
     
 }
 
-- (void) updateValue: (NSString *) value 
+-(void) updateValue: (NSString *) value 
           ofAttribue: (NSString *) attributeName 
               ofType: (NSString *) attributeType 
         withNewValue: (NSString *) newValue{
@@ -123,7 +152,7 @@
     
 }
 
-- (void) updateAttribute: (NSString *) attributeName 
+-(void) updateAttribute: (NSString *) attributeName 
                   ofType: (NSString *) attributeType 
             withNewValue: (NSArray *) newValues{
 
@@ -134,7 +163,6 @@
     [[[self.attributes objectForKey:attributeType] objectForKey:attributeName] addObjectsFromArray:newValues];
     
 }
-
 
 
 @end

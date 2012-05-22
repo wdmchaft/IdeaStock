@@ -16,8 +16,14 @@
  This is helper that handles parsing and working 
  with Xooml syntax
  */
+
 @interface XoomlParser : NSObject
 
+/*--------------------------------------------------
+ 
+                        XooML Writing
+ 
+ -------------------------------------------------*/
 
 /*
  Create a note object from the contents of Xooml file
@@ -26,25 +32,9 @@
 //TODO maybe I should just return NSData * here too.
 + (BulletinBoardNote *) xoomlNoteFromXML: (NSData *)data;
 
-/*
- Converst the contents of a note object to Xooml xml data
- */
-+ (NSData *) convertNoteToXooml: (BulletinBoardNote *) note;
-
-/*
- Creates the boilerplate Xooml bulletin baord document
- and returns it as NSData
- */
-+ (NSData *) getEmptyBulletinBoardXooml;
-
-/*
- Creates an empty xooml:associationToolAttribute for holding
- a note attribute
- */
 + (DDXMLElement *) xoomlForAssociationToolAttributeWithName: (NSString *) attributeName 
 
                                                     andType: (NSString *) attributeType; 
-
 /*
  Creates an empty xoomlAssociationToolAttribute without a name and 
  only a type for holding a note attribute
@@ -70,11 +60,27 @@
 + (DDXMLNode *) xoomlForNotePositionX: (NSString *) positionX
                          andPositionY: (NSString *) positionY
                        withVisibility: (NSString *) isVisible;
+
+/*
+ Converst the contents of a note object to Xooml xml data
+ */
++ (NSData *) convertNoteToXooml: (BulletinBoardNote *) note;
+
+/*
+ Creates the boilerplate Xooml bulletin baord document
+ and returns it as NSData
+ */
++ (NSData *) getEmptyBulletinBoardXooml;
+
+/*--------------------------------------------------
+ 
+                    XooML xPath Methods 
+ 
+ -------------------------------------------------*/
 /*
  Returns the xPath for accessing a note with noteID
  */
 + (NSString *) xPathforNote: (NSString *) noteID;
-
 
 /*
  Returns the xpath for accessing a bulletin board attribute of specified type
@@ -87,6 +93,6 @@
 + (NSString *) xPathForFragmentAttributeWithName: (NSString *) attributeName
                                          andType: (NSString *) attributeType;
 
-+(NSString *) xPathForAllNotes;
++ (NSString *) xPathForAllNotes;
 
 @end

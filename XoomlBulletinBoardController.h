@@ -25,7 +25,9 @@
  The reason for this decision is that keeping the integrity in the code level
  has less perforamnce penality than keeping it in the xooml level. 
  */
+
 @interface XoomlBulletinBoardController : NSObject <BulletinBoardDelegate, BulletinBoardDatasource>
 
 + (NSData *) getEmptyBulletinBoardData;
+
 @end

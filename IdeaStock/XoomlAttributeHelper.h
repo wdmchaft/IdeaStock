@@ -11,5 +11,7 @@
 @interface XoomlAttributeHelper : NSObject
 
 + (NSString *) generateUUID;
+
 + (NSString *) generateCurrentTimeForXooml;
+
 @end

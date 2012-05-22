@@ -11,26 +11,48 @@
 #import "NoteView.h"
 #import "StackView.h"
 #import "StackViewController.h"
+#import "BulletinBoardNote.h"
 
 
 @interface BulletinBoardViewController ()
 
+
+/*========================================================================*/
+
+
+/*-----------------------------------------------------------
+                        UI Properties
+ -----------------------------------------------------------*/
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *label;
 @property (weak, nonatomic) IBOutlet UIScrollView *bulletinboardView;
-@property (strong, nonatomic) DropBoxAssociativeBulletinBoard * board;
-@property (strong, nonatomic) NSArray * intersectingViews;
 @property (strong, nonatomic) UIBarButtonItem * deleteButton;
 @property (strong, nonatomic) UIBarButtonItem * expandButton;
-@property (weak, nonatomic) UIView<BulletinBoardObject> * highlightedView;
-
-@property int panCounter ;
-@property (nonatomic) BOOL editMode;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 
+/*-----------------------------------------------------------
+                            Model
+ -----------------------------------------------------------*/
+@property (strong, nonatomic) DropBoxAssociativeBulletinBoard * board;
+
+/*-----------------------------------------------------------
+                        Modal Properties
+ -----------------------------------------------------------*/
+@property (strong, nonatomic) NSArray * intersectingViews;
+@property (weak, nonatomic) UIView<BulletinBoardObject> * highlightedView;
+@property (nonatomic) BOOL editMode;
+@property int panCounter ;
 
 @end
 
+
+/*========================================================================*/
+
+
 @implementation BulletinBoardViewController
+
+/*-----------------------------------------------------------
+                    Synthesizers
+ -----------------------------------------------------------*/
 @synthesize label = _label;
 @synthesize bulletinboardView = _bulletinboardView; 
 @synthesize parent = _parent;
@@ -42,31 +64,29 @@
 @synthesize expandButton = _expandButton;
 @synthesize editMode = _editMode;
 @synthesize highlightedView = _highlightedView;
-
-
-
 @synthesize bulletinBoardName = _bulletinBoardName;
 
-
-- (NSArray *) intersectingViews{
-    if (!_intersectingViews){
-        _intersectingViews = [[NSArray alloc] init];
-    }
-    return _intersectingViews;
-}
-- (DropBoxAssociativeBulletinBoard *) board{
+-(DropBoxAssociativeBulletinBoard *) board{
     
     if (!_board){
         _board = [[DropBoxAssociativeBulletinBoard alloc] initBulletinBoardFromXoomlWithName:self.bulletinBoardName];
     }
     return _board;
 }
-- (void) setBulletinBoardName:(NSString *)bulletinBoardName{
+
+-(void) setBulletinBoardName:(NSString *) bulletinBoardName{
     _bulletinBoardName = bulletinBoardName;
     
     
 }
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+
+/*========================================================================*/
+
+/*-----------------------------------------------------------
+                    Initializers
+ -----------------------------------------------------------*/
+
+- (id)initWithNibName:(NSString *) nibNameOrNil bundle:(NSBundle *) nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -74,61 +94,34 @@
     }
     return self;
 }
-- (IBAction)backPressed:(id)sender {
-    
-    //save the bulletinboard
-    
-    [self.parent finishedWorkingWithBulletinBoard];
-}
 
--(void) objectPinched: (UIPinchGestureRecognizer *) sender{
+/*-----------------------------------------------------------
+                        UI Action Helper
+ -----------------------------------------------------------*/
+
+-(void) removeContextualToolbarItems:(UIView *) contextView{
     
-    if (self.editMode) return;
-    if (sender.state == UIGestureRecognizerStateChanged ||
-        sender.state == UIGestureRecognizerStateEnded){
-        CGFloat scale = sender.scale;
-        if ([sender.view conformsToProtocol: @protocol(BulletinBoardObject)]){
-            UIView <BulletinBoardObject> * view = (NoteView *) sender.view;
-            [view scale:scale];
-        }
-        
-        sender.scale = 1 ;
+    NSMutableArray * newToolbarItems = [self.toolbar.items mutableCopy];
+    [newToolbarItems removeLastObject];
+    if( [contextView isKindOfClass:[StackView class]]){
+        [newToolbarItems removeLastObject];
     }
+    self.toolbar.items = newToolbarItems;
 }
 
-- (NSArray *) checkForOverlapWithView: (UIView *) senderView{
-    NSMutableArray * ans = [[NSMutableArray alloc] init];
-    for (UIView * view in self.bulletinboardView.subviews){
-        if (view != senderView && [view conformsToProtocol:@protocol(BulletinBoardObject)]){
-            if (CGRectIntersectsRect(view.frame,senderView.frame)){
-                [ans addObject:view];
-                
-            }
-        }
+-(void) addContextualToolbarItems: (UIView *) contextView{
+    NSMutableArray * newToolbarItems = [self.toolbar.items mutableCopy];
+    if ( [contextView isKindOfClass:[StackView class]]){
+        [newToolbarItems addObject:self.expandButton];
     }
-    [ans addObject:senderView];
-    return ans;
+    [newToolbarItems addObject:self.deleteButton];
+    self.toolbar.items = newToolbarItems;
+    
+    
 }
-
--(void) stackTapped: (UIPanGestureRecognizer *) sender{
-    StackViewController * stackViewer = [self.storyboard instantiateViewControllerWithIdentifier:@"StackView"];
-    stackViewer.delegate = self;
-    stackViewer.notes = ((StackView *) sender.view).views;
-    stackViewer.openStack = (StackView *) sender.view;
-    [self presentModalViewController:stackViewer animated:YES];
-}
-
-/*
--(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    ((StackViewController *) segue.destinationViewController).delegate = self;
-    ((StackViewController *) segue.destinationViewController).notes = ((StackView *) sender).views;
-    ((StackViewController *) segue.destinationViewController).openStack = (StackView *) sender;
-}
-*/
 
 #define STACKING_SCALING_WIDTH 1.1
 #define STACKING_SCALING_HEIGHT 1.2
-
 -(void) stackNotes: (NSArray *) items into: (UIView *) mainView{
     __block BOOL first = YES;
     
@@ -180,7 +173,6 @@
     
 }
 
-
 - (NSMutableArray *) getAllNormalNotesInViews: (NSArray *) views{
     NSMutableArray * ans = [[NSMutableArray alloc] init];
     for (UIView * view in views){
@@ -195,173 +187,12 @@
     return ans;
 }
 
--(void) removeContextualToolbarItems:(UIView *) contextView{
-    
-    NSMutableArray * newToolbarItems = [self.toolbar.items mutableCopy];
-    [newToolbarItems removeLastObject];
-    if( [contextView isKindOfClass:[StackView class]]){
-        [newToolbarItems removeLastObject];
-    }
-    self.toolbar.items = newToolbarItems;
-}
-
--(void) addContextualToolbarItems: (UIView *) contextView{
-    NSMutableArray * newToolbarItems = [self.toolbar.items mutableCopy];
-    if ( [contextView isKindOfClass:[StackView class]]){
-        [newToolbarItems addObject:self.expandButton];
-    }
-    [newToolbarItems addObject:self.deleteButton];
-    self.toolbar.items = newToolbarItems;
-    
-    
-}
--(void) objectPressed: (UILongPressGestureRecognizer *) sender{
-    
-    
-    if ( sender.state == UIGestureRecognizerStateBegan){
-        
-        if (self.highlightedView && self.highlightedView != sender.view){
-            self.highlightedView.highlighted = NO;
-            [self removeContextualToolbarItems:self.highlightedView];
-            self.highlightedView = (UIView <BulletinBoardObject> *) sender.view;
-            [self addContextualToolbarItems:self.highlightedView];
-            self.highlightedView.highlighted = YES;
-            
-        }
-        else if (self.editMode){
-            self.editMode = NO;
-            self.highlightedView = nil;
-            [self removeContextualToolbarItems:sender.view];
-            
-            if ([sender.view conformsToProtocol:@protocol(BulletinBoardObject)]){
-                ((UIView <BulletinBoardObject> * ) sender.view).highlighted = NO;
-            }
-        }
-        else{
-            self.editMode = YES;
-            self.highlightedView = (UIView <BulletinBoardObject> *) sender.view;
-            
-            [self addContextualToolbarItems:sender.view];
-            
-            if ([sender.view conformsToProtocol:@protocol(BulletinBoardObject)]){
-                ((UIView <BulletinBoardObject> * ) sender.view).highlighted = YES;
-            }
-        }
-    }
-    
-}
-#define CHECK_TIME 0
--(void) objectPanned: (UIPanGestureRecognizer *) sender{
-    if( sender.state == UIGestureRecognizerStateChanged ||
-       sender.state == UIGestureRecognizerStateEnded){
-        CGPoint translation = [sender translationInView:self.bulletinboardView];
-        UIView * pannedView = [sender view];
-        CGPoint newOrigin = CGPointMake(pannedView.frame.origin.x + translation.x,
-                                        pannedView.frame.origin.y + translation.y);
-        pannedView.frame = CGRectMake(newOrigin.x, newOrigin.y, pannedView.frame.size.width,pannedView.frame.size.height);
-        [sender setTranslation:CGPointZero inView:self.bulletinboardView];
-        
-        if (self.editMode) return;
-        
-        self.panCounter++;
-        if (self.panCounter > CHECK_TIME ){
-            self.panCounter = 0;
-            NSArray * intersectingViews = [self checkForOverlapWithView:sender.view];
-            if ( [intersectingViews count] != [self.intersectingViews count] || [intersectingViews count] == 1){
-                for (UIView * view in self.intersectingViews){
-                    view.alpha = 1;
-                }
-            }
-            else{
-                for (UIView * view in intersectingViews){
-                    
-                    view.alpha = 0.5;
-                }
-            }
-            self.intersectingViews = intersectingViews;   
-        }
-        
-    }
-    
-    if (sender.state == UIGestureRecognizerStateEnded){
-        
-        for (UIView * view in self.intersectingViews){
-            view.alpha = 1;
-        }
-        
-        if ([self.intersectingViews count] > 1 ){
-            [self stackNotes:self.intersectingViews into:sender.view];
-        }
-    }
-    
-}
--(void) mainScreenDoubleTapped:(UITapGestureRecognizer *)sender{
-    
-    if (self.editMode) return;
-    
-    CGPoint location = [sender locationOfTouch:0 inView:self.bulletinboardView];
-    CGRect frame = CGRectMake(location.x, location.y, 200, 200);
-    NoteView * note = [[NoteView alloc] initWithFrame:frame];
-    note.transform = CGAffineTransformScale(note.transform, 10, 10);
-    note.alpha = 0;
-    note.delegate = self;
-    
-    [UIView animateWithDuration:0.25 animations:^{
-        note.transform = CGAffineTransformScale(note.transform, 0.1, 0.1);
-        note.alpha = 1;
-    }];
-    
-    [self.bulletinboardView addSubview:note];
-    UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectPanned:)];
-    UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(objectPinched:)];
-    UILongPressGestureRecognizer * lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(objectPressed:)];
-    
-    [note addGestureRecognizer:lpgr];
-    [note addGestureRecognizer:gr];
-    [note addGestureRecognizer:pgr];
-    
-}
-
--(void) screenTapped: (UIGestureRecognizer *)sender{
-    if (self.editMode){
-        self.editMode = NO;
-        self.highlightedView.highlighted = NO;
-        [self removeContextualToolbarItems:self.highlightedView];
-        self.highlightedView = nil;
-        
-    }
-}
-
-- (void)viewDidLoad
-{
-    
-    int len = [[self.toolbar items] count];
-    self.deleteButton = [[self.toolbar items] objectAtIndex:len - 1];
-    self.expandButton = [[self.toolbar items] objectAtIndex:len - 2];
-    NSMutableArray * toolBarItems = [[NSMutableArray alloc] init];
-    for ( int i = 0 ; i < 4 ; i++){
-        [toolBarItems addObject:[[self.toolbar items] objectAtIndex:i]];
-    }
-    self.toolbar.items = [toolBarItems copy];
-    
-    [super viewDidLoad];
-    self.label.title = self.bulletinBoardName;
-    CGSize size =  CGSizeMake(self.bulletinboardView.bounds.size.width, self.bulletinboardView.bounds.size.height);
-    [self.bulletinboardView setContentSize:size];
-    
-    UITapGestureRecognizer * gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainScreenDoubleTapped:)];
-    gr.numberOfTapsRequired = 2;
-    UITapGestureRecognizer * tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(screenTapped:)];
-    [self.bulletinboardView addGestureRecognizer:gr];
-    [self.bulletinboardView addGestureRecognizer:tgr];
-    self.bulletinboardView.delegate = self;
-}
-
-
+/*-----------------------------------------------------------
+                        Layout Methods
+ -----------------------------------------------------------*/
 
 #define EXPAND_COL_SIZE 5
 #define SEPERATOR_RATIO 0.1
-
 -(CGSize) getRectSizeForStack: (StackView *) stack{
     
     int notesInStack = [stack.views count];
@@ -390,7 +221,8 @@
     
     return CGSizeMake(rectWidth, rectHeight);
 }
-- (CGRect) findFittingRectangle: (StackView *) stack{
+
+-(CGRect) findFittingRectangle: (StackView *) stack{
     
     //find the size
     CGSize rectSize = [self getRectSizeForStack:stack];
@@ -568,7 +400,207 @@
         
     }
 }
-- (IBAction)expandPressed:(id)sender {
+
+-(NSArray *) intersectingViews{
+    if (!_intersectingViews){
+        _intersectingViews = [[NSArray alloc] init];
+    }
+    return _intersectingViews;
+}
+
+-(NSArray *) checkForOverlapWithView: (UIView *) senderView{
+    NSMutableArray * ans = [[NSMutableArray alloc] init];
+    for (UIView * view in self.bulletinboardView.subviews){
+        if (view != senderView && [view conformsToProtocol:@protocol(BulletinBoardObject)]){
+            if (CGRectIntersectsRect(view.frame,senderView.frame)){
+                [ans addObject:view];
+                
+            }
+        }
+    }
+    [ans addObject:senderView];
+    return ans;
+}
+
+/*-----------------------------------------------------------
+                        Gesture Events
+ -----------------------------------------------------------*/
+
+-(void) screenTapped: (UIGestureRecognizer *) sender{
+    if (self.editMode){
+        self.editMode = NO;
+        self.highlightedView.highlighted = NO;
+        [self removeContextualToolbarItems:self.highlightedView];
+        self.highlightedView = nil;
+        
+    }
+}
+
+-(void) mainScreenDoubleTapped:(UITapGestureRecognizer *) sender{
+    
+    if (self.editMode) return;
+    
+    CGPoint location = [sender locationOfTouch:0 inView:self.bulletinboardView];
+    CGRect frame = CGRectMake(location.x, location.y, 200, 200);
+    NoteView * note = [[NoteView alloc] initWithFrame:frame];
+    note.transform = CGAffineTransformScale(note.transform, 10, 10);
+    note.alpha = 0;
+    note.delegate = self;
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        note.transform = CGAffineTransformScale(note.transform, 0.1, 0.1);
+        note.alpha = 1;
+    }];
+    
+    [self.bulletinboardView addSubview:note];
+    UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectPanned:)];
+    UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(objectPinched:)];
+    UILongPressGestureRecognizer * lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(objectPressed:)];
+    
+    [note addGestureRecognizer:lpgr];
+    [note addGestureRecognizer:gr];
+    [note addGestureRecognizer:pgr];
+    
+    //add note to dropbox
+    
+    
+}
+
+-(void) objectPressed: (UILongPressGestureRecognizer *) sender{
+    
+    
+    if ( sender.state == UIGestureRecognizerStateBegan){
+        
+        if (self.highlightedView && self.highlightedView != sender.view){
+            self.highlightedView.highlighted = NO;
+            [self removeContextualToolbarItems:self.highlightedView];
+            self.highlightedView = (UIView <BulletinBoardObject> *) sender.view;
+            [self addContextualToolbarItems:self.highlightedView];
+            self.highlightedView.highlighted = YES;
+            
+        }
+        else if (self.editMode){
+            self.editMode = NO;
+            self.highlightedView = nil;
+            [self removeContextualToolbarItems:sender.view];
+            
+            if ([sender.view conformsToProtocol:@protocol(BulletinBoardObject)]){
+                ((UIView <BulletinBoardObject> * ) sender.view).highlighted = NO;
+            }
+        }
+        else{
+            self.editMode = YES;
+            self.highlightedView = (UIView <BulletinBoardObject> *) sender.view;
+            
+            [self addContextualToolbarItems:sender.view];
+            
+            if ([sender.view conformsToProtocol:@protocol(BulletinBoardObject)]){
+                ((UIView <BulletinBoardObject> * ) sender.view).highlighted = YES;
+            }
+        }
+    }
+    
+}
+
+#define CHECK_TIME 0
+-(void) objectPanned: (UIPanGestureRecognizer *) sender{
+    if( sender.state == UIGestureRecognizerStateChanged ||
+       sender.state == UIGestureRecognizerStateEnded){
+        CGPoint translation = [sender translationInView:self.bulletinboardView];
+        UIView * pannedView = [sender view];
+        CGPoint newOrigin = CGPointMake(pannedView.frame.origin.x + translation.x,
+                                        pannedView.frame.origin.y + translation.y);
+        pannedView.frame = CGRectMake(newOrigin.x, newOrigin.y, pannedView.frame.size.width,pannedView.frame.size.height);
+        [sender setTranslation:CGPointZero inView:self.bulletinboardView];
+        
+        if (self.editMode) return;
+        
+        self.panCounter++;
+        if (self.panCounter > CHECK_TIME ){
+            self.panCounter = 0;
+            NSArray * intersectingViews = [self checkForOverlapWithView:sender.view];
+            if ( [intersectingViews count] != [self.intersectingViews count] || [intersectingViews count] == 1){
+                for (UIView * view in self.intersectingViews){
+                    view.alpha = 1;
+                }
+            }
+            else{
+                for (UIView * view in intersectingViews){
+                    
+                    view.alpha = 0.5;
+                }
+            }
+            self.intersectingViews = intersectingViews;   
+        }
+        
+    }
+    
+    if (sender.state == UIGestureRecognizerStateEnded){
+        
+        for (UIView * view in self.intersectingViews){
+            view.alpha = 1;
+        }
+        
+        if ([self.intersectingViews count] > 1 ){
+            [self stackNotes:self.intersectingViews into:sender.view];
+        }
+    }
+    
+}
+
+-(void) stackTapped: (UIPanGestureRecognizer *) sender{
+    StackViewController * stackViewer = [self.storyboard instantiateViewControllerWithIdentifier:@"StackView"];
+    stackViewer.delegate = self;
+    stackViewer.notes = ((StackView *) sender.view).views;
+    stackViewer.openStack = (StackView *) sender.view;
+    [self presentModalViewController:stackViewer animated:YES];
+}
+
+-(void) objectPinched: (UIPinchGestureRecognizer *) sender{
+    
+    if (self.editMode) return;
+    if (sender.state == UIGestureRecognizerStateChanged ||
+        sender.state == UIGestureRecognizerStateEnded){
+        CGFloat scale = sender.scale;
+        if ([sender.view conformsToProtocol: @protocol(BulletinBoardObject)]){
+            UIView <BulletinBoardObject> * view = (NoteView *) sender.view;
+            [view scale:scale];
+        }
+        
+        sender.scale = 1 ;
+    }
+}
+
+/*-----------------------------------------------------------
+                         UI Events
+ -----------------------------------------------------------*/
+
+-(void) viewDidLoad
+{
+    
+    int len = [[self.toolbar items] count];
+    self.deleteButton = [[self.toolbar items] objectAtIndex:len - 1];
+    self.expandButton = [[self.toolbar items] objectAtIndex:len - 2];
+    NSMutableArray * toolBarItems = [[NSMutableArray alloc] init];
+    for ( int i = 0 ; i < 4 ; i++){
+        [toolBarItems addObject:[[self.toolbar items] objectAtIndex:i]];
+    }
+    self.toolbar.items = [toolBarItems copy];
+    
+    [super viewDidLoad];
+    self.label.title = self.bulletinBoardName;
+    CGSize size =  CGSizeMake(self.bulletinboardView.bounds.size.width, self.bulletinboardView.bounds.size.height);
+    [self.bulletinboardView setContentSize:size];
+    
+    UITapGestureRecognizer * gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainScreenDoubleTapped:)];
+    gr.numberOfTapsRequired = 2;
+    UITapGestureRecognizer * tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(screenTapped:)];
+    [self.bulletinboardView addGestureRecognizer:gr];
+    [self.bulletinboardView addGestureRecognizer:tgr];
+    self.bulletinboardView.delegate = self;
+}
+
+-(IBAction) expandPressed:(id) sender {
     if (!self.editMode) return;
     
     if (![self.highlightedView isKindOfClass:[StackView class]]) return;
@@ -590,7 +622,7 @@
     
 }
 
-- (IBAction)deletePressed:(id)sender {
+-(IBAction) deletePressed:(id) sender {
     if(!self.editMode) return;
     
     
@@ -613,7 +645,14 @@
     
 }
 
-- (void)viewDidUnload
+-(IBAction)backPressed:(id) sender {
+    
+    //save the bulletinboard
+    
+    [self.parent finishedWorkingWithBulletinBoard];
+}
+
+-(void) viewDidUnload
 {
     [self setLabel:nil];
     [self setView:nil];
@@ -623,17 +662,14 @@
     // Release any retained subviews of the main view.
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+-(BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
 }
 
-
-
-
-/*----------------
- Stack View Delegate Methods
- -------------------*/
+/*-----------------------------------------------------------
+                        Stack Delegate Protocol
+ -----------------------------------------------------------*/
 
 -(void) returnedstackViewController:(StackViewController *)sender{
     [self dismissModalViewControllerAnimated:YES];
@@ -680,12 +716,13 @@
     }
 }
 
-/*----------------
- Note View Delegate Methods
- -------------------*/
+/*-----------------------------------------------------------
+                        Note Delegate Protocol
+ -----------------------------------------------------------*/
 
 -(void) textViewDidEndEditing:(UITextView *)textView{
     NSLog(@"synchronize dropbox");
 }
+
 
 @end

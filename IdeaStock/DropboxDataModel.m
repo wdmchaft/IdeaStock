@@ -10,31 +10,45 @@
 #import "FileSystemHelper.h"
 #import "QueueProducer.h"
 
-
-@interface DropboxDataModel()
-
-//connection to dropbox
-@property (nonatomic,strong) id tempDel;
-
-
 #define ADD_BULLETIN_BOARD_ACTION @"addBulletinBoard"
 #define UPDATE_BULLETIN_BOARD_ACTION @"addBulletinBoard"
 #define ADD_NOTE_ACTION @"addNote"
 #define UPDATE_NOTE_ACTION @"updateNote"
 
 
+@interface DropboxDataModel()
 
+/*--------------------------------------------------
+ 
+                Delegation Properties
+ 
+ -------------------------------------------------*/
 
+//connection to dropbox
+@property (nonatomic,strong) id tempDel;
 
+/*--------------------------------------------------
+ 
+                Operational Properties
+ 
+ -------------------------------------------------*/
 
 @property NSString * action;
-
 @property NSString * actionPath;
 @property NSString * actionBulletinBoardName;
 @property NSString * actionNoteName;
+
 @end
 
+/*=======================================================*/
+
 @implementation DropboxDataModel
+
+/*--------------------------------------------------
+ 
+                    Synthesis
+ 
+ -------------------------------------------------*/
 
 @synthesize restClient = _restClient;
 @synthesize tempDel = _tempDel;
@@ -43,7 +57,7 @@
 @synthesize actionBulletinBoardName = _actionBulletinBoardName;
 @synthesize actionNoteName = _actionNoteName;
 
-- (DBRestClient *) restClient{
+-(DBRestClient *) restClient{
     if (!_restClient){
         _restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
         
@@ -53,7 +67,7 @@
     return _restClient;
 }
 
-- (void) setDelegate:(id <QueueProducer,DBRestClientDelegate>)delegate{
+-(void) setDelegate:(id <QueueProducer,DBRestClientDelegate>)delegate{
     self.restClient.delegate = delegate;
 }
 
@@ -61,7 +75,15 @@
     return  _restClient.delegate;
 }
 
-- (void) createMissingDirectoryForPath: (NSString *) path{
+/*=======================================================*/
+
+/*--------------------------------------------------
+ 
+                Local file system methods
+ 
+ -------------------------------------------------*/
+
+-(void) createMissingDirectoryForPath: (NSString *) path{
     
     NSString * directory = [path stringByDeletingLastPathComponent];
     NSString * directoryName = [directory lastPathComponent];
@@ -90,8 +112,16 @@
     }
     
 }
+
+
+/*--------------------------------------------------
+ 
+                    Creastion Methods
+ 
+ -------------------------------------------------*/
+
 #define BULLETINBOARD_XOOML_FILE_NAME @"XooML.xml"
-- (void) addBulletinBoardWithName: (NSString *) bulletinBoardName
+-(void) addBulletinBoardWithName: (NSString *) bulletinBoardName
              andBulletinBoardInfo: (NSData *) content{
     
     
@@ -124,6 +154,50 @@
     [self.restClient createFolder:bulletinBoardName];
 }
 
+-(void) addNote: (NSString *)noteName 
+     withContent: (NSData *) note 
+ ToBulletinBoard: (NSString *) bulletinBoardName{
+    
+    //  noteName = @"Joojoo";
+    NSError * err;
+    //first write the note to the disk
+    NSString * path = [FileSystemHelper getPathForNoteWithName:noteName inBulletinBoardWithName:bulletinBoardName];
+    [self createMissingDirectoryForPath:path];
+    BOOL didWrite = [note writeToFile:path options:NSDataWritingAtomic error:&err];
+    if (!didWrite){
+        NSLog(@"Error in writing to file system: %@", err);
+        return;
+    }
+    
+    //temporarily save the delegate
+    self.tempDel = self.delegate;
+    
+    //make yourself delegate
+    self.restClient.delegate = self;
+    
+    
+    //set the action
+    self.action = ADD_NOTE_ACTION;
+    self.actionPath = path;
+    self.actionBulletinBoardName = bulletinBoardName;
+    self.actionNoteName = noteName;
+    
+    
+    //now upload the file to the dropbox
+    //First check whether the note folder exists
+    //NSString * destination = [NSString stringWithFormat: @"/%@/%@/%@", bulletinBoardName, noteName, NOTE_XOOML_FILE_NAME];
+    NSString * destination = [NSString stringWithFormat: @"/%@/%@", bulletinBoardName, noteName];
+    
+    //the rest is done for loadedMetadata method
+    [self.restClient createFolder: destination];
+    
+}
+
+/*--------------------------------------------------
+ 
+                    Update Methods
+ 
+ -------------------------------------------------*/
 
 -(void) updateBulletinBoardWithName: (NSString *) bulletinBoardName 
                andBulletinBoardInfo: (NSData *) content{
@@ -158,45 +232,6 @@
     
 }
 #define NOTE_XOOML_FILE_NAME @"XooML.xml"
-
-- (void) addNote: (NSString *)noteName 
-     withContent: (NSData *) note 
- ToBulletinBoard: (NSString *) bulletinBoardName{
-    
-  //  noteName = @"Joojoo";
-    NSError * err;
-    //first write the note to the disk
-    NSString * path = [FileSystemHelper getPathForNoteWithName:noteName inBulletinBoardWithName:bulletinBoardName];
-    [self createMissingDirectoryForPath:path];
-    BOOL didWrite = [note writeToFile:path options:NSDataWritingAtomic error:&err];
-    if (!didWrite){
-        NSLog(@"Error in writing to file system: %@", err);
-        return;
-    }
-    
-    //temporarily save the delegate
-    self.tempDel = self.delegate;
-    
-    //make yourself delegate
-    self.restClient.delegate = self;
-    
-    
-    //set the action
-    self.action = ADD_NOTE_ACTION;
-    self.actionPath = path;
-    self.actionBulletinBoardName = bulletinBoardName;
-    self.actionNoteName = noteName;
-    
-
-    //now upload the file to the dropbox
-    //First check whether the note folder exists
-    //NSString * destination = [NSString stringWithFormat: @"/%@/%@/%@", bulletinBoardName, noteName, NOTE_XOOML_FILE_NAME];
-     NSString * destination = [NSString stringWithFormat: @"/%@/%@", bulletinBoardName, noteName];
-    
-    //the rest is done for loadedMetadata method
-    [self.restClient createFolder: destination];
-    
-}
 
 -(void) updateNote: (NSString *) noteName 
        withContent: (NSData *) content
@@ -233,7 +268,13 @@
     
 }
 
-- (void) removeBulletinBoard:(NSString *) boardName{
+/*--------------------------------------------------
+ 
+                    Deletion Methods
+ 
+ -------------------------------------------------*/
+
+-(void) removeBulletinBoard:(NSString *) boardName{
     NSError * err;
     NSString * path = [FileSystemHelper getPathForBulletinBoardWithName:boardName];
     path = [path stringByDeletingLastPathComponent];
@@ -251,7 +292,7 @@
     
 }
 
-- (void) removeNote: (NSString *) noteName
+-(void) removeNote: (NSString *) noteName
   FromBulletinBoard: (NSString *) bulletinBoardName{
     
     NSError *err;
@@ -272,22 +313,27 @@
     
 }
 
-- (NSArray *) getAllBulletinBoardsFromRoot{
+
+/*--------------------------------------------------
+ 
+                    Query Methods
+ 
+ -------------------------------------------------*/
+
+-(NSArray *) getAllBulletinBoardsFromRoot{
     [self getAllBulletinBoardsAsynch];
     return nil;
 }
 
-- (NSData *) getBulletinBoard: (NSString *) bulletinBoardName{
+-(NSData *) getBulletinBoard: (NSString *) bulletinBoardName{
     [self getBulletinBoardAsynch:bulletinBoardName];
     return nil;
 }
-
 
 -(void) getAllBulletinBoardsAsynch{
     
     [self.restClient loadMetadata:@"/"];
 }
-
 
 -(void) getBulletinBoardAsynch: (NSString *) bulletinBoardName{
     
@@ -296,16 +342,13 @@
     
 }
 
+/*--------------------------------------------------
+ 
+                RESTClient delegate protocol
+ 
+ -------------------------------------------------*/
 
-
-
-
-/*----------------------------------------------------
- Delegate Methods
- *---------------------------------------------------*/
-
-
-- (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
+-(void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
     
     NSString * parentRev = [metadata rev];
     NSString * path = [metadata path];
@@ -344,7 +387,7 @@
     
 }
 
-- (void)restClient:(DBRestClient *)client
+-(void)restClient:(DBRestClient *)client
 loadMetadataFailedWithError:(NSError *)error {
     
     NSLog(@"Error loading metadata: %@", error);
@@ -356,12 +399,7 @@ loadMetadataFailedWithError:(NSError *)error {
     [self.delegate produceNext];
 }
     
-
--(NSString *) description{
-    return @"Its me the dropbox datamodel itself";
-}
-
-- (void)restClient:(DBRestClient*)client createdFolder:(DBMetadata*)folder{
+-(void)restClient:(DBRestClient*)client createdFolder:(DBMetadata*)folder{
     
     if ([self.action isEqualToString:ADD_BULLETIN_BOARD_ACTION]){
         NSLog(@"Folder Created for bulletinboard: %@ ", self.actionBulletinBoardName);
@@ -400,10 +438,9 @@ loadMetadataFailedWithError:(NSError *)error {
     }
 }
 
-- (void)restClient:(DBRestClient*)client createFolderFailedWithError:(NSError*)error{
+-(void)restClient:(DBRestClient*)client createFolderFailedWithError:(NSError*)error{
     NSLog(@"Failed to create Folder:: %@", error);
     self.restClient.delegate = self.tempDel;
 }
-
 
 @end

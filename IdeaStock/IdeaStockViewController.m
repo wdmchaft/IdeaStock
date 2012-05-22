@@ -10,12 +10,9 @@
 #import <DropboxSDK/DropboxSDK.h>
 #import "DropBoxAssociativeBulletinBoard.h"
 
-
-@interface IdeaStockViewController ()
-
-
-
-@end
+/*-----------------------------------------------------------
+                            For Demo Purposes Only
+ -----------------------------------------------------------*/
 
 @implementation IdeaStockViewController
 
@@ -24,7 +21,7 @@
 
 - (DropBoxAssociativeBulletinBoard *) board{
     if (!_board){
-
+        
         _board  = [[DropBoxAssociativeBulletinBoard alloc] initBulletinBoardFromXoomlWithName:@"BulletinBoard"];
     }
     
@@ -65,32 +62,28 @@ loadMetadataFailedWithError:(NSError *)error {
         [[DBSession sharedSession] link];
     }
     
-
-
+    
+    
 }
 - (IBAction)buttonPressed:(id)sender {
     
-   // id board = self.board;
+    // id board = self.board;
 }
 - (IBAction)savePressed:(id)sender {
     [self.board saveBulletinBoard];
 }
-
 - (IBAction)addNewNote:(id)sender {
     [self.board demoAddNewNote];
 }
 - (IBAction)addNewBB:(id)sender {
     [self.board demoAddNewBulletinBoard];
 }
-
 - (IBAction)deleteBB:(id)sender {
     [self.board demoDeleteBB];
 }
-
 - (IBAction)deleteNote:(id)sender {
     [self.board demoDeleteNote];
 }
-
 
 
 - (void)viewDidUnload

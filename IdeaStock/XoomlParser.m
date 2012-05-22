@@ -17,10 +17,67 @@
 @implementation XoomlParser
 
 
+/*===========================================================*/
+
+/*--------------------------------------------------
+ 
+                        Definations
+ 
+ -------------------------------------------------*/
+
 #define NOTE_ID  @"ID"
 #define NOTE_TEXT  @"displayText"
 #define NOTE_CREATION_DATE @"createdOn"
 #define NOTE_MODIFICATION_DATE @"modifiedOn"
+
+#define XML_HEADER @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+#define XSI_NAMESPACE @"http://www.w3.org/2001/XMLSchema-instance"
+#define XOOML_NAMESPACE @"http://kftf.ischool.washington.edu/xmlns/xooml"
+#define IDEA_STOCK_NAMESPACE @"http://ischool.uw.edu/xmlns/ideastock"
+#define XOOML_SCHEMA_LOCATION @"http://kftf.ischool.washington.edu/xmlns/xooml http://kftf.ischool.washington.edu/XMLschema/0.41/XooML.xsd"
+#define XOOML_SCHEMA_VERSION @"0.41"
+
+#define XOOML_FRAGMENT @"xooml:fragment"
+#define XOOML_ASSOCIATION @"xooml:association"
+
+#define ATTRIBUTE_ID @"ID"
+#define ATTRIBUTE_TYPE @"type"
+#define ATTRIBUTE_NAME @"name"
+#define ATTRIBUTE_TOOL @"toolName"
+#define ATTRIBUTE_TOOL_VERSION @"toolVersion"
+
+#define ASSOCIATED_ITEM @"associatedItem"
+#define ASSOCIATED_ICON @"associatedIcon"
+#define ASSOCIATED_XOOML_FRAGMENT @"associatedXooMLFragment"
+#define LEVEL_OF_SYNCHRONIZATION @"levelOfSynchronization"
+#define DISPLAY_TEXT @"displayText"
+#define OPEM_WITH_DEFAULT @"openWithDefault"
+#define CREATED_BY @"createdBy"
+#define CREATED_ON @"createdOn"
+#define MODIFIED_BY @"modifiedBy"
+#define MODIFIED_ON @"modifiedOn"
+#define POSITION_X @"positionX"
+#define POSITION_Y @"positionY"
+#define IS_VISIBLE @"isVisible"
+
+#define APP_NAME @"IdeaStock"
+#define APP_VERSION @"0.1"
+
+#define XOOML_NOTE_TOOL_ATTRIBUTE @"xooml:associationToolAttributes"
+#define XOOML_BULLETINBOARD_TOOL_ATTRIBUTE @"xooml:fragmentToolAttributes"
+#define ATTRIBUTE_NAME @"name"
+#define NOTE_REF_ELEMENT_NAME @"is:note"
+#define NOTE_POSITION_ELEMENT_NAME @"is:position"
+#define REF_ID @"refID"
+
+/*===========================================================*/
+
+
+/*--------------------------------------------------
+ 
+ XooML Writing
+ 
+ -------------------------------------------------*/
 
 + (BulletinBoardNote *) xoomlNoteFromXML:(NSData *)data{
     
@@ -62,46 +119,6 @@
 
 }
 
-#define XML_HEADER @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-#define XSI_NAMESPACE @"http://www.w3.org/2001/XMLSchema-instance"
-#define XOOML_NAMESPACE @"http://kftf.ischool.washington.edu/xmlns/xooml"
-#define IDEA_STOCK_NAMESPACE @"http://ischool.uw.edu/xmlns/ideastock"
-#define XOOML_SCHEMA_LOCATION @"http://kftf.ischool.washington.edu/xmlns/xooml http://kftf.ischool.washington.edu/XMLschema/0.41/XooML.xsd"
-#define XOOML_SCHEMA_VERSION @"0.41"
-
-#define XOOML_FRAGMENT @"xooml:fragment"
-#define XOOML_ASSOCIATION @"xooml:association"
-
-#define ATTRIBUTE_ID @"ID"
-#define ATTRIBUTE_TYPE @"type"
-#define ATTRIBUTE_NAME @"name"
-#define ATTRIBUTE_TOOL @"toolName"
-#define ATTRIBUTE_TOOL_VERSION @"toolVersion"
-
-#define ASSOCIATED_ITEM @"associatedItem"
-#define ASSOCIATED_ICON @"associatedIcon"
-#define ASSOCIATED_XOOML_FRAGMENT @"associatedXooMLFragment"
-#define LEVEL_OF_SYNCHRONIZATION @"levelOfSynchronization"
-#define DISPLAY_TEXT @"displayText"
-#define OPEM_WITH_DEFAULT @"openWithDefault"
-#define CREATED_BY @"createdBy"
-#define CREATED_ON @"createdOn"
-#define MODIFIED_BY @"modifiedBy"
-#define MODIFIED_ON @"modifiedOn"
-#define POSITION_X @"positionX"
-#define POSITION_Y @"positionY"
-#define IS_VISIBLE @"isVisible"
-
-
-#define APP_NAME @"IdeaStock"
-#define APP_VERSION @"0.1"
-
-#define XOOML_NOTE_TOOL_ATTRIBUTE @"xooml:associationToolAttributes"
-#define XOOML_BULLETINBOARD_TOOL_ATTRIBUTE @"xooml:fragmentToolAttributes"
-#define ATTRIBUTE_NAME @"name"
-#define NOTE_REF_ELEMENT_NAME @"is:note"
-#define NOTE_POSITION_ELEMENT_NAME @"is:position"
-#define REF_ID @"refID"
 
 + (NSData *) convertNoteToXooml: (BulletinBoardNote *) note{
     
@@ -171,11 +188,6 @@
     return [xmlString dataUsingEncoding:NSUTF8StringEncoding];
 }
 
-
-
-/*xooml:associationToolAttributes xmlns="http://ischool.uw.edu/xmlns/ideastock"
-ID="d391c321-4f25-4128-8a82-13dd5f268035" type="linkage" name="link1" toolName="IdeaStock"
-toolVersion="0.1">*/
 + (DDXMLElement *) xoomlForAssociationToolAttributeWithName: (NSString *) attributeName 
                                          andType: (NSString *) attributeType{
     
@@ -241,6 +253,7 @@ toolVersion="0.1">*/
     return xoomlAssociation;
     
 }
+
 + (DDXMLNode *) xoomlForNoteRef: (NSString *) refID{
     //make the note reference element
     DDXMLElement * noteRef = [DDXMLElement elementWithName:NOTE_REF_ELEMENT_NAME];
@@ -264,6 +277,12 @@ toolVersion="0.1">*/
 }
 
 
+/*--------------------------------------------------
+ 
+ XooML xPath Methods 
+ 
+ -------------------------------------------------*/
+
 + (NSString *) xPathforNote: (NSString *) noteID{
     return [NSString stringWithFormat:@"//xooml:association[@ID = \"%@\"]",noteID];
 }
@@ -278,7 +297,8 @@ toolVersion="0.1">*/
     return [NSString stringWithFormat:@"//xooml:fragmentToolAttributes[@type = \"%@\"]", attributeType];
 }
 
-+(NSString *) xPathForAllNotes{
++ (NSString *) xPathForAllNotes{
     return @"//xooml:association";
 }
+
 @end
