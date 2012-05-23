@@ -1033,7 +1033,7 @@ attributeName ofType:(NSString *) attributeType{
     NSString * newIsVisible = [[newProperties objectForKey:NOTE_IS_VISIBLE] lastObject];
     //if its the name of the note that we want to change change it on the 
     //note itself
-    if (note){
+    if (newName){
         [note removeAttributeForName:XOOML_NOTE_NAME];
         [note addAttribute:[DDXMLNode attributeWithName:XOOML_NOTE_NAME stringValue:newName]];
     }
