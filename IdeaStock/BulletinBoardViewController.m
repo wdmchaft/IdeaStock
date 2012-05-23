@@ -208,9 +208,9 @@
     NSString * positionX = [NSString stringWithFormat:@"%f", note.frame.origin.x];
     NSStream * positionY = [NSString stringWithFormat:@"%f", note.frame.origin.y];
     
-    NSLog(@"%@",positionX);
     NSDictionary * noteProperties =[[NSDictionary alloc] initWithObjectsAndKeys:noteName,@"name",noteID,@"ID",positionX,@"positionX",positionY, @"positionY",@"true", @"isVisible",nil];
     BulletinBoardNote * noteItem = [[BulletinBoardNote alloc] initEmptyNoteWithID:noteTextID andDate:creationDate];
+    noteItem.noteText = note.text;
     
     [self.board addNoteContent:noteItem andProperties:noteProperties];
     note.ID = noteID;
