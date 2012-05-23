@@ -385,17 +385,23 @@
 
 -(void) animateReturn{
     
-    self.lastView.alpha = 1;
-    [UIView animateWithDuration:0.65
+    
+
+    [UIView animateWithDuration:1.0 animations:^{ self.lastView.alpha = 1;}];
+    
+    [UIView animateWithDuration:1.0
                           delay:0
-                        options:UIViewAnimationCurveEaseOut
+                        options:UIViewAnimationOptionLayoutSubviews
                      animations:^{
-                        self.lastView.transform = CGAffineTransformIdentity;
-                         self.lastView.frame = self.lastFrame;
+                            
+                        
                         UILabel * viewLabel = (UILabel *)[[self.lastView subviews] objectAtIndex:0];
 
                          viewLabel.alpha = 1;
                         // viewLabel.transform = CGAffineTransformIdentity;
+                         
+                         self.lastView.transform = CGAffineTransformIdentity;
+                         self.lastView.frame = self.lastFrame;
                      }completion:nil];
 }
 
