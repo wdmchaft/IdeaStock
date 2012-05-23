@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol NoteViewDelegate <UITextViewDelegate>
+@protocol NoteViewDelegate 
 
-- (void)textViewDidEndEditing:(UITextView *)textView;
+-(void) note:(id) note changedTextTo: (NSString *)text;
 
 @end

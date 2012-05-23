@@ -10,7 +10,7 @@
 #import "BulletinBoardObject.h"
 #import "NoteViewDelegate.h"
 
-@interface NoteView : UIView <BulletinBoardObject>
+@interface NoteView : UIView <BulletinBoardObject,UITextViewDelegate>
 
 @property (weak,nonatomic) id<NoteViewDelegate> delegate;
 

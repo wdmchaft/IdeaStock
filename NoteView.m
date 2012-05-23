@@ -51,11 +51,6 @@
 
 -(void) setDelegate:(id<NoteViewDelegate>) delegate{
     _delegate = delegate;
-    for (UIView * subView in self.subviews){
-        if ([subView isKindOfClass:[UITextView class]]){
-            ((UITextView *)subView).delegate = delegate;
-        }
-    }
 }
 
 -(UIImage *) normalImage{
@@ -136,7 +131,7 @@
                                       self.bounds.origin.y + self.bounds.size.height * STARTING_POS_OFFSET_Y,
                                       self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
         UITextView * textView = [[UITextView alloc] initWithFrame:textFrame];
-        textView.delegate = self.delegate;
+        textView.delegate = self;
         [self addSubview:imageView];
         [self addSubview:textView];
         self.text = @"Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. All rights reserved.Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. ";
@@ -194,9 +189,7 @@
                                           self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
             UITextView * textView = [[UITextView alloc] initWithFrame:textFrame];
             textView.text = oldText;
-            textView.delegate = self.delegate;
-            
-            
+            textView.delegate = self;
             [subView removeFromSuperview];
             
             [self addSubview:textView];
@@ -221,8 +214,7 @@
                                                   self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
                     UITextView * textView = [[UITextView alloc] initWithFrame:textFrame];
                     textView.text = oldText;
-                    textView.delegate = self.delegate;
-                    
+                    textView.delegate = self;
                     
                     [subView removeFromSuperview];
                     
@@ -256,6 +248,16 @@
         }
     }
 
+}
+
+
+/*-----------------------------------------------------------
+                        textViewDelegate
+ -----------------------------------------------------------*/
+
+-(void) textViewDidEndEditing:(UITextView *)textView{
+    NSString * text = textView.text;
+    [self.delegate note:self changedTextTo:text];
 }
 
 @end

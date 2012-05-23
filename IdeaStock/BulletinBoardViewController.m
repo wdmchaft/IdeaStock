@@ -794,8 +794,11 @@
                         Note Delegate Protocol
  -----------------------------------------------------------*/
 
--(void) textViewDidEndEditing:(UITextView *)textView{
+- (void) note: (id)note changedTextTo: (NSString *) text{
+    NSString * newText = text;
     NSLog(@"synchronize dropbox");
+    
+    
 }
 
 

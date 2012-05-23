@@ -439,9 +439,9 @@
                         Note Delegate Protocol
  -----------------------------------------------------------*/
 
--(void) textViewDidEndEditing:(UITextView *)textView{
-    NSLog(@"%@", textView.text);
-    [self.openStack setText: textView.text];
+-(void) note:(id)note changedTextTo:(NSString *)text{
+    NSLog(@"%@", text);
+    [self.openStack setText: text];
 }
 
 @end
