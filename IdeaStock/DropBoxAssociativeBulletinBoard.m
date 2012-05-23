@@ -117,19 +117,22 @@
     
     if (self.needSynchronization){
         self.needSynchronization = NO;
-        [self saveBulletinBoard];
+        [DropBoxAssociativeBulletinBoard saveBulletinBoard: self];
     }
 }
 
 
--(void) saveBulletinBoard{
-    if ([self.dataModel isKindOfClass:[DropboxDataModel class]]){
-        ((DropboxDataModel *) self.dataModel).delegate = self;
++(void) saveBulletinBoard:(id) bulletinBoard{
+    
+    if ([bulletinBoard isKindOfClass:[DropBoxAssociativeBulletinBoard class]]){
+        DropBoxAssociativeBulletinBoard * board = (DropBoxAssociativeBulletinBoard *) bulletinBoard;
+        if ([board.dataModel isKindOfClass:[DropboxDataModel class]]){
+            ((DropboxDataModel *) board.dataModel).delegate = board;
+        }
+        
     }
     
-    [self.dataModel updateBulletinBoardWithName: self.bulletinBoardName
-                           andBulletinBoardInfo:[self.dataSource data]];
-    
+    [super saveBulletinBoard:bulletinBoard];
 }
 
 /*--------------------------------------------------
@@ -330,7 +333,7 @@ toBulletinBoardAttribute:attributeName
 -(void) removeNoteWithID:(NSString *)delNoteID{
     [super removeNoteWithID:delNoteID];
     
-    [self saveBulletinBoard];
+    self.needSynchronization = true;
 }
 
 -(void) removeNote: (NSString *) targetNoteID
@@ -413,6 +416,12 @@ fromBulletinBoardAttribute:attributeName
     self.needSynchronization = YES;
 }
 
+
+-(void) updateNoteProperties:(NSString *)noteID withProperties:(NSDictionary *)newProperties{
+    [super updateNoteProperties:noteID withProperties:newProperties];
+    
+    self.needSynchronization = YES;
+}
 /*--------------------------------------------------
  
                     Dropbox delegate methods

@@ -12,6 +12,7 @@
 @protocol BulletinBoard <NSObject>
 
 
+
 /*---------------------------------
  * Creation behavior
  *--------------------------------*/
@@ -192,6 +193,10 @@ fromBulletinBoardAttribute: (NSString *) attributeName
                                ofType: (NSString *) attributeType 
                              withName: (NSString *) newAttributeName;
 
+
+- (void) updateNoteProperties: (NSString *) noteID 
+              withProperties: (NSDictionary *) newProperties;
+
 /**---------------------------------
  * Query behavior
  *--------------------------------**/
@@ -236,12 +241,6 @@ fromBulletinBoardAttribute: (NSString *) attributeName
                                    ofAttributeType: (NSString *) attributeType
                                            forNote: (NSString *) noteID;
 
-@optional
-/*
- Use any mechanism and any data model to save the bulletin board
- */
--(void) saveBulletinBoard;
-
-
++ (void) saveBulletinBoard: (id) bulletinBoard;
 
 @end

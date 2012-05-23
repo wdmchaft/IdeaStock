@@ -1027,10 +1027,10 @@ attributeName ofType:(NSString *) attributeType{
     DDXMLElement * note = [self getNoteElementFor:noteID];
     if (!note) return;
     
-    NSString * newName = [newProperties objectForKey:NOTE_NAME_KEY];
-    NSString * newPositionX = [newProperties objectForKey:NOTE_POSITION_X_KEY];
-    NSString * newPositionY = [newProperties objectForKey:NOTE_POSITION_Y_KEY];
-    NSString * newIsVisible = [newProperties objectForKey:NOTE_IS_VISIBLE];
+    NSString * newName = [[newProperties objectForKey:NOTE_NAME_KEY] lastObject];
+    NSString * newPositionX = [[newProperties objectForKey:NOTE_POSITION_X_KEY] lastObject];
+    NSString * newPositionY = [[newProperties objectForKey:NOTE_POSITION_Y_KEY]lastObject];
+    NSString * newIsVisible = [[newProperties objectForKey:NOTE_IS_VISIBLE] lastObject];
     //if its the name of the note that we want to change change it on the 
     //note itself
     if (note){

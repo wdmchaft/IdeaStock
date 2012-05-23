@@ -194,7 +194,11 @@
                         Model Manipulation
  -----------------------------------------------------------*/
 
+#define POSITION_X_TYPE @"positionX"
+#define POSITION_Y_TYPE @"positionY"
+#define POSITION_TYPE @"position"
 -(void) addNoteToModel: (NoteView *) note{
+    
     NSString * noteTextID = [XoomlAttributeHelper generateUUID];
     NSString * creationDate = [XoomlAttributeHelper generateCurrentTimeForXooml];
     NSString * noteID = [XoomlAttributeHelper generateUUID];
@@ -212,6 +216,23 @@
     note.ID = noteID;
 }
 
+-(void) updateNoteLocation:(NoteView *) view{
+    NSString * noteID = view.ID;
+    float positionFloat = view.frame.origin.x;
+    NSString * positionX = [NSString stringWithFormat:@"%f",positionFloat];
+    positionFloat = view.frame.origin.y;
+    NSString * positionY = [NSString stringWithFormat:@"%f",positionFloat];
+    
+    NSArray * positionXArr = [NSArray arrayWithObject:positionX];
+    NSArray * positionYArr = [NSArray arrayWithObject:positionY];
+    NSDictionary * position = [[NSDictionary alloc] initWithObjectsAndKeys:
+                               positionXArr, POSITION_X_TYPE,
+                               positionYArr, POSITION_Y_TYPE, nil];
+
+    NSDictionary * newProperties = [[NSDictionary alloc] initWithObjectsAndKeys:position,POSITION_TYPE, nil];
+    
+    [self.board updateNoteProperties:noteID withProperties:newProperties]; 
+}
 /*-----------------------------------------------------------
                             Notification
  -----------------------------------------------------------*/
@@ -240,6 +261,7 @@
         if (noteObj.noteText) note.text = noteObj.noteText;
         note.transform = CGAffineTransformScale(note.transform, 10, 10);
         note.alpha = 0;
+        note.ID = noteID;
         note.delegate = self;
         
         [UIView animateWithDuration:0.25 animations:^{
@@ -612,6 +634,8 @@
         if ([self.intersectingViews count] > 1 ){
             [self stackNotes:self.intersectingViews into:sender.view];
         }
+        
+        [self updateNoteLocation:(NoteView *) sender.view];
     }
     
 }
@@ -722,11 +746,14 @@
     
     //save the bulletinboard
     
+    [DropBoxAssociativeBulletinBoard saveBulletinBoard:self.board];
     [self.parent finishedWorkingWithBulletinBoard];
+
 }
 
 -(void) viewDidUnload
 {
+    [DropBoxAssociativeBulletinBoard saveBulletinBoard:self.board];
     [self setLabel:nil];
     [self setView:nil];
     [self setBulletinboardView:nil];

@@ -560,6 +560,24 @@ fromBulletinBoardAttribute: (NSString *) attributeName
     
 }
 
+
+-(void) updateNoteProperties:(NSString *)noteID 
+              withProperties:(NSDictionary *)newProperties{
+    
+    if (![self.noteContents objectForKey:noteID]) return;
+    
+    BulletinBoardAttributes * noteAttribute = [self.noteAttributes objectForKey:noteID];
+    
+    if([newProperties objectForKey:POSITION_TYPE]){
+        NSDictionary * positionProp = [newProperties objectForKey:POSITION_TYPE];
+        [noteAttribute updateAttribute:POSITION_X ofType:POSITION_TYPE withNewValue:[positionProp objectForKey:POSITION_X]];
+        [noteAttribute updateAttribute:POSITION_Y ofType:POSITION_TYPE withNewValue:[positionProp objectForKey:POSITION_Y]];
+        [self.delegate updateNote:noteID withProperties:positionProp];
+    }
+    
+
+
+}
 -(void) updateNoteAttribute: (NSString *) attributeName
                      ofType:(NSString *) attributeType 
                     forNote: (NSString *) noteID 
@@ -642,17 +660,17 @@ fromBulletinBoardAttribute: (NSString *) attributeName
  
  -------------------------------------------------*/
 
--(void) saveBulletinBoard{
++(void) saveBulletinBoard:(id) bulletinBoard{
     
-    [self.dataModel updateBulletinBoardWithName:self.bulletinBoardName andBulletinBoardInfo:[self.dataSource data]];
-    for (NSString * noteID in self.noteContents){
-        //get the name of a note
-        NSData * noteData = [XoomlParser convertNoteToXooml:[self.noteContents objectForKey:noteID]];
-        BulletinBoardAttributes * noteAttributes = [self.noteAttributes objectForKey:noteID];
-        NSString * noteName = [[noteAttributes getAttributeWithName:NOTE_NAME forAttributeType:NOTE_NAME_TYPE] lastObject];
-        [self.dataModel addNote:noteName withContent:noteData ToBulletinBoard:@"joo"];
+    if ([bulletinBoard isKindOfClass:[AssociativeBulletinBoard class]]){
+        
+        AssociativeBulletinBoard * board = (AssociativeBulletinBoard *) bulletinBoard;
+            [board.dataModel updateBulletinBoardWithName:board.bulletinBoardName andBulletinBoardInfo:[board.dataSource data]];
+
     }
+
 }
+
 
 //TODO Update note name is not provided yet
 

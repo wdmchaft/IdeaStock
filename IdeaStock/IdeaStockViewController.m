@@ -70,7 +70,7 @@ loadMetadataFailedWithError:(NSError *)error {
     // id board = self.board;
 }
 - (IBAction)savePressed:(id)sender {
-    [self.board saveBulletinBoard];
+    [DropBoxAssociativeBulletinBoard saveBulletinBoard:self.board];
 }
 - (IBAction)addNewNote:(id)sender {
     [self.board demoAddNewNote];
