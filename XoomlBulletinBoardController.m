@@ -118,6 +118,7 @@
 #define XOOML_POSITION_Y @"positionY"
 #define XOOML_IS_VISIBLE @"isVisible"
 #define XOOML_NOTE_NAME @"associatedItem"
+#define XOOML_ID @"ID"
 
 /*-----------------------------------------------------------
  
@@ -134,16 +135,26 @@
     
     //xooml:association[@ID ="d391c321-4f25-4128-8a82-13dd5f268034"]
     //TODO this may not work maybe I shoud remove @ sign
-    NSString * xPath = [XoomlParser xPathforNote:noteID];
-    
+    NSString * xPath = [XoomlParser xPathforNote:noteID]; 
     NSError * err;
-    NSArray *notes = [self.document nodesForXPath: xPath error: &err];
+    NSArray *notes = [self.document.rootElement nodesForXPath: xPath error: &err];
+    
     if (notes == nil){
         NSLog(@"Error reading the content from XML");
         return nil;
     }
+    
+
     if ([notes count] == 0 ){
-        NSLog(@"No Note Content exist for the given note");
+        
+        //There is apparently a bug in KissXML xPath
+        //I will search for the note manually if the bug occurs
+        for(DDXMLElement * node in self.document.rootElement.children){
+            if([[[node attributeForName:XOOML_ID] stringValue] isEqualToString:noteID]){
+                return node;
+            }
+        }
+        NSLog(@"No Note XML Content exist for the given note");
         return nil;
     }
     
@@ -1099,4 +1110,8 @@ attributeName ofType:(NSString *) attributeType{
     
 }
 
+-(NSString *) description{
+    NSData * xml = self.data;
+    return [[NSString alloc] initWithData:xml encoding:NSUTF8StringEncoding];
+}
 @end
