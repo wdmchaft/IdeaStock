@@ -237,6 +237,7 @@
         
         CGRect noteFrame = CGRectMake(positionX, positionY, NOTE_WIDTH, NOTE_HEIGHT);
         NoteView * note = [[NoteView alloc] initWithFrame:noteFrame];
+        if (noteObj.noteText) note.text = noteObj.noteText;
         note.transform = CGAffineTransformScale(note.transform, 10, 10);
         note.alpha = 0;
         note.delegate = self;
@@ -752,7 +753,7 @@
 -(void) unstackItem:(UIView *) item
            fromView: (UIView *) stackView 
       withPastCount: (int) count{
-    if (!item) NSLog(@"Fuck you nill item");
+
     if ( [item isKindOfClass:[NoteView class]]){
         NoteView * noteItem = (NoteView *) item;
         
@@ -795,8 +796,12 @@
  -----------------------------------------------------------*/
 
 - (void) note: (id)note changedTextTo: (NSString *) text{
-    NSString * newText = text;
-    NSLog(@"synchronize dropbox");
+
+    NoteView * noteView = (NoteView *)note;
+    NSString * noteId = noteView.ID;
+    BulletinBoardNote * newNoteObj = [[BulletinBoardNote alloc] initWithText:text];
+    [self.board updateNoteContentOf:noteId withContentsOf:newNoteObj];
+    
     
     
 }

@@ -16,7 +16,7 @@
 @interface StackViewController : UIViewController <NoteViewDelegate>
 
 @property (weak,nonatomic) NSMutableArray * notes;
-@property (weak, nonatomic) id<StackViewDelegate>  delegate;
+@property (weak, nonatomic) id<StackViewDelegate,NoteViewDelegate>  delegate;
 @property (weak,nonatomic) StackView * openStack;
 
 @end

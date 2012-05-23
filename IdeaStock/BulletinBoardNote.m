@@ -8,6 +8,7 @@
 
 #import "BulletinBoardNote.h"
 #import "XoomlParser.h"
+#import "XoomlAttributeHelper.h"
 
 @implementation BulletinBoardNote
 
@@ -35,6 +36,17 @@
     self.noteTextID = noteID;
     self.creationDate = date;
     return self;
+}
+
+-(BulletinBoardNote *) initWithText: (NSString *) text{
+
+    self = [[BulletinBoardNote alloc] init];
+    NSString * date = [XoomlAttributeHelper generateCurrentTimeForXooml];
+    self.creationDate = date;
+    self.modificationDate = date;
+    self.noteTextID = [XoomlAttributeHelper generateUUID];
+    self.noteText = text;
+    return  self;
 }
 
 - (NSString *) description{

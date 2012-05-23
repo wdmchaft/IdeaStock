@@ -134,7 +134,7 @@
         textView.delegate = self;
         [self addSubview:imageView];
         [self addSubview:textView];
-        self.text = @"Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. All rights reserved.Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. Created by Ali Fathalian on 4/28/12. Copyright (c) 2012 University of Washington. ";
+        self.text = @"Tap To Edit Note";
         // self.backgroundColor = [UIColor blueColor];
     }
     return self;

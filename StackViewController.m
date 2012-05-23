@@ -8,6 +8,7 @@
 
 #import "StackViewController.h"
 #import "NoteView.h"
+#import "BulletinBoardNote.h"
 
 @interface StackViewController ()
 
@@ -440,8 +441,8 @@
  -----------------------------------------------------------*/
 
 -(void) note:(id)note changedTextTo:(NSString *)text{
-    NSLog(@"%@", text);
     [self.openStack setText: text];
+    [self.delegate note:note changedTextTo:text];
 }
 
 @end

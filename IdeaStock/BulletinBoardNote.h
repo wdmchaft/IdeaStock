@@ -16,4 +16,6 @@
                                    andDate: (NSString *)date;
 
 -(BulletinBoardNote *) initEmptyNoteWithID: (NSString *) noteID;
+
+-(BulletinBoardNote *) initWithText: (NSString *) text;
 @end
