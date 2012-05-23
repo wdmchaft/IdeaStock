@@ -476,6 +476,15 @@
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [alert show];
 }
+- (IBAction)refreshPressed:(id)sender {
+    [self.dropBox setDelegate: self];
+    for (UIView * board in self.mainView.subviews) {
+        [board removeFromSuperview];
+    }
+    [self.bulletinBoardNames removeAllObjects];
+    [self.bulletinBoardViews removeAllObjects];
+    [self.dropBox getAllBulletinBoardsAsynch];
+}
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
@@ -489,7 +498,6 @@
 -(void) viewWillAppear:(BOOL)animated{
     
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    NSLog(@"Generating orientation notification");
 }
 
 -(void) viewDidLoad{

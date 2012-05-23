@@ -38,7 +38,11 @@
                                             <segue destination="9HL-37-GHp" kind="modal" identifier="bulletinBoardSegue" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="eq8-da-VHb"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem systemItem="refresh" id="fbB-rF-pm9"/>
+                                    <barButtonItem systemItem="refresh" id="fbB-rF-pm9">
+                                        <connections>
+                                            <action selector="refreshPressed:" destination="C4k-Gx-gPL" id="VKj-MQ-8qa"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem systemItem="add" id="eTp-YV-1ie">
                                         <connections>
                                             <action selector="AddPressed:" destination="C4k-Gx-gPL" id="xV9-YA-tBA"/>
