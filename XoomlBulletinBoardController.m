@@ -148,7 +148,7 @@
     if ([notes count] == 0 ){
         
         //There is apparently a bug in KissXML xPath
-        //I will search for the note manually if the bug occurs
+        //I will search for the note manuallyss if the bug occurs
         for(DDXMLElement * node in self.document.rootElement.children){
             if([[[node attributeForName:XOOML_ID] stringValue] isEqualToString:noteID]){
                 return node;
@@ -447,12 +447,42 @@ WithReferenceToNote: (NSString *) refNoteID{
 
 -(void) addStackingWithName: (NSString *) stackingName
                    withNotes: (NSArray *) notes{
-    DDXMLElement * stackingElement = [XoomlParser xoomlForFragmentToolAttributeWithName:stackingName andType:STACKING_TYPE];
-    for (NSString * noteID in notes){
-        DDXMLNode * note = [XoomlParser xoomlForNoteRef:noteID];
-        [stackingElement addChild:note];
+    
+    NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:stackingName andType:STACKING_TYPE];
+    
+    NSError * err;
+    NSMutableArray *stacking = [[self.document nodesForXPath: xPath error: &err] mutableCopy];
+
+    //KISS XML BUG
+    if ([stacking count] == 0){
+        for (DDXMLElement * node in self.document.rootElement.children){
+            if ([[[node attributeForName:ATTRIBUTE_TYPE] stringValue] isEqualToString:STACKING_TYPE] &&
+                [[[node attributeForName:ATTRIBUTE_NAME] stringValue] isEqualToString:stackingName]){
+                [stacking addObject:node];
+                break;
+            }
+        }
     }
-    [[self.document rootElement] addChild:stackingElement];
+    //if the stacking doesn't exist create it
+    if (stacking == nil || [stacking count] == 0) {
+        
+        DDXMLElement * stackingElement = [XoomlParser xoomlForFragmentToolAttributeWithName:stackingName andType:STACKING_TYPE];
+        for (NSString * noteID in notes){
+            DDXMLNode * note = [XoomlParser xoomlForNoteRef:noteID];
+            [stackingElement addChild:note];
+        }
+        
+        [[self.document rootElement] addChild:stackingElement];
+    }
+    else{
+        
+        DDXMLElement * stackingElement = [stacking lastObject];
+        for (NSString * noteID in notes){
+            DDXMLNode * note = [XoomlParser xoomlForNoteRef:noteID];
+            [stackingElement addChild:note];
+        }
+    }
+
     
     
 }
@@ -728,12 +758,22 @@ WithReferenceToNote: (NSString *) refNoteID{
     NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:stackingName andType:STACKING_TYPE];
     
     NSError * err;
-    NSArray *attribtues = [self.document nodesForXPath: xPath error: &err];
-    
+    NSMutableArray *stacking = [[self.document nodesForXPath: xPath error: &err] mutableCopy];
+
+    //KISS XML BUG
+    if ([stacking count] == 0){
+        for (DDXMLElement * node in self.document.rootElement.children){
+            if ([[[node attributeForName:ATTRIBUTE_TYPE] stringValue] isEqualToString:STACKING_TYPE] &&
+                [[[node attributeForName:ATTRIBUTE_NAME] stringValue] isEqualToString:stackingName]){
+                [stacking addObject:node];
+                break;
+            }
+        }
+    }
     //if the stacking attribute does not exist return
-    if (attribtues == nil || [attribtues count] == 0) return;
+    if (stacking == nil || [stacking count] == 0) return;
     
-    DDXMLElement * bulletinBoardAttribute = [attribtues lastObject];
+    DDXMLElement * bulletinBoardAttribute = [stacking lastObject];
     DDXMLElement * attributeParent = (DDXMLElement *)[bulletinBoardAttribute parent];
     [attributeParent removeChildAtIndex:[bulletinBoardAttribute index]];
     

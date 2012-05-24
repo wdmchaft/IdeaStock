@@ -75,7 +75,9 @@
         return;
     }
     
-    [oldValues addObjectsFromArray:values];
+    else{
+        [oldValues addObjectsFromArray:values];
+    }
     
 }
 

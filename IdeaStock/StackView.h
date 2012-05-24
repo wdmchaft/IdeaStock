@@ -13,6 +13,8 @@
 
 @property (strong,nonatomic) NSMutableArray * views;
 
+@property (weak, nonatomic) NoteView * mainView;
+
 -(id) initWithViews: (NSMutableArray *) views 
         andMainView: (NoteView *) mainView
           withFrame: (CGRect) frame;

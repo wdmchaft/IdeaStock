@@ -132,8 +132,13 @@
         if (view != mainView){
             [UIView animateWithDuration:0.5
                                   delay:0 options:UIViewAnimationCurveEaseOut
-                             animations:^{[view setFrame:mainView.frame];}
+                             animations:^{
+                                 [view setFrame:mainView.frame];
+                             }
                              completion:^(BOOL finished){
+                                 if ([view isKindOfClass:[NoteView class]]){
+                                     [self updateNoteLocation:(NoteView *) view];
+                                 }
                                  [view removeFromSuperview];
                                  if (first){
                                      CGRect stackFrame;
@@ -148,6 +153,8 @@
                                      }
                                      
                                      NSMutableArray * allNotes = [self getAllNormalNotesInViews:items];
+                                     NSString * stackingID = [self normalizeStackingWithItems: (NSArray *)items 
+                                                                                  andMainView: (UIView *) mainView];
                                      StackView * stack = [[StackView alloc] initWithViews:allNotes
                                                                               andMainView:(NoteView *)mainView
                                                                                 withFrame:
@@ -156,6 +163,7 @@
                                      [mainView removeFromSuperview];
                                      mainView.alpha = 1;
                                      stack.alpha =0;
+                                     stack.ID = stackingID;
                                      UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectPanned:)];
                                      UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(objectPinched:)];
                                      UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(stackTapped:)];
@@ -171,9 +179,7 @@
                                  }
                              }];
         }
-    }
-    
-    
+    }    
 }
 
 - (NSMutableArray *) getAllNormalNotesInViews: (NSArray *) views{
@@ -197,6 +203,8 @@
 #define POSITION_X_TYPE @"positionX"
 #define POSITION_Y_TYPE @"positionY"
 #define POSITION_TYPE @"position"
+#define STACKING_TYPE @"stacking"
+
 -(void) addNoteToModel: (NoteView *) note{
     
     NSString * noteTextID = [XoomlAttributeHelper generateUUID];
@@ -233,6 +241,44 @@
     
     [self.board updateNoteProperties:noteID withProperties:newProperties]; 
 }
+
+-(NSString *) normalizeStackingWithItems: (NSArray *)items andMainView: (UIView *) mainView{
+    NSString * stackingID = [XoomlAttributeHelper generateUUID];
+    
+    NSMutableArray * stackingNoteIDs = [[NSMutableArray alloc] init];
+    for( UIView * view in items){
+        if ([view isKindOfClass:[NoteView class]]){
+            [stackingNoteIDs addObject:((NoteView *) view).ID];
+        }
+        else if ([view isKindOfClass:[StackView class]]){
+            NSString * oldStackingID = ((StackView *)view).ID;
+            [self.board removeBulletinBoardAttribute:oldStackingID ofType:STACKING_TYPE];
+            for (UIView * note in ((StackView *)view).views){
+                NSString *stackingNoteID = ((NoteView *)note).ID;
+                [stackingNoteIDs addObject:stackingNoteID];
+            }
+        }
+    }
+    
+    NSString * topItemID;
+    if ([mainView isKindOfClass:[NoteView class]]){
+        topItemID = ((NoteView *) mainView).ID;
+    }
+    else if ([mainView isKindOfClass:[StackView class]]){
+        topItemID = ((StackView *)mainView).mainView.ID;
+    }
+    
+    [stackingNoteIDs removeObject:topItemID];
+    [stackingNoteIDs insertObject:topItemID atIndex:0];
+    
+    for(NSString * noteID in stackingNoteIDs){
+        
+        [self.board addNoteWithID:noteID toBulletinBoardAttribute:stackingID forAttributeType:STACKING_TYPE];
+    }
+
+    return stackingID;
+}
+
 /*-----------------------------------------------------------
                             Notification
  -----------------------------------------------------------*/
@@ -241,6 +287,7 @@
     
     [self layoutNotes];
 }
+
 /*-----------------------------------------------------------
                         Layout Methods
  -----------------------------------------------------------*/
@@ -530,7 +577,6 @@
         
     }
 }
-
 
 -(void) mainScreenDoubleTapped:(UITapGestureRecognizer *) sender{
     

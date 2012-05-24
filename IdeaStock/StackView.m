@@ -18,7 +18,7 @@
                     UI properties
  -------------------------------------------------*/
 
-@property (weak, nonatomic) NoteView * mainView;
+
 @property (strong,nonatomic) UIImage * normalImage;
 @property (strong, nonatomic) UIImage * highlightedImage;
 

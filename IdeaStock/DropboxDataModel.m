@@ -366,7 +366,10 @@ loadMetadataFailedWithError:(NSError *)error {
 -(void) restClient:(DBRestClient *)client uploadedFile:(NSString *)destPath from:(NSString *)srcPath{
     NSLog(@"File sucessfully uploaded from %@ to %@",srcPath, destPath);
     self.restClient.delegate = self.tempDel;
-    [self.delegate produceNext];
+    if ([self.delegate respondsToSelector:@selector(produceNext)]){
+            [self.delegate produceNext];
+    }
+
 }
     
 -(void)restClient:(DBRestClient*)client createdFolder:(DBMetadata*)folder{
