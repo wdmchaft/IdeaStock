@@ -284,6 +284,7 @@
         topItemID = ((StackView *)mainView).mainView.ID;
     }
     
+    if (topItemID == nil) return stackingID ;
     [stackingNoteIDs removeObject:topItemID];
     [stackingNoteIDs insertObject:topItemID atIndex:0];
     
@@ -300,7 +301,7 @@
  -----------------------------------------------------------*/
 
 -(void) loadSavedNotes: (NSNotification *) notificatoin{
-    
+    NSLog(@"got Notfied");
     [self layoutNotes];
 }
 
@@ -309,6 +310,9 @@
  -----------------------------------------------------------*/
 
 -(void) layoutNotes{
+    for(UIView * view in self.bulletinboardView.subviews){
+        [view removeFromSuperview];
+    }
     NSDictionary * allNotes = [self.board getAllNotes];
     self.noteCount = [allNotes count];
     NSLog(@"Read %d notes",[allNotes count]);
