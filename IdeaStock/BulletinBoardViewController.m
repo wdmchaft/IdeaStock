@@ -621,6 +621,13 @@
         if ([self.highlightedView isKindOfClass:[NoteView class]]){
             [self updateNoteLocation:(NoteView *) self.highlightedView];
         }
+        else if ([self.highlightedView isKindOfClass:[StackView class]]){
+            StackView * stack = (StackView *)self.highlightedView;
+            for(NoteView * stackNoteView in stack.views){
+                stackNoteView.frame = stack.frame;
+                [self updateNoteLocation:stackNoteView];
+            }
+        }
         self.highlightedView = nil;
 
         
@@ -679,6 +686,13 @@
             
             if ([sender.view isKindOfClass:[NoteView class]]){
                 [self updateNoteLocation:(NoteView *) sender.view];
+            }
+            else if ([sender.view isKindOfClass:[StackView class]]){
+                StackView * stack = (StackView *) sender.view;
+                for(NoteView * stackNoteView in stack.views){
+                    stackNoteView.frame = stack.frame;
+                    [self updateNoteLocation:stackNoteView];
+                }
             }
         }
         else{
