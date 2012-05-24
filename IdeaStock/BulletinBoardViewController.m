@@ -125,7 +125,14 @@
 
 #define STACKING_SCALING_WIDTH 1.1
 #define STACKING_SCALING_HEIGHT 1.2
--(void) stackNotes: (NSArray *) items into: (UIView *) mainView{
+
+/*
+ If ID is nil the methods will create a unique UUID itself and will also write
+ to the datamodel. 
+ If ID is not nil the stacking this means that stacking is formed from the datamodel
+ */
+//TODO bad function design , this should be broken down into two things
+-(void) stackNotes: (NSArray *) items into: (UIView *) mainView withID: (NSString *) ID{
     __block BOOL first = YES;
     
     for (UIView * view in items){
@@ -137,7 +144,9 @@
                              }
                              completion:^(BOOL finished){
                                  if ([view isKindOfClass:[NoteView class]]){
-                                     [self updateNoteLocation:(NoteView *) view];
+                                     if (!ID){
+                                         [self updateNoteLocation:(NoteView *) view];
+                                     }
                                  }
                                  [view removeFromSuperview];
                                  if (first){
@@ -153,8 +162,15 @@
                                      }
                                      
                                      NSMutableArray * allNotes = [self getAllNormalNotesInViews:items];
-                                     NSString * stackingID = [self normalizeStackingWithItems: (NSArray *)items 
+                                     NSString * stackingID ;
+                                     
+                                     if (!ID){
+                                         stackingID = [self normalizeStackingWithItems: (NSArray *)items 
                                                                                   andMainView: (UIView *) mainView];
+                                     }
+                                     else{
+                                         stackingID = ID;
+                                     }
                                      StackView * stack = [[StackView alloc] initWithViews:allNotes
                                                                               andMainView:(NoteView *)mainView
                                                                                 withFrame:
@@ -327,8 +343,33 @@
 
 
     }
+    
+    [self layoutStackings];
 }
 
+-(void) layoutStackings{
+    NSDictionary * stackings =[self.board getAllBulletinBoardAttributeNamesOfType:STACKING_TYPE];
+    for(NSString * stackingID in stackings){
+        NSMutableArray * views = [[NSMutableArray alloc] init];
+        NSArray * noteRefIDs = [stackings objectForKey:stackingID];
+        NSSet * noteRefs = [[NSSet alloc] initWithArray:noteRefIDs];
+        NSLog(@"%@",noteRefIDs);
+        UIView * mainView;
+        for (UIView * view in self.bulletinboardView.subviews){
+            if ([view isKindOfClass:[NoteView class]]){
+                NSString * noteID = ((NoteView *) view).ID;
+                if ([noteRefs containsObject:noteID]){
+                    [views addObject:view];
+                    if ([noteID isEqualToString:[noteRefIDs objectAtIndex:0]]){
+                        mainView = view;
+                    }
+                }
+            }
+        }
+        
+        [self stackNotes:views into:mainView withID:stackingID];
+    }
+}
 #define EXPAND_COL_SIZE 5
 #define SEPERATOR_RATIO 0.1
 -(CGSize) getRectSizeForStack: (StackView *) stack{
@@ -682,7 +723,7 @@
         }
         
         if ([self.intersectingViews count] > 1 ){
-            [self stackNotes:self.intersectingViews into:sender.view];
+            [self stackNotes:self.intersectingViews into:sender.view withID:nil];
         }
         
         [self updateNoteLocation:(NoteView *) sender.view];
