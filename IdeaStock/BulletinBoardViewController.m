@@ -614,7 +614,11 @@
         self.editMode = NO;
         self.highlightedView.highlighted = NO;
         [self removeContextualToolbarItems:self.highlightedView];
+        if ([self.highlightedView isKindOfClass:[NoteView class]]){
+            [self updateNoteLocation:(NoteView *) self.highlightedView];
+        }
         self.highlightedView = nil;
+
         
     }
 }
@@ -668,6 +672,10 @@
             if ([sender.view conformsToProtocol:@protocol(BulletinBoardObject)]){
                 ((UIView <BulletinBoardObject> * ) sender.view).highlighted = NO;
             }
+            
+            if ([sender.view isKindOfClass:[NoteView class]]){
+                [self updateNoteLocation:(NoteView *) sender.view];
+            }
         }
         else{
             self.editMode = YES;
@@ -685,6 +693,7 @@
 
 #define CHECK_TIME 0
 -(void) objectPanned: (UIPanGestureRecognizer *) sender{
+
     if( sender.state == UIGestureRecognizerStateChanged ||
        sender.state == UIGestureRecognizerStateEnded){
         CGPoint translation = [sender translationInView:self.bulletinboardView];
@@ -713,20 +722,21 @@
             }
             self.intersectingViews = intersectingViews;   
         }
-        
     }
     
+
     if (sender.state == UIGestureRecognizerStateEnded){
         
         for (UIView * view in self.intersectingViews){
             view.alpha = 1;
         }
-        
+
         if ([self.intersectingViews count] > 1 ){
             [self stackNotes:self.intersectingViews into:sender.view withID:nil];
         }
         
         [self updateNoteLocation:(NoteView *) sender.view];
+        return;
     }
     
 }
