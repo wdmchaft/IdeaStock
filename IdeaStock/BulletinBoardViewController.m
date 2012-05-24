@@ -522,6 +522,13 @@
                 if ([subView isKindOfClass:[NoteView class]]){
                     [self updateNoteLocation: (NoteView *) subView];
                 }
+                else if ([subView isKindOfClass:[StackView class]]){
+                    StackView * stack = (StackView *) subView;
+                    for(NoteView * stackNoteView in stack.views){
+                        stackNoteView.frame = stack.frame;
+                        [self updateNoteLocation:stackNoteView];
+                    }
+                }
 
             }
         }
@@ -875,6 +882,7 @@
 -(IBAction)backPressed:(id) sender {
     
     //save the bulletinboard
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [DropBoxAssociativeBulletinBoard saveBulletinBoard:self.board];
     [self.parent finishedWorkingWithBulletinBoard];

@@ -567,11 +567,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "359540019.19902"
+         timestampString = "359540644.13945"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "746"
-         endingLineNumber = "746"
+         startingLineNumber = "753"
+         endingLineNumber = "753"
          landmarkName = "-objectPanned:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -580,11 +580,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "359540019.19902"
+         timestampString = "359540644.13945"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "749"
-         endingLineNumber = "749"
+         startingLineNumber = "756"
+         endingLineNumber = "756"
          landmarkName = "-objectPanned:"
          landmarkType = "5">
       </FileBreakpoint>
