@@ -357,7 +357,7 @@
 #define EXIT_OFFSET_RATIO 0.1
 -(void) clearRectangle: (CGRect) rect{
     for (UIView * subView in self.bulletinboardView.subviews){
-        if ([subView isKindOfClass:[NoteView class]]){
+        if ([subView conformsToProtocol:@protocol(BulletinBoardObject)]){
             if (CGRectIntersectsRect(subView.frame, rect)){
                 
                 float newStartX = subView.frame.origin.x;
@@ -427,6 +427,10 @@
                 }
                 
                 [UIView animateWithDuration:0.25 animations:^{subView.frame = CGRectMake(newStartX, newStartY, subView.frame.size.width, subView.frame.size.height);}];
+                if ([subView isKindOfClass:[NoteView class]]){
+                    [self updateNoteLocation: (NoteView *) subView];
+                }
+
             }
         }
     }
@@ -488,7 +492,7 @@
         else{
             startX += noteWidth/3;
         }
-        
+        [self updateNoteLocation:view];   
     }
 }
 
