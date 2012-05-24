@@ -727,6 +727,7 @@
 
     if (sender.state == UIGestureRecognizerStateEnded){
         
+        
         for (UIView * view in self.intersectingViews){
             view.alpha = 1;
         }
@@ -735,7 +736,17 @@
             [self stackNotes:self.intersectingViews into:sender.view withID:nil];
         }
         
-        [self updateNoteLocation:(NoteView *) sender.view];
+        if([sender.view isKindOfClass:[NoteView class]]){
+            [self updateNoteLocation:(NoteView *) sender.view];
+        }
+        else if ([sender.view isKindOfClass:[StackView class]]){
+            StackView * stack = (StackView *) sender.view;
+            for(NoteView * stackNoteView in stack.views){
+                stackNoteView.frame = stack.frame;
+                [self updateNoteLocation:stackNoteView];
+            }
+        }
+
         return;
     }
     
@@ -854,7 +865,7 @@
 
 -(void) viewDidUnload
 {
-    [DropBoxAssociativeBulletinBoard saveBulletinBoard:self.board];
+    //[DropBoxAssociativeBulletinBoard saveBulletinBoard:self.board];
     [self setLabel:nil];
     [self setView:nil];
     [self setBulletinboardView:nil];

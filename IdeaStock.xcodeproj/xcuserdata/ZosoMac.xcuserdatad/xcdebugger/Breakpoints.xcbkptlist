@@ -580,11 +580,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "359533476.314645"
+         timestampString = "359536494.945027"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "730"
-         endingLineNumber = "730"
+         startingLineNumber = "731"
+         endingLineNumber = "731"
          landmarkName = "-objectPanned:"
          landmarkType = "5">
       </FileBreakpoint>
