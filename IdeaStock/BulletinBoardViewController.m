@@ -865,6 +865,7 @@
     
     //clean up
     [self removeContextualToolbarItems:self.highlightedView];
+    [self.board removeBulletinBoardAttribute:((StackView *)self.highlightedView).ID ofType:STACKING_TYPE];
     self.highlightedView = nil;
     self.editMode = NO;
 
