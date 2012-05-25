@@ -323,6 +323,20 @@
         float positionX = [[[position objectForKey:@"positionX"] lastObject] floatValue];
         float positionY = [[[position objectForKey:@"positionY"] lastObject] floatValue];
         
+        if ( positionX + NOTE_WIDTH > self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.width ){
+            positionX = self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.width - NOTE_WIDTH;
+        }
+        if ( positionY + NOTE_HEIGHT > self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.height){
+            positionY = self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.height - NOTE_HEIGHT;
+        }
+        if (positionX <  self.bulletinboardView.frame.origin.x){
+             positionX = self.bulletinboardView.frame.origin.x;
+         }
+        if (positionY < self.bulletinboardView.frame.origin.y){
+            positionY = self.bulletinboardView.frame.origin.y;
+        }
+        
+        
         CGRect noteFrame = CGRectMake(positionX, positionY, NOTE_WIDTH, NOTE_HEIGHT);
         NoteView * note = [[NoteView alloc] initWithFrame:noteFrame];
         if (noteObj.noteText) note.text = noteObj.noteText;
@@ -371,6 +385,20 @@
             }
         }
         
+      /*  float positionX = mainView.frame.origin.x;
+        float positionY = mainView.frame.origin.y;
+       if ( positionX + mainView.frame.size.width > self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.width ||
+            positionY + mainView.frame.size.height > self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.height ||
+            positionY < self.bulletinboardView.frame.origin.y ||
+            positionX < self.bulletinboardView.frame.origin.x){
+            
+            float temp = positionX;
+            positionX = positionY;
+            positionY = temp;
+            mainView.frame = CGRectMake(positionX, positionY, mainView.frame.size.width, mainView.frame.size.height);
+        }*/
+        
+
         [self stackNotes:views into:mainView withID:stackingID];
     }
 }
@@ -902,11 +930,42 @@
     // Release any retained subviews of the main view.
 }
 
+
 -(BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
 }
 
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    
+    for (UIView * view in self.bulletinboardView.subviews){
+        
+        float positionX = view.frame.origin.x;
+        float positionY = view.frame.origin.y;
+        BOOL changed = NO;
+        if ( positionX + view.frame.size.width > self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.width ){
+            positionX = self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.width - NOTE_WIDTH;
+            changed = YES;
+        }
+        if ( positionY + view.frame.size.height > self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.height){
+            positionY = self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.height - NOTE_HEIGHT;
+            changed = YES;
+        }
+        if (positionX <  self.bulletinboardView.frame.origin.x){
+            positionX = self.bulletinboardView.frame.origin.x;
+            changed = YES;
+        }
+        if (positionY < self.bulletinboardView.frame.origin.y){
+            positionY = self.bulletinboardView.frame.origin.y;
+            changed = YES;
+        }
+        
+        if(changed){
+            view.frame = CGRectMake(positionX, positionY, view.frame.size.width, view.frame.size.height);
+        }
+    }
+
+}
 /*-----------------------------------------------------------
                         Stack Delegate Protocol
  -----------------------------------------------------------*/

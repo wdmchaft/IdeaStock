@@ -359,11 +359,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "359539377.8795"
+         timestampString = "359617240.851724"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "328"
-         endingLineNumber = "328"
+         startingLineNumber = "342"
+         endingLineNumber = "342"
          landmarkName = "-layoutNotes"
          landmarkType = "5">
       </FileBreakpoint>
@@ -567,11 +567,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "359540644.13945"
+         timestampString = "359617240.851724"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "753"
-         endingLineNumber = "753"
+         startingLineNumber = "781"
+         endingLineNumber = "781"
          landmarkName = "-objectPanned:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -580,12 +580,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "IdeaStock/BulletinBoardViewController.m"
-         timestampString = "359540644.13945"
+         timestampString = "359617240.851724"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "756"
-         endingLineNumber = "756"
+         startingLineNumber = "784"
+         endingLineNumber = "784"
          landmarkName = "-objectPanned:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "IdeaStock/BulletinBoardViewController.m"
+         timestampString = "359617240.851724"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "390"
+         endingLineNumber = "390"
+         landmarkName = "-layoutStackings"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
