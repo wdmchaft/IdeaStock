@@ -301,7 +301,6 @@
  -----------------------------------------------------------*/
 
 -(void) loadSavedNotes: (NSNotification *) notificatoin{
-    NSLog(@"got Notfied");
     [self layoutNotes];
 }
 
@@ -384,19 +383,7 @@
                 }
             }
         }
-        
-      /*  float positionX = mainView.frame.origin.x;
-        float positionY = mainView.frame.origin.y;
-       if ( positionX + mainView.frame.size.width > self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.width ||
-            positionY + mainView.frame.size.height > self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.height ||
-            positionY < self.bulletinboardView.frame.origin.y ||
-            positionX < self.bulletinboardView.frame.origin.x){
-            
-            float temp = positionX;
-            positionX = positionY;
-            positionY = temp;
-            mainView.frame = CGRectMake(positionX, positionY, mainView.frame.size.width, mainView.frame.size.height);
-        }*/
+
         
 
         [self stackNotes:views into:mainView withID:stackingID];
@@ -891,18 +878,34 @@
     [self removeContextualToolbarItems:self.highlightedView];
     
     if ([self.highlightedView isKindOfClass:[StackView class]]){
+        
+        [self.board removeBulletinBoardAttribute:((StackView *) self.highlightedView).ID ofType:STACKING_TYPE];
+        
         for (UIView * view in ((StackView *) self.highlightedView).views){
             [view removeFromSuperview];
+            [self.board removeNoteWithID:((NoteView *)view).ID];
         }
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            self.highlightedView.transform = CGAffineTransformScale(self.highlightedView.transform, 0.05, 0.05);
+        }completion:^ (BOOL didFinish){
+            [self.highlightedView removeFromSuperview];
+            self.editMode = NO;
+            self.highlightedView = nil;
+        }];
     }
-    
-    [UIView animateWithDuration:0.5 animations:^{
-        self.highlightedView.transform = CGAffineTransformScale(self.highlightedView.transform, 0.05, 0.05);
-    }completion:^ (BOOL didFinish){
-        [self.highlightedView removeFromSuperview];
-        self.editMode = NO;
-        self.highlightedView = nil;
-    }];
+    else if ([self.highlightedView isKindOfClass:[NoteView class]]){
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            self.highlightedView.transform = CGAffineTransformScale(self.highlightedView.transform, 0.05, 0.05);
+        }completion:^ (BOOL didFinish){
+            [self.highlightedView removeFromSuperview];
+            [self.board removeNoteWithID:(self.highlightedView.ID)];
+            self.editMode = NO;
+            self.highlightedView = nil;
+        }];
+    }
+
     
     
 }
