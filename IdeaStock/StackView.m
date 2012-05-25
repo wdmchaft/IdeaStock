@@ -158,4 +158,10 @@ return _highlightedImage;
 
     
 }
+
+-(void) setNextMainView{
+    [self.views removeObject:self.mainView];
+    self.mainView = [self.views lastObject];
+    [self setText:((NoteView *)[self.views lastObject]).text];
+}
 @end

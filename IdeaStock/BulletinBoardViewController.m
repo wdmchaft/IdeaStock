@@ -985,6 +985,9 @@
     if ( [item isKindOfClass:[NoteView class]]){
         NoteView * noteItem = (NoteView *) item;
         
+        if (((StackView *) stackView).mainView == noteItem){
+            [((StackView *) stackView) setNextMainView];
+        }
         for (UIGestureRecognizer * gr in noteItem.gestureRecognizers){
             [noteItem removeGestureRecognizer:gr];
         }
@@ -1014,6 +1017,9 @@
                                           noteItem.frame.size.width,
                                           noteItem.frame.size.height);
             [UIView animateWithDuration:1 animations:^{noteItem.frame = finalRect;}];
+            
+            [self.board removeNote:noteItem.ID fromBulletinBoardAttribute:((StackView*) stackView).ID ofType:STACKING_TYPE];
+            [self updateNoteLocation:noteItem];
         }];
         
     }

@@ -14,7 +14,7 @@
 @interface XoomlBulletinBoardController()
 
 /*-----------------------------------------------------------
-                            Model
+ Model
  -----------------------------------------------------------*/
 
 //This is the actual xooml document that this object wraps around.
@@ -28,7 +28,7 @@
 @implementation XoomlBulletinBoardController 
 
 /*-----------------------------------------------------------
-                        Synthesizer
+ Synthesizer
  -----------------------------------------------------------*/
 
 @synthesize document = _document;
@@ -37,7 +37,7 @@
 
 
 /*-----------------------------------------------------------
-                    Datasource implementation
+ Datasource implementation
  -----------------------------------------------------------*/
 
 //TODO There may be some tidying up needed in the xooml file.
@@ -46,7 +46,7 @@
 
 /*-----------------------------------------------------------
  
-                        Initializers
+ Initializers
  
  -----------------------------------------------------------*/
 
@@ -81,7 +81,7 @@
 
 /*-----------------------------------------------------------
  
-                        Serialization
+ Serialization
  
  -----------------------------------------------------------*/
 
@@ -122,7 +122,7 @@
 
 /*-----------------------------------------------------------
  
-                            Query
+ Query
  
  -----------------------------------------------------------*/
 
@@ -144,7 +144,7 @@
         return nil;
     }
     
-
+    
     if ([notes count] == 0 ){
         
         //There is apparently a bug in KissXML xPath
@@ -233,11 +233,18 @@
     
     
     NSError * err;
-    NSArray *attribtues = [self.document nodesForXPath: xPath error: &err];
+    NSMutableArray *attribtues = [[self.document nodesForXPath: xPath error: &err]  mutableCopy];
     
     //if the stacking attribute does not exist return
     if (attribtues == nil) return nil; 
     
+    if ([attribtues count] == 0){
+        for (DDXMLElement * node in self.document.rootElement.children){
+            if ([[[node attributeForName:ATTRIBUTE_TYPE] stringValue] isEqualToString:STACKING_TYPE]){
+                [attribtues addObject:node];
+            }
+        }
+    }
     //create a result dictionary
     NSMutableDictionary * result = [NSMutableDictionary dictionary];
     
@@ -257,8 +264,6 @@
     }
     
     return [result copy];
-    
-    
     
 }
 
@@ -360,7 +365,7 @@
 }
 
 -(NSDictionary *) getNoteAttributeInfo: (NSString *) attributeType
-                                forNote: (NSString *)noteID{
+                               forNote: (NSString *)noteID{
     
     if ([attributeType isEqualToString:LINKAGE_TYPE]){
         return [self getLinkageInfoForNote:noteID];
@@ -382,7 +387,7 @@
 
 /*-----------------------------------------------------------
  
-                            Creation
+ Creation
  
  -----------------------------------------------------------*/
 
@@ -401,7 +406,7 @@
  */
 
 -(void) addLinkage: (NSString *) linkageName
-             ToNote: (NSString *) noteID
+            ToNote: (NSString *) noteID
 WithReferenceToNote: (NSString *) refNoteID{
     //if the note doesn't exists return
     DDXMLElement * noteNode = [self getNoteElementFor:noteID];
@@ -446,13 +451,13 @@ WithReferenceToNote: (NSString *) refNoteID{
 
 
 -(void) addStackingWithName: (NSString *) stackingName
-                   withNotes: (NSArray *) notes{
+                  withNotes: (NSArray *) notes{
     
     NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:stackingName andType:STACKING_TYPE];
     
     NSError * err;
     NSMutableArray *stacking = [[self.document nodesForXPath: xPath error: &err] mutableCopy];
-
+    
     //KISS XML BUG
     if ([stacking count] == 0){
         for (DDXMLElement * node in self.document.rootElement.children){
@@ -482,7 +487,7 @@ WithReferenceToNote: (NSString *) refNoteID{
             [stackingElement addChild:note];
         }
     }
-
+    
     
     
 }
@@ -501,7 +506,7 @@ WithReferenceToNote: (NSString *) refNoteID{
 
 
 -(void) addGroupingWithName: (NSString *) groupingName
-                   withNotes: (NSArray *) notes{
+                  withNotes: (NSArray *) notes{
     DDXMLElement * groupingElement = [XoomlParser xoomlForFragmentToolAttributeWithName:groupingName andType:GROUPING_TYPE];
     for (NSString * noteID in notes){
         DDXMLNode * note = [XoomlParser xoomlForNoteRef:noteID];
@@ -526,7 +531,7 @@ WithReferenceToNote: (NSString *) refNoteID{
  */
 
 -(void) addNote: (NSString *) noteID
-      toStacking: (NSString *) stackingName{
+     toStacking: (NSString *) stackingName{
     
     //get the xpath for the required attribute
     NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:stackingName andType:STACKING_TYPE];
@@ -560,7 +565,7 @@ WithReferenceToNote: (NSString *) refNoteID{
  */
 
 -(void) addNote: (NSString *) noteID
-      toGrouping: (NSString *) groupingName{
+     toGrouping: (NSString *) groupingName{
     //get the xpath for the required attribute
     NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:groupingName andType:GROUPING_TYPE];
     
@@ -581,7 +586,7 @@ WithReferenceToNote: (NSString *) refNoteID{
 }
 
 -(void) addNoteWithID: (NSString *) noteId 
-         andProperties: (NSDictionary *)properties{
+        andProperties: (NSDictionary *)properties{
     
     //get the required attributes from the properties dictionary
     //if they are missing return
@@ -594,7 +599,7 @@ WithReferenceToNote: (NSString *) refNoteID{
     //create the note node
     DDXMLElement * noteNode = [XoomlParser xoomlForBulletinBoardNote:noteId andName:noteName];
     
-
+    
     //create the position attribute
     DDXMLElement * associationAttribute = [XoomlParser xoomlForAssociationToolAttributeWithType:POSITION_TYPE];
     //create the position property itself
@@ -621,9 +626,9 @@ WithReferenceToNote: (NSString *) refNoteID{
 
 //TODO maybe I should do these with selectors later
 -(void) addNoteAttribute: (NSString *) attributeName
-                  forType: (NSString *) attributeType 
-                  forNote: (NSString *)noteID 
-               withValues:(NSArray *) values{
+                 forType: (NSString *) attributeType 
+                 forNote: (NSString *)noteID 
+              withValues:(NSArray *) values{
     if ([attributeType isEqualToString:LINKAGE_TYPE]){
         for (NSString * value in values){
             [self addLinkage:attributeName ToNote:noteID WithReferenceToNote:value];
@@ -658,8 +663,8 @@ WithReferenceToNote: (NSString *) refNoteID{
 }
 
 -(void) addBulletinBoardAttribute: (NSString *) attributeName 
-                           forType: (NSString *) attributeType 
-                        withValues: (NSArray *) values{
+                          forType: (NSString *) attributeType 
+                       withValues: (NSArray *) values{
     if ([attributeType isEqualToString:STACKING_TYPE]){
         [self addStackingWithName:attributeName withNotes:values];
         return;
@@ -673,7 +678,7 @@ WithReferenceToNote: (NSString *) refNoteID{
 
 /*-----------------------------------------------------------
  
-                            Deletion
+ Deletion
  
  -----------------------------------------------------------*/
 
@@ -687,7 +692,7 @@ WithReferenceToNote: (NSString *) refNoteID{
  doing anything. 
  */
 -(void) deleteLinkage: (NSString *) linkageName 
-               forNote: (NSString *)noteID{
+              forNote: (NSString *)noteID{
     
     DDXMLElement * noteNode = [self getNoteElementFor:noteID];
     
@@ -717,8 +722,8 @@ WithReferenceToNote: (NSString *) refNoteID{
 
 
 -(void) deleteNote: (NSString *) noteRefID
-        fromLinkage: (NSString *)linkageName
-            forNote: (NSString *) noteID{
+       fromLinkage: (NSString *)linkageName
+           forNote: (NSString *) noteID{
     DDXMLElement * noteNode = [self getNoteElementFor:noteID];
     
     //if the note is not found delete
@@ -759,7 +764,7 @@ WithReferenceToNote: (NSString *) refNoteID{
     
     NSError * err;
     NSMutableArray *stacking = [[self.document nodesForXPath: xPath error: &err] mutableCopy];
-
+    
     //KISS XML BUG
     if ([stacking count] == 0){
         for (DDXMLElement * node in self.document.rootElement.children){
@@ -788,13 +793,23 @@ WithReferenceToNote: (NSString *) refNoteID{
  */
 
 -(void) deleteNote: (NSString *) noteID
-       fromStacking: (NSString *) stackingName{
+      fromStacking: (NSString *) stackingName{
+    
     
     NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:stackingName andType:STACKING_TYPE];
     
-    NSError * err;
-    NSArray *attribtues = [self.document nodesForXPath: xPath error: &err];
     
+    NSError * err;
+    NSMutableArray *attribtues = [[self.document nodesForXPath: xPath error: &err] mutableCopy];
+    if ([attribtues count] == 0){
+        for (DDXMLElement * node in self.document.rootElement.children){
+            if ([[[node attributeForName:ATTRIBUTE_TYPE] stringValue] isEqualToString:STACKING_TYPE] &&
+                [[[node attributeForName:ATTRIBUTE_NAME] stringValue] isEqualToString:stackingName]){
+                [attribtues addObject:node];
+                break;
+            }
+        }
+    }
     //if the stacking attribute does not exist return
     if (attribtues == nil || [attribtues count] == 0) return;
     
@@ -843,7 +858,7 @@ WithReferenceToNote: (NSString *) refNoteID{
  */
 
 -(void) deleteNote: (NSString *) noteID
-       fromGrouping: (NSString *) groupingName{
+      fromGrouping: (NSString *) groupingName{
     
     NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:groupingName andType:GROUPING_TYPE];
     
@@ -904,9 +919,9 @@ WithReferenceToNote: (NSString *) refNoteID{
 }
 
 -(void) deleteNote:(NSString *) targetNoteID 
-  fromNoteAttribute: (NSString *) attributeName 
-             ofType: (NSString *) attributeType 
-            forNote: (NSString *) sourceNoteID{
+ fromNoteAttribute: (NSString *) attributeName 
+            ofType: (NSString *) attributeType 
+           forNote: (NSString *) sourceNoteID{
     
     if ([attributeType isEqualToString:LINKAGE_TYPE]){
         //get all the linkage attributes for the sourceNote
@@ -957,8 +972,8 @@ attributeName ofType:(NSString *) attributeType{
 
 #define ATTRIBUTE_TYPE @"type"
 -(void) deleteNoteAttribute: (NSString *) attributeName
-                      ofType: (NSString *) attributeType 
-                    fromNote: (NSString *) noteID{
+                     ofType: (NSString *) attributeType 
+                   fromNote: (NSString *) noteID{
     
     //if noteID is invalid return
     DDXMLElement * note = [self getNoteElementFor:noteID];
@@ -980,7 +995,7 @@ attributeName ofType:(NSString *) attributeType{
 }
 
 -(void) deleteBulletinBoardAttribute:(NSString *) attributeName 
-                               ofType: (NSString *) attributeType{
+                              ofType: (NSString *) attributeType{
     if ([attributeType isEqualToString:STACKING_TYPE]){
         [self deleteStacking:attributeName];
         return;
@@ -993,8 +1008,8 @@ attributeName ofType:(NSString *) attributeType{
 }
 
 /*-----------------------------------------------------------
-
-                            Updating
+ 
+ Updating
  
  -----------------------------------------------------------*/
 
@@ -1006,8 +1021,8 @@ attributeName ofType:(NSString *) attributeType{
  doing anything. 
  */
 -(void) updateLinkageName: (NSString *) linkageName
-                   forNote: (NSString *) noteID
-               withNewName: (NSString *) newLinkageName{
+                  forNote: (NSString *) noteID
+              withNewName: (NSString *) newLinkageName{
     
     DDXMLElement * noteNode = [self getNoteElementFor:noteID];
     
@@ -1037,7 +1052,7 @@ attributeName ofType:(NSString *) attributeType{
  */
 
 -(void) updateStackingName: (NSString *) stackingName
-                withNewName: (NSString *) newStackingName{
+               withNewName: (NSString *) newStackingName{
     NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:stackingName andType:STACKING_TYPE];
     
     NSError * err;
@@ -1058,7 +1073,7 @@ attributeName ofType:(NSString *) attributeType{
  */
 
 -(void) updateGroupingName: (NSString *) groupingName
-                withNewName: (NSString *) newGroupingName{
+               withNewName: (NSString *) newGroupingName{
     NSString * xPath = [XoomlParser xPathForFragmentAttributeWithName:groupingName andType:GROUPING_TYPE];
     
     NSError * err;
@@ -1073,7 +1088,7 @@ attributeName ofType:(NSString *) attributeType{
 }
 
 -(void) updateNote: (NSString *) noteID 
-     withProperties: (NSDictionary *)  newProperties{
+    withProperties: (NSDictionary *)  newProperties{
     //lookup the note if it doesnt exist return
     DDXMLElement * note = [self getNoteElementFor:noteID];
     if (!note) return;
@@ -1100,7 +1115,7 @@ attributeName ofType:(NSString *) attributeType{
             if (newPositionX){
                 [positionNode removeAttributeForName:XOOML_POSITION_X];
                 [positionNode addAttribute:[DDXMLNode attributeWithName:XOOML_POSITION_X stringValue:newPositionX]];
-            
+                
             }
             if(newPositionY){
                 [positionNode removeAttributeForName:XOOML_POSITION_Y];
@@ -1116,9 +1131,9 @@ attributeName ofType:(NSString *) attributeType{
 }
 
 -(void) updateNoteAttribute: (NSString *) oldAttributeName
-                      ofType:(NSString *) attributeType 
-                     forNote: (NSString *) noteID 
-                 withNewName: (NSString *) newAttributeName{
+                     ofType:(NSString *) attributeType 
+                    forNote: (NSString *) noteID 
+                withNewName: (NSString *) newAttributeName{
     if ([attributeType isEqualToString:LINKAGE_TYPE]){
         [self updateLinkageName:oldAttributeName forNote:noteID withNewName:newAttributeName];
     }
@@ -1126,8 +1141,8 @@ attributeName ofType:(NSString *) attributeType{
 }
 
 -(void) updateBulletinBoardAttributeName: (NSString *) oldAttributeName
-                                   ofType: (NSString *) attributeType 
-                              withNewName: (NSString *) newAttributeName{
+                                  ofType: (NSString *) attributeType 
+                             withNewName: (NSString *) newAttributeName{
     if ([attributeType isEqualToString:STACKING_TYPE]){
         [self updateStackingName:oldAttributeName withNewName:newAttributeName];
     }

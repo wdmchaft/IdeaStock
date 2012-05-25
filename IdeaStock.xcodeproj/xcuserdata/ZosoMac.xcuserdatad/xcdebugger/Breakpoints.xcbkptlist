@@ -164,11 +164,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "XoomlBulletinBoardController.m"
-         timestampString = "359519130.011129"
+         timestampString = "359621617.708128"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "587"
-         endingLineNumber = "587"
+         startingLineNumber = "592"
+         endingLineNumber = "592"
          landmarkName = "-addNoteWithID:andProperties:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -307,11 +307,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "XoomlBulletinBoardController.m"
-         timestampString = "359523966.379177"
+         timestampString = "359621943.169194"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1081"
-         endingLineNumber = "1081"
+         startingLineNumber = "1096"
+         endingLineNumber = "1096"
          landmarkName = "-updateNote:withProperties:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -385,11 +385,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "XoomlBulletinBoardController.m"
-         timestampString = "359523966.379177"
+         timestampString = "359621943.169194"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1078"
-         endingLineNumber = "1078"
+         startingLineNumber = "1093"
+         endingLineNumber = "1093"
          landmarkName = "-updateNote:withProperties:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -411,11 +411,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "XoomlBulletinBoardController.m"
-         timestampString = "359519130.011129"
+         timestampString = "359621617.708128"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "595"
-         endingLineNumber = "595"
+         startingLineNumber = "600"
+         endingLineNumber = "600"
          landmarkName = "-addNoteWithID:andProperties:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -450,11 +450,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "XoomlBulletinBoardController.m"
-         timestampString = "359518327.974831"
+         timestampString = "359621617.708128"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "450"
-         endingLineNumber = "450"
+         startingLineNumber = "455"
+         endingLineNumber = "455"
          landmarkName = "-addStackingWithName:withNotes:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -463,11 +463,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "XoomlBulletinBoardController.m"
-         timestampString = "359518473.340623"
+         timestampString = "359621617.708128"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "451"
-         endingLineNumber = "451"
+         startingLineNumber = "456"
+         endingLineNumber = "456"
          landmarkName = "-addStackingWithName:withNotes:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -528,11 +528,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "XoomlBulletinBoardController.m"
-         timestampString = "359523796.082522"
+         timestampString = "359621617.708128"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "758"
-         endingLineNumber = "758"
+         startingLineNumber = "763"
+         endingLineNumber = "763"
          landmarkName = "-deleteStacking:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -573,6 +573,45 @@
          startingLineNumber = "771"
          endingLineNumber = "771"
          landmarkName = "-objectPanned:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "IdeaStock/AssociativeBulletinBoard.m"
+         timestampString = "359620781.147975"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "493"
+         endingLineNumber = "493"
+         landmarkName = "-removeNote:fromBulletinBoardAttribute:ofType:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "XoomlBulletinBoardController.m"
+         timestampString = "359621943.169194"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "948"
+         endingLineNumber = "948"
+         landmarkName = "-deleteNote:fromBulletinBoardAttribute:ofType:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "IdeaStock/StackView.m"
+         timestampString = "359622669.342047"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "87"
+         endingLineNumber = "87"
+         landmarkName = "-setText:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
