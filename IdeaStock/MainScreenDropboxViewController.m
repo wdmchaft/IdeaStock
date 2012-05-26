@@ -23,6 +23,7 @@
 @property (weak, nonatomic) UIView * lastView;
 @property (strong, nonatomic) NSMutableArray * bulletinBoardViews; 
 
+
 /*------------------------------------------------
                     Model
  -------------------------------------------------*/
@@ -497,13 +498,24 @@
 
 -(void) viewWillAppear:(BOOL)animated{
     
-    UIImage * image = [UIImage imageNamed:@"skybacground.jpg"];
+    /*UIImage * image = [UIImage imageNamed:@"skybacground.jpg"];
      UIColor * color = [UIColor colorWithPatternImage:image];
-    [self.mainView setBackgroundColor:color];
+    [self.mainView setBackgroundColor:color];*/
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 }
 
 -(void) viewDidLoad{
+    
+ /*   UIImage * img = [UIImage imageNamed:@"skybacground.jpg"];
+    UIImageView * imgView =[[UIImageView alloc] initWithFrame:self.mainView.frame];
+    imgView.image = img;
+    UIView * superView =  self.mainView.superview;
+    [self.mainView removeFromSuperview];
+    // [self.mainView addSubview:imgView];
+    //[imgView addSubview:self.mainView];
+    [superView addSubview:imgView];
+    [superView addSubview:self.mainView];*/
+    [self.mainView setBackgroundColor: [UIColor clearColor]];
     
     [super viewDidLoad];
     

@@ -822,9 +822,9 @@
  -----------------------------------------------------------*/
 
 -(void) viewWillAppear:(BOOL)animated{
-    UIImage * image = [UIImage imageNamed:@"greenchalkboard.jpg"];
-    UIColor * color = [UIColor colorWithPatternImage:image];
-    [self.bulletinboardView setBackgroundColor:color];
+  /*  UIImage * image = [UIImage imageNamed:@"greenchalkboard.jpg"];
+    UIColor * color = [UIColor colorWithPatternImage:image];*/
+    [self.bulletinboardView setBackgroundColor:[UIColor clearColor]];
 }
 -(void) viewDidLoad
 {
