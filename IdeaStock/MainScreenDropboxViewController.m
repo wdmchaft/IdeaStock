@@ -111,16 +111,16 @@
     UIImage * image;
     
     if ( self.colorOrder == 0 ) {
-        image  = [UIImage imageNamed:@"chalkborders.jpg"];
+        image  = [UIImage imageNamed:@"mainnote2.png"];
         self.colorOrder++;
         
     }
     else if ( self.colorOrder == 1){
-        image =[UIImage imageNamed:@"chalkborders.jpg"];
+        image =[UIImage imageNamed:@"mainnote2.png"];
         self.colorOrder++;
     }
     else {
-        image =[UIImage imageNamed:@"chalkborders.jpg"];
+        image =[UIImage imageNamed:@"mainnote2.png"];
         self.colorOrder = 0 ;
     }
     
@@ -132,8 +132,7 @@
     label.text = name;
     [label setBackgroundColor:[UIColor clearColor]];
     label.textAlignment = UITextAlignmentCenter;
-    label.font = [UIFont fontWithName:@"Helvetica" size:14.0];
-    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont fontWithName:@"Helvetica" size:15.0];
     [view addSubview:label];
     
     [view setUserInteractionEnabled:YES];
@@ -498,9 +497,9 @@
 
 -(void) viewWillAppear:(BOOL)animated{
     
-   // UIImage * image = [UIImage imageNamed:@"skybacground.jpg"];
-   // UIColor * color = [UIColor colorWithPatternImage:image];
-    //[self.mainView setBackgroundColor:color];
+    UIImage * image = [UIImage imageNamed:@"skybacground.jpg"];
+     UIColor * color = [UIColor colorWithPatternImage:image];
+    [self.mainView setBackgroundColor:color];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 }
 
