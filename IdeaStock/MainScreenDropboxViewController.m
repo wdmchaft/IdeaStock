@@ -111,16 +111,16 @@
     UIImage * image;
     
     if ( self.colorOrder == 0 ) {
-        image  = [UIImage imageNamed:@"green board.png"];
+        image  = [UIImage imageNamed:@"chalkborders.jpg"];
         self.colorOrder++;
         
     }
     else if ( self.colorOrder == 1){
-        image =[UIImage imageNamed:@"blue board.png"];
+        image =[UIImage imageNamed:@"chalkborders.jpg"];
         self.colorOrder++;
     }
     else {
-        image =[UIImage imageNamed:@"red board.png"];
+        image =[UIImage imageNamed:@"chalkborders.jpg"];
         self.colorOrder = 0 ;
     }
     
@@ -133,6 +133,7 @@
     [label setBackgroundColor:[UIColor clearColor]];
     label.textAlignment = UITextAlignmentCenter;
     label.font = [UIFont fontWithName:@"Helvetica" size:14.0];
+    label.textColor = [UIColor whiteColor];
     [view addSubview:label];
     
     [view setUserInteractionEnabled:YES];
@@ -497,9 +498,9 @@
 
 -(void) viewWillAppear:(BOOL)animated{
     
-    UIImage * image = [UIImage imageNamed:@"skybacground.jpg"];
-    UIColor * color = [UIColor colorWithPatternImage:image];
-    [self.mainView setBackgroundColor:color];
+   // UIImage * image = [UIImage imageNamed:@"skybacground.jpg"];
+   // UIColor * color = [UIColor colorWithPatternImage:image];
+    //[self.mainView setBackgroundColor:color];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 }
 
