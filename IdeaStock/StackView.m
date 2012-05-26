@@ -49,14 +49,14 @@
 
 -(UIImage *) normalImage{
     if (!_normalImage){
-        _normalImage = [UIImage imageNamed:@"stackedGreenNote.png"];
+        _normalImage = [UIImage imageNamed:@"s.png"];
     }
     return _normalImage;
 }
 
 -(UIImage *) highlightedImage{
     if (!_highlightedImage){
-        _highlightedImage = [UIImage imageNamed:@"highlightedstackedgreennote.png"];
+        _highlightedImage = [UIImage imageNamed:@"stackSelected.png"];
     }
 return _highlightedImage;
 }
@@ -163,5 +163,20 @@ return _highlightedImage;
     [self.views removeObject:self.mainView];
     self.mainView = [self.views lastObject];
     [self setText:((NoteView *)[self.views lastObject]).text];
+}
+
+
+/*-----------------------------------------------------------
+ Keyboard methods
+ -----------------------------------------------------------*/
+
+-(void) resignFirstResponder{
+    for (UIView * subView in self.subviews){
+        if ([subView isKindOfClass:[UITextView class]]){
+            if (subView.isFirstResponder){
+                [subView resignFirstResponder];
+            }
+        }
+    }
 }
 @end

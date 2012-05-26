@@ -157,8 +157,7 @@
             self.lastFrame = sender.view.frame;
             UIPanGestureRecognizer * pgr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(notePanned:)];
             [sender.view addGestureRecognizer:pgr];
-            UITapGestureRecognizer * tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(screenTapped:)];
-            [self.stackView addGestureRecognizer:tgr];
+
             self.highLightedNote = (NoteView *) sender.view;
             self.isInEditMode = YES;
             [self addToolbarItems];
@@ -206,6 +205,7 @@
 }
 
 -(void) screenTapped: (UITapGestureRecognizer *) sender{
+
     if (self.isInEditMode){
         self.isInEditMode = NO;
         self.highLightedNote.highlighted = NO;
@@ -220,6 +220,13 @@
         }
         [UIView animateWithDuration:0.25 animations:^{ self.highLightedNote.frame = self.lastFrame;}];
         self.highLightedNote = nil;
+    }
+    
+    for(UIView * view in self.notes){
+        if ([view conformsToProtocol:@protocol(BulletinBoardObject)]){
+            id<BulletinBoardObject> obj = (id<BulletinBoardObject>) view;
+            [obj resignFirstResponder];
+        }
     }
 }
 
@@ -380,6 +387,9 @@
     
     self.toolbar.items = [toolbar copy];
     [self layoutNotes:NO];
+    
+    UITapGestureRecognizer * tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(screenTapped:)];
+    [self.stackView addGestureRecognizer:tgr];
 }
 
 -(void)viewDidUnload

@@ -116,11 +116,11 @@
         
     }
     else if ( self.colorOrder == 1){
-        image =[UIImage imageNamed:@"red board.png"];
+        image =[UIImage imageNamed:@"blue board.png"];
         self.colorOrder++;
     }
     else {
-        image =[UIImage imageNamed:@"blue board.png"];
+        image =[UIImage imageNamed:@"red board.png"];
         self.colorOrder = 0 ;
     }
     
@@ -497,6 +497,9 @@
 
 -(void) viewWillAppear:(BOOL)animated{
     
+    UIImage * image = [UIImage imageNamed:@"skybacground.jpg"];
+    UIColor * color = [UIColor colorWithPatternImage:image];
+    [self.mainView setBackgroundColor:color];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 }
 

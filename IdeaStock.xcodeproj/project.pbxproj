@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D703754D1570914A0079A2C7 /* greenchalkboard.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D703754C1570914A0079A2C7 /* greenchalkboard.jpg */; };
+		D703754F157091C40079A2C7 /* skybacground.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D703754E157091C40079A2C7 /* skybacground.jpg */; };
 		D709470B1523BDFE008E4AD9 /* BulletinBoardNote.m in Sources */ = {isa = PBXBuildFile; fileRef = D709470A1523BDFE008E4AD9 /* BulletinBoardNote.m */; };
 		D70947231523DC27008E4AD9 /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D70947161523DC27008E4AD9 /* DDXMLElementAdditions.m */; };
 		D70947241523DC27008E4AD9 /* NSString+DDXML.m in Sources */ = {isa = PBXBuildFile; fileRef = D70947191523DC27008E4AD9 /* NSString+DDXML.m */; };
@@ -16,16 +18,16 @@
 		D709472A15242AC3008E4AD9 /* XoomlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D709472915242AC3008E4AD9 /* XoomlParser.m */; };
 		D709473115244557008E4AD9 /* IdeaStockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D709473015244557008E4AD9 /* IdeaStockTests.m */; };
 		D709473715245416008E4AD9 /* XoomlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D709473615245416008E4AD9 /* XoomlTests.m */; };
+		D715B4AE15704EDC006975A6 /* bg8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D715B4AD15704EDC006975A6 /* bg8.jpg */; };
+		D715B4B815707F63006975A6 /* noteselected.png in Resources */ = {isa = PBXBuildFile; fileRef = D715B4B415707F63006975A6 /* noteselected.png */; };
+		D715B4BA15707F63006975A6 /* stackSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = D715B4B615707F63006975A6 /* stackSelected.png */; };
+		D715B4D415708F85006975A6 /* red board.png in Resources */ = {isa = PBXBuildFile; fileRef = D715B4D315708F85006975A6 /* red board.png */; };
 		D71D934E15230A930043E573 /* DropboxDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D71D934D15230A930043E573 /* DropboxDataModel.m */; };
-		D71EA17E154BA19600496663 /* pile boardSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = D71EA17C154BA19600496663 /* pile boardSmall.png */; };
 		D71EA17F154BA19600496663 /* pile boardBig.png in Resources */ = {isa = PBXBuildFile; fileRef = D71EA17D154BA19600496663 /* pile boardBig.png */; };
 		D71EA185154CD3FB00496663 /* BulletinBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D71EA184154CD3FB00496663 /* BulletinBoardViewController.m */; };
-		D71EA187154CFF0D00496663 /* green2 note.png in Resources */ = {isa = PBXBuildFile; fileRef = D71EA186154CFF0D00496663 /* green2 note.png */; };
 		D731B4C11535F17B0015C325 /* MockDropBoxDatamodel.m in Sources */ = {isa = PBXBuildFile; fileRef = D731B4C01535F17B0015C325 /* MockDropBoxDatamodel.m */; };
 		D74CF0C415266DD900DDEF0F /* BulletinboardXoomlTemplate.xml in Resources */ = {isa = PBXBuildFile; fileRef = D74CF0C315266DD900DDEF0F /* BulletinboardXoomlTemplate.xml */; };
 		D74E48201524F3DF00BC8B9D /* XoomlAttributeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D74E481F1524F3DF00BC8B9D /* XoomlAttributeHelper.m */; };
-		D767B0F51566C7CA005C8699 /* green note highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = D767B0F41566C7CA005C8699 /* green note highlight.png */; };
-		D78224EA154904A5002DF91A /* ali.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D78224E9154904A5002DF91A /* ali.jpg */; };
 		D7947AB7152E35B10054CB23 /* NoteXooMLTemplate.xml in Resources */ = {isa = PBXBuildFile; fileRef = D7947AB6152E35B10054CB23 /* NoteXooMLTemplate.xml */; };
 		D7A53CF11522F39500183CB6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF01522F39500183CB6 /* UIKit.framework */; };
 		D7A53CF31522F39500183CB6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF21522F39500183CB6 /* Foundation.framework */; };
@@ -44,27 +46,21 @@
 		D7AB7DEA152F760400FC6BC0 /* DropBoxAssociativeBulletinBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = D7AB7DE9152F760400FC6BC0 /* DropBoxAssociativeBulletinBoard.m */; };
 		D7AB7DEE152FB52C00FC6BC0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D271522F4E100183CB6 /* Security.framework */; };
 		D7AB7DEF152FB54800FC6BC0 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53D251522F4C700183CB6 /* DropboxSDK.framework */; };
-		D7AD16BF1547492400B9F084 /* Pile note.png in Resources */ = {isa = PBXBuildFile; fileRef = D7AD16BE1547492400B9F084 /* Pile note.png */; };
-		D7AD16C31547566A00B9F084 /* trashcan.png in Resources */ = {isa = PBXBuildFile; fileRef = D7AD16C21547566A00B9F084 /* trashcan.png */; };
 		D7B1431C152680B600DC7556 /* IdeaStockSchema.xsd in Resources */ = {isa = PBXBuildFile; fileRef = D7B1431B152680B500DC7556 /* IdeaStockSchema.xsd */; };
 		D7B1432115268B4C00DC7556 /* BulletinBoardAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B1432015268B4C00DC7556 /* BulletinBoardAttributes.m */; };
 		D7B1432D1526A50400DC7556 /* AssociativeBulletinBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B1432C1526A50400DC7556 /* AssociativeBulletinBoard.m */; };
 		D7BF465D154728DD00F06412 /* MainStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7BF465C154728DD00F06412 /* MainStoryBoard.storyboard */; };
 		D7BF46661547303700F06412 /* MainScreenDropboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7BF46651547303700F06412 /* MainScreenDropboxViewController.m */; };
-		D7BFBEC51568385900E94D74 /* highlightedstackedgreennote.png in Resources */ = {isa = PBXBuildFile; fileRef = D7BFBEC41568385900E94D74 /* highlightedstackedgreennote.png */; };
+		D7D86C741570A95400FE2E21 /* note.png in Resources */ = {isa = PBXBuildFile; fileRef = D7D86C731570A95400FE2E21 /* note.png */; };
 		D7DEF2C41530D37800D13CF4 /* FileSystemHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DEF2C31530D37800D13CF4 /* FileSystemHelper.m */; };
 		D7E44BEE15643AA90080EF71 /* StackView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E44BED15643AA90080EF71 /* StackView.m */; };
-		D7E44BF1156446CE0080EF71 /* GreenNoteStack.png in Resources */ = {isa = PBXBuildFile; fileRef = D7E44BF0156446CE0080EF71 /* GreenNoteStack.png */; };
-		D7E44BF31564607B0080EF71 /* stackedGreenNote.png in Resources */ = {isa = PBXBuildFile; fileRef = D7E44BF21564607B0080EF71 /* stackedGreenNote.png */; };
 		D7E44C03156573800080EF71 /* StackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E44C02156573800080EF71 /* StackViewController.m */; };
 		D7E88ACB154B8FFA003C773F /* blue board.png in Resources */ = {isa = PBXBuildFile; fileRef = D7E88ACA154B8FFA003C773F /* blue board.png */; };
 		D7E88AD1154B9A7B003C773F /* metallic board.png in Resources */ = {isa = PBXBuildFile; fileRef = D7E88ACD154B9A7B003C773F /* metallic board.png */; };
 		D7E88AD2154B9A7B003C773F /* lightOrange board.png in Resources */ = {isa = PBXBuildFile; fileRef = D7E88ACE154B9A7B003C773F /* lightOrange board.png */; };
-		D7E88AD3154B9A7B003C773F /* red board.png in Resources */ = {isa = PBXBuildFile; fileRef = D7E88ACF154B9A7B003C773F /* red board.png */; };
 		D7E88AD4154B9A7B003C773F /* yellow board.png in Resources */ = {isa = PBXBuildFile; fileRef = D7E88AD0154B9A7B003C773F /* yellow board.png */; };
 		D7EC3C65154B7BD300230C0C /* green board.png in Resources */ = {isa = PBXBuildFile; fileRef = D7EC3C64154B7BD300230C0C /* green board.png */; };
 		D7F1FF2C154D1A3300D07B58 /* NoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7F1FF2B154D1A3300D07B58 /* NoteView.m */; };
-		D7F1FF2F154DECDA00D07B58 /* green note3.png in Resources */ = {isa = PBXBuildFile; fileRef = D7F1FF2E154DECDA00D07B58 /* green note3.png */; };
 		D7F85EB41528D80300F16D25 /* XoomlBulletinBoardController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7F85EB31528D80300F16D25 /* XoomlBulletinBoardController.m */; };
 		D7FAD4301534DBDE0072E35B /* DropboxAssociativeBulletinBoardTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FAD42F1534DBDE0072E35B /* DropboxAssociativeBulletinBoardTests.m */; };
 /* End PBXBuildFile section */
@@ -80,6 +76,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D703754C1570914A0079A2C7 /* greenchalkboard.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = greenchalkboard.jpg; sourceTree = "<group>"; };
+		D703754E157091C40079A2C7 /* skybacground.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = skybacground.jpg; sourceTree = "<group>"; };
 		D70947091523BDFE008E4AD9 /* BulletinBoardNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoardNote.h; sourceTree = "<group>"; };
 		D709470A1523BDFE008E4AD9 /* BulletinBoardNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletinBoardNote.m; sourceTree = "<group>"; };
 		D70947151523DC27008E4AD9 /* DDXMLElementAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLElementAdditions.h; sourceTree = "<group>"; };
@@ -100,24 +98,24 @@
 		D709473015244557008E4AD9 /* IdeaStockTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdeaStockTests.m; sourceTree = "<group>"; };
 		D709473515245416008E4AD9 /* XoomlTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XoomlTests.h; sourceTree = "<group>"; };
 		D709473615245416008E4AD9 /* XoomlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XoomlTests.m; sourceTree = "<group>"; };
+		D715B4AD15704EDC006975A6 /* bg8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg8.jpg; sourceTree = "<group>"; };
+		D715B4B415707F63006975A6 /* noteselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noteselected.png; sourceTree = "<group>"; };
+		D715B4B615707F63006975A6 /* stackSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stackSelected.png; sourceTree = "<group>"; };
+		D715B4D315708F85006975A6 /* red board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red board.png"; sourceTree = "<group>"; };
 		D71D934B152301F10043E573 /* DataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModel.h; sourceTree = "<group>"; };
 		D71D934C15230A930043E573 /* DropboxDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxDataModel.h; sourceTree = "<group>"; };
 		D71D934D15230A930043E573 /* DropboxDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxDataModel.m; sourceTree = "<group>"; };
 		D71D934F15230B3D0043E573 /* BulletinBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoard.h; sourceTree = "<group>"; };
 		D71D935015230B820043E573 /* Note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Note.h; sourceTree = "<group>"; };
-		D71EA17C154BA19600496663 /* pile boardSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pile boardSmall.png"; sourceTree = "<group>"; };
 		D71EA17D154BA19600496663 /* pile boardBig.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pile boardBig.png"; sourceTree = "<group>"; };
 		D71EA183154CD3FB00496663 /* BulletinBoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoardViewController.h; sourceTree = "<group>"; };
 		D71EA184154CD3FB00496663 /* BulletinBoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletinBoardViewController.m; sourceTree = "<group>"; };
-		D71EA186154CFF0D00496663 /* green2 note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green2 note.png"; sourceTree = "<group>"; };
 		D731B4BF1535F17B0015C325 /* MockDropBoxDatamodel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MockDropBoxDatamodel.h; path = IdeaStockTests/MockDropBoxDatamodel.h; sourceTree = SOURCE_ROOT; };
 		D731B4C01535F17B0015C325 /* MockDropBoxDatamodel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MockDropBoxDatamodel.m; path = IdeaStockTests/MockDropBoxDatamodel.m; sourceTree = SOURCE_ROOT; };
 		D74CF0C315266DD900DDEF0F /* BulletinboardXoomlTemplate.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = BulletinboardXoomlTemplate.xml; sourceTree = "<group>"; };
 		D74E481E1524F3DF00BC8B9D /* XoomlAttributeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XoomlAttributeHelper.h; sourceTree = "<group>"; };
 		D74E481F1524F3DF00BC8B9D /* XoomlAttributeHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XoomlAttributeHelper.m; sourceTree = "<group>"; };
 		D75820EF1532C8EC00F2617E /* QueueProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueueProducer.h; sourceTree = "<group>"; };
-		D767B0F41566C7CA005C8699 /* green note highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green note highlight.png"; sourceTree = "<group>"; };
-		D78224E9154904A5002DF91A /* ali.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ali.jpg; sourceTree = "<group>"; };
 		D78970D41569E376002EC56F /* NoteViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteViewDelegate.h; sourceTree = "<group>"; };
 		D7947AB6152E35B10054CB23 /* NoteXooMLTemplate.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = NoteXooMLTemplate.xml; sourceTree = "<group>"; };
 		D7A53CEC1522F39500183CB6 /* IdeaStock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IdeaStock.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -142,8 +140,6 @@
 		D7AB7DE6152F6DB200FC6BC0 /* CallBackDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallBackDataModel.h; sourceTree = "<group>"; };
 		D7AB7DE8152F760400FC6BC0 /* DropBoxAssociativeBulletinBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropBoxAssociativeBulletinBoard.h; sourceTree = "<group>"; };
 		D7AB7DE9152F760400FC6BC0 /* DropBoxAssociativeBulletinBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropBoxAssociativeBulletinBoard.m; sourceTree = "<group>"; };
-		D7AD16BE1547492400B9F084 /* Pile note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Pile note.png"; path = "../Pile note.png"; sourceTree = "<group>"; };
-		D7AD16C21547566A00B9F084 /* trashcan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trashcan.png; sourceTree = "<group>"; };
 		D7B1431B152680B500DC7556 /* IdeaStockSchema.xsd */ = {isa = PBXFileReference; explicitFileType = text.xml; fileEncoding = 4; path = IdeaStockSchema.xsd; sourceTree = "<group>"; };
 		D7B1431F15268B4C00DC7556 /* BulletinBoardAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoardAttributes.h; sourceTree = "<group>"; };
 		D7B1432015268B4C00DC7556 /* BulletinBoardAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletinBoardAttributes.m; sourceTree = "<group>"; };
@@ -152,25 +148,21 @@
 		D7BF465C154728DD00F06412 /* MainStoryBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryBoard.storyboard; sourceTree = "<group>"; };
 		D7BF46641547303700F06412 /* MainScreenDropboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScreenDropboxViewController.h; sourceTree = "<group>"; };
 		D7BF46651547303700F06412 /* MainScreenDropboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScreenDropboxViewController.m; sourceTree = "<group>"; };
-		D7BFBEC41568385900E94D74 /* highlightedstackedgreennote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = highlightedstackedgreennote.png; sourceTree = "<group>"; };
+		D7D86C731570A95400FE2E21 /* note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = note.png; sourceTree = "<group>"; };
 		D7DEF2C21530D37800D13CF4 /* FileSystemHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileSystemHelper.h; sourceTree = "<group>"; };
 		D7DEF2C31530D37800D13CF4 /* FileSystemHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileSystemHelper.m; sourceTree = "<group>"; };
 		D7E44BEC15643AA90080EF71 /* StackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackView.h; sourceTree = "<group>"; };
 		D7E44BED15643AA90080EF71 /* StackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StackView.m; sourceTree = "<group>"; };
-		D7E44BF0156446CE0080EF71 /* GreenNoteStack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GreenNoteStack.png; sourceTree = "<group>"; };
-		D7E44BF21564607B0080EF71 /* stackedGreenNote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stackedGreenNote.png; sourceTree = "<group>"; };
 		D7E44BF7156476360080EF71 /* BulletinBoardObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BulletinBoardObject.h; path = ../BulletinBoardObject.h; sourceTree = "<group>"; };
 		D7E44C01156573800080EF71 /* StackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StackViewController.h; path = ../StackViewController.h; sourceTree = "<group>"; };
 		D7E44C02156573800080EF71 /* StackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StackViewController.m; path = ../StackViewController.m; sourceTree = "<group>"; };
 		D7E88ACA154B8FFA003C773F /* blue board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue board.png"; sourceTree = "<group>"; };
 		D7E88ACD154B9A7B003C773F /* metallic board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metallic board.png"; sourceTree = "<group>"; };
 		D7E88ACE154B9A7B003C773F /* lightOrange board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lightOrange board.png"; sourceTree = "<group>"; };
-		D7E88ACF154B9A7B003C773F /* red board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red board.png"; sourceTree = "<group>"; };
 		D7E88AD0154B9A7B003C773F /* yellow board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yellow board.png"; sourceTree = "<group>"; };
 		D7EC3C64154B7BD300230C0C /* green board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green board.png"; sourceTree = "<group>"; };
 		D7F1FF2A154D1A3300D07B58 /* NoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NoteView.h; path = ../NoteView.h; sourceTree = "<group>"; };
 		D7F1FF2B154D1A3300D07B58 /* NoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NoteView.m; path = ../NoteView.m; sourceTree = "<group>"; };
-		D7F1FF2E154DECDA00D07B58 /* green note3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green note3.png"; sourceTree = "<group>"; };
 		D7F85EAD1528CF7800F16D25 /* BulletinBoardDatasource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoardDatasource.h; sourceTree = "<group>"; };
 		D7F85EAE1528D29E00F16D25 /* BulletinBoardDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletinBoardDelegate.h; sourceTree = "<group>"; };
 		D7F85EB21528D80300F16D25 /* XoomlBulletinBoardController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XoomlBulletinBoardController.h; path = ../XoomlBulletinBoardController.h; sourceTree = "<group>"; };
@@ -334,23 +326,19 @@
 		D7A53CF71522F39500183CB6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D7BFBEC41568385900E94D74 /* highlightedstackedgreennote.png */,
-				D767B0F41566C7CA005C8699 /* green note highlight.png */,
-				D7E44BF21564607B0080EF71 /* stackedGreenNote.png */,
-				D7E44BF0156446CE0080EF71 /* GreenNoteStack.png */,
-				D7F1FF2E154DECDA00D07B58 /* green note3.png */,
-				D71EA186154CFF0D00496663 /* green2 note.png */,
-				D71EA17C154BA19600496663 /* pile boardSmall.png */,
+				D7D86C731570A95400FE2E21 /* note.png */,
+				D703754E157091C40079A2C7 /* skybacground.jpg */,
+				D703754C1570914A0079A2C7 /* greenchalkboard.jpg */,
+				D715B4D315708F85006975A6 /* red board.png */,
+				D715B4B415707F63006975A6 /* noteselected.png */,
+				D715B4B615707F63006975A6 /* stackSelected.png */,
+				D715B4AD15704EDC006975A6 /* bg8.jpg */,
 				D71EA17D154BA19600496663 /* pile boardBig.png */,
 				D7E88ACD154B9A7B003C773F /* metallic board.png */,
 				D7E88ACE154B9A7B003C773F /* lightOrange board.png */,
-				D7E88ACF154B9A7B003C773F /* red board.png */,
 				D7E88AD0154B9A7B003C773F /* yellow board.png */,
 				D7E88ACA154B8FFA003C773F /* blue board.png */,
 				D7EC3C64154B7BD300230C0C /* green board.png */,
-				D78224E9154904A5002DF91A /* ali.jpg */,
-				D7AD16C21547566A00B9F084 /* trashcan.png */,
-				D7AD16BE1547492400B9F084 /* Pile note.png */,
 				D7A53CF81522F39500183CB6 /* IdeaStock-Info.plist */,
 				D7A53CF91522F39500183CB6 /* InfoPlist.strings */,
 				D7A53CFC1522F39500183CB6 /* main.m */,
@@ -485,23 +473,19 @@
 				D7B1431C152680B600DC7556 /* IdeaStockSchema.xsd in Resources */,
 				D7947AB7152E35B10054CB23 /* NoteXooMLTemplate.xml in Resources */,
 				D7BF465D154728DD00F06412 /* MainStoryBoard.storyboard in Resources */,
-				D7AD16BF1547492400B9F084 /* Pile note.png in Resources */,
-				D7AD16C31547566A00B9F084 /* trashcan.png in Resources */,
-				D78224EA154904A5002DF91A /* ali.jpg in Resources */,
 				D7EC3C65154B7BD300230C0C /* green board.png in Resources */,
 				D7E88ACB154B8FFA003C773F /* blue board.png in Resources */,
 				D7E88AD1154B9A7B003C773F /* metallic board.png in Resources */,
 				D7E88AD2154B9A7B003C773F /* lightOrange board.png in Resources */,
-				D7E88AD3154B9A7B003C773F /* red board.png in Resources */,
 				D7E88AD4154B9A7B003C773F /* yellow board.png in Resources */,
-				D71EA17E154BA19600496663 /* pile boardSmall.png in Resources */,
 				D71EA17F154BA19600496663 /* pile boardBig.png in Resources */,
-				D71EA187154CFF0D00496663 /* green2 note.png in Resources */,
-				D7F1FF2F154DECDA00D07B58 /* green note3.png in Resources */,
-				D7E44BF1156446CE0080EF71 /* GreenNoteStack.png in Resources */,
-				D7E44BF31564607B0080EF71 /* stackedGreenNote.png in Resources */,
-				D767B0F51566C7CA005C8699 /* green note highlight.png in Resources */,
-				D7BFBEC51568385900E94D74 /* highlightedstackedgreennote.png in Resources */,
+				D715B4AE15704EDC006975A6 /* bg8.jpg in Resources */,
+				D715B4B815707F63006975A6 /* noteselected.png in Resources */,
+				D715B4BA15707F63006975A6 /* stackSelected.png in Resources */,
+				D715B4D415708F85006975A6 /* red board.png in Resources */,
+				D703754D1570914A0079A2C7 /* greenchalkboard.jpg in Resources */,
+				D703754F157091C40079A2C7 /* skybacground.jpg in Resources */,
+				D7D86C741570A95400FE2E21 /* note.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

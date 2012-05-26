@@ -12,6 +12,8 @@
 
 -(void) scale:(CGFloat) scaleFactor;
 
+-(void) resignFirstResponder;
+
 @property (strong,nonatomic) NSString * text;
 @property (nonatomic) BOOL highlighted;
 @property (strong, nonatomic) NSString * ID;

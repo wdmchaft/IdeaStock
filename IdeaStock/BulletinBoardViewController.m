@@ -635,7 +635,7 @@
                         Gesture Events
  -----------------------------------------------------------*/
 
--(void) screenTapped: (UIGestureRecognizer *) sender{
+-(void) screenTapped: (UITapGestureRecognizer *) sender{
     if (self.editMode){
         self.editMode = NO;
         self.highlightedView.highlighted = NO;
@@ -652,8 +652,10 @@
         }
         self.highlightedView = nil;
 
-        
     }
+    
+
+    [self resignFirstResponders];
 }
 
 -(void) mainScreenDoubleTapped:(UITapGestureRecognizer *) sender{
@@ -819,6 +821,11 @@
                          UI Events
  -----------------------------------------------------------*/
 
+-(void) viewWillAppear:(BOOL)animated{
+    UIImage * image = [UIImage imageNamed:@"greenchalkboard.jpg"];
+    UIColor * color = [UIColor colorWithPatternImage:image];
+    [self.bulletinboardView setBackgroundColor:color];
+}
 -(void) viewDidLoad
 {
     
@@ -1038,6 +1045,15 @@
     
     
     
+}
+
+-(void) resignFirstResponders{
+    for(UIView * view in self.bulletinboardView.subviews){
+        if ([view conformsToProtocol:@protocol(BulletinBoardObject)]){
+            id<BulletinBoardObject> obj = (id<BulletinBoardObject>) view;
+            [obj resignFirstResponder];
+        }
+    }
 }
 
 

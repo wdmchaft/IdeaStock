@@ -55,7 +55,7 @@
 
 -(UIImage *) normalImage{
     if (!_normalImage){
-        _normalImage = [UIImage imageNamed:@"green note3.png"];
+        _normalImage = [UIImage imageNamed:@"renote.png"];
     }
     return _normalImage;
 }
@@ -63,7 +63,7 @@
 -(UIImage *) highLightedImage{
     
     if (! _highLightedImage){
-        _highLightedImage = [UIImage imageNamed:@"green note highlight.png"];
+        _highLightedImage = [UIImage imageNamed:@"noteselected.png"];
         
     }
     return _highLightedImage;
@@ -251,6 +251,19 @@
 }
 
 
+/*-----------------------------------------------------------
+                        Keyboard methods
+ -----------------------------------------------------------*/
+
+-(void) resignFirstResponder{
+    for (UIView * subView in self.subviews){
+        if ([subView isKindOfClass:[UITextView class]]){
+            if (subView.isFirstResponder){
+                [subView resignFirstResponder];
+            }
+        }
+    }
+}
 /*-----------------------------------------------------------
                         textViewDelegate
  -----------------------------------------------------------*/
