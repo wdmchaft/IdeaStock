@@ -13,14 +13,14 @@
 /*========================================================================*/
 
 /*-----------------------------------------------------------
-                        UI Properties
+ UI Properties
  -----------------------------------------------------------*/
 
 @property (strong, nonatomic) UIImage * highLightedImage;
 @property (strong, nonatomic) UIImage * normalImage;
 
 /*-----------------------------------------------------------
-                         Modal Properties
+ Modal Properties
  -----------------------------------------------------------*/
 
 @property (nonatomic) CGRect originalFrame;
@@ -33,7 +33,7 @@
 @implementation NoteView
 
 /*-----------------------------------------------------------
-                        Synthesizers
+ Synthesizers
  -----------------------------------------------------------*/
 #define STARTING_POS_OFFSET_X 0.07
 #define STARTING_POS_OFFSET_Y 0.07
@@ -85,9 +85,9 @@
             if ([subView isKindOfClass:[UIImageView class]]){
                 [((UIImageView *) subView) setImage:self.normalImage];
                 [UIView animateWithDuration:0.20 animations:^{[subView setTransform:CGAffineTransformIdentity];}];
-             
+                
             }
-
+            
         }
         
     }
@@ -109,14 +109,14 @@
         }
     }
     return nil;
-
+    
     
 }
 
 /*========================================================================*/
 
 /*-----------------------------------------------------------
-                        Initializers
+ Initializers
  -----------------------------------------------------------*/
 
 -(id)initWithFrame:(CGRect)frame
@@ -131,6 +131,8 @@
                                       self.bounds.origin.y + self.bounds.size.height * STARTING_POS_OFFSET_Y,
                                       self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
         UITextView * textView = [[UITextView alloc] initWithFrame:textFrame];
+        textView.font = [UIFont fontWithName:@"Cochin" size:17.0];
+        
         textView.delegate = self;
         [self addSubview:imageView];
         [self addSubview:textView];
@@ -141,8 +143,8 @@
 }
 
 -(id) initNoteWithFrame:(CGRect) frame 
-                  andText: (NSString *)text
-                    andID:(NSString *)ID{
+                andText: (NSString *)text
+                  andID:(NSString *)ID{
     self = [self initWithFrame:frame];
     self.text = text;
     self.ID = ID;
@@ -151,7 +153,7 @@
 }
 
 /*-----------------------------------------------------------
-                        Layout Methods
+ Layout Methods
  -----------------------------------------------------------*/
 
 -(void) resetSize{
@@ -188,7 +190,9 @@
                                           self.bounds.origin.y + self.bounds.size.height * STARTING_POS_OFFSET_Y,
                                           self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
             UITextView * textView = [[UITextView alloc] initWithFrame:textFrame];
+            textView.font = [UIFont fontWithName:@"Cochin" size:17.0];
             textView.text = oldText;
+            
             textView.delegate = self;
             [subView removeFromSuperview];
             
@@ -213,6 +217,7 @@
                                                   self.bounds.origin.y + self.bounds.size.height * STARTING_POS_OFFSET_Y,
                                                   self.bounds.size.width * TEXT_WIDHT_RATIO, self.bounds.size.height * TEXT_HEIGHT_RATIO);
                     UITextView * textView = [[UITextView alloc] initWithFrame:textFrame];
+                    textView.font = [UIFont fontWithName:@"Cochin" size:17.0];
                     textView.text = oldText;
                     textView.delegate = self;
                     
@@ -247,12 +252,12 @@
             }
         }
     }
-
+    
 }
 
 
 /*-----------------------------------------------------------
-                        Keyboard methods
+ Keyboard methods
  -----------------------------------------------------------*/
 
 -(void) resignFirstResponder{
@@ -265,7 +270,7 @@
     }
 }
 /*-----------------------------------------------------------
-                        textViewDelegate
+ textViewDelegate
  -----------------------------------------------------------*/
 
 -(void) textViewDidEndEditing:(UITextView *)textView{

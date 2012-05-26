@@ -28,6 +28,9 @@
 		D731B4C11535F17B0015C325 /* MockDropBoxDatamodel.m in Sources */ = {isa = PBXBuildFile; fileRef = D731B4C01535F17B0015C325 /* MockDropBoxDatamodel.m */; };
 		D74CF0C415266DD900DDEF0F /* BulletinboardXoomlTemplate.xml in Resources */ = {isa = PBXBuildFile; fileRef = D74CF0C315266DD900DDEF0F /* BulletinboardXoomlTemplate.xml */; };
 		D74E48201524F3DF00BC8B9D /* XoomlAttributeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D74E481F1524F3DF00BC8B9D /* XoomlAttributeHelper.m */; };
+		D77905061571446D00EBF060 /* pp1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D77905031571446D00EBF060 /* pp1.jpg */; };
+		D77905071571446D00EBF060 /* pp2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D77905041571446D00EBF060 /* pp2.jpg */; };
+		D77905081571446D00EBF060 /* pp3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D77905051571446D00EBF060 /* pp3.jpg */; };
 		D7947AB7152E35B10054CB23 /* NoteXooMLTemplate.xml in Resources */ = {isa = PBXBuildFile; fileRef = D7947AB6152E35B10054CB23 /* NoteXooMLTemplate.xml */; };
 		D7A53CF11522F39500183CB6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF01522F39500183CB6 /* UIKit.framework */; };
 		D7A53CF31522F39500183CB6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A53CF21522F39500183CB6 /* Foundation.framework */; };
@@ -126,6 +129,9 @@
 		D74E481E1524F3DF00BC8B9D /* XoomlAttributeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XoomlAttributeHelper.h; sourceTree = "<group>"; };
 		D74E481F1524F3DF00BC8B9D /* XoomlAttributeHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XoomlAttributeHelper.m; sourceTree = "<group>"; };
 		D75820EF1532C8EC00F2617E /* QueueProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueueProducer.h; sourceTree = "<group>"; };
+		D77905031571446D00EBF060 /* pp1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pp1.jpg; sourceTree = "<group>"; };
+		D77905041571446D00EBF060 /* pp2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pp2.jpg; sourceTree = "<group>"; };
+		D77905051571446D00EBF060 /* pp3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pp3.jpg; sourceTree = "<group>"; };
 		D78970D41569E376002EC56F /* NoteViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteViewDelegate.h; sourceTree = "<group>"; };
 		D7947AB6152E35B10054CB23 /* NoteXooMLTemplate.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = NoteXooMLTemplate.xml; sourceTree = "<group>"; };
 		D7A53CEC1522F39500183CB6 /* IdeaStock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IdeaStock.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -346,6 +352,9 @@
 		D7A53CF71522F39500183CB6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D77905031571446D00EBF060 /* pp1.jpg */,
+				D77905041571446D00EBF060 /* pp2.jpg */,
+				D77905051571446D00EBF060 /* pp3.jpg */,
 				D7D86C871570D68700FE2E21 /* stackbg1.jpg */,
 				D7D86C881570D68700FE2E21 /* stackbg2.jpg */,
 				D7D86C851570D48100FE2E21 /* stack2.png */,
@@ -526,6 +535,9 @@
 				D7D86C861570D48100FE2E21 /* stack2.png in Resources */,
 				D7D86C891570D68700FE2E21 /* stackbg1.jpg in Resources */,
 				D7D86C8A1570D68700FE2E21 /* stackbg2.jpg in Resources */,
+				D77905061571446D00EBF060 /* pp1.jpg in Resources */,
+				D77905071571446D00EBF060 /* pp2.jpg in Resources */,
+				D77905081571446D00EBF060 /* pp3.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

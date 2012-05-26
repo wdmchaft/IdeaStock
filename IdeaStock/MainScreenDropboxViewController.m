@@ -133,7 +133,8 @@
     label.text = name;
     [label setBackgroundColor:[UIColor clearColor]];
     label.textAlignment = UITextAlignmentCenter;
-    label.font = [UIFont fontWithName:@"Helvetica" size:15.0];
+    label.font = [UIFont fontWithName:@"Baskerville Bold" size:17.0];
+   
     [view addSubview:label];
     
     [view setUserInteractionEnabled:YES];
