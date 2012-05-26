@@ -390,6 +390,7 @@
     
     UITapGestureRecognizer * tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(screenTapped:)];
     [self.stackView addGestureRecognizer:tgr];
+    [self.stackView setBackgroundColor:[UIColor clearColor]];
 }
 
 -(void)viewDidUnload

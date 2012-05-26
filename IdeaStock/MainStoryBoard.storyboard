@@ -125,6 +125,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="stackbg2.jpg" id="lJa-BH-sdI">
+                                <rect key="frame" x="0.0" y="21" width="540" height="578"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="zTy-aI-wC0">
                                 <rect key="frame" x="0.0" y="0.0" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -149,7 +153,7 @@
                                 </items>
                             </toolbar>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" id="jWv-aN-rSC">
-                                <rect key="frame" x="0.0" y="42" width="540" height="578"/>
+                                <rect key="frame" x="0.0" y="42" width="549" height="578"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </scrollView>
                         </subviews>
@@ -173,6 +177,7 @@
     <resources>
         <image name="greenchalkboard.jpg" width="1024" height="1024"/>
         <image name="skybacground.jpg" width="1024" height="1024"/>
+        <image name="stackbg2.jpg" width="3888" height="2592"/>
     </resources>
     <classes>
         <class className="BulletinBoardViewController" superclassName="UIViewController">
