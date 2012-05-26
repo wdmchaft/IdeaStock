@@ -55,7 +55,7 @@
 
 -(UIImage *) normalImage{
     if (!_normalImage){
-        _normalImage = [UIImage imageNamed:@"renote.png"];
+        _normalImage = [UIImage imageNamed:@"note.png"];
     }
     return _normalImage;
 }

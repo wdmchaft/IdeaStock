@@ -49,7 +49,7 @@
 
 -(UIImage *) normalImage{
     if (!_normalImage){
-        _normalImage = [UIImage imageNamed:@"s.png"];
+        _normalImage = [UIImage imageNamed:@"stack.png"];
     }
     return _normalImage;
 }
