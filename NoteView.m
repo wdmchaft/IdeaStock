@@ -36,8 +36,8 @@
                         Synthesizers
  -----------------------------------------------------------*/
 #define STARTING_POS_OFFSET_X 0.07
-#define STARTING_POS_OFFSET_Y 0.13
-#define TEXT_WIDHT_RATIO 0.9
+#define STARTING_POS_OFFSET_Y 0.07
+#define TEXT_WIDHT_RATIO 0.8
 #define TEXT_HEIGHT_RATIO 0.75
 
 @synthesize text = _text;

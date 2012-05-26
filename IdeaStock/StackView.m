@@ -43,8 +43,8 @@
 @synthesize ID = _ID;
 
 #define STARTING_POS_OFFSET_X 0.10
-#define STARTING_POS_OFFSET_Y 0.20
-#define TEXT_WIDHT_RATIO 0.83
+#define STARTING_POS_OFFSET_Y 0.2
+#define TEXT_WIDHT_RATIO 0.7
 #define TEXT_HEIGHT_RATIO 0.60
 
 -(UIImage *) normalImage{
