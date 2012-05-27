@@ -112,16 +112,16 @@
     UIImage * image;
     
     if ( self.colorOrder == 0 ) {
-        image  = [UIImage imageNamed:@"mainnote2.png"];
+        image  = [UIImage imageNamed:@"bulletin.png"];
         self.colorOrder++;
         
     }
     else if ( self.colorOrder == 1){
-        image =[UIImage imageNamed:@"mainnote2.png"];
+        image =[UIImage imageNamed:@"bulletin.png"];
         self.colorOrder++;
     }
     else {
-        image =[UIImage imageNamed:@"mainnote2.png"];
+        image =[UIImage imageNamed:@"bulletin.png"];
         self.colorOrder = 0 ;
     }
     
@@ -167,6 +167,7 @@
     
     BOOL isFirst = YES;
     
+    
     if ( [UIDevice currentDevice].orientation ==  UIDeviceOrientationPortrait 
         || [UIDevice currentDevice].orientation == UIDeviceOrientationPortraitUpsideDown 
         || [UIDevice currentDevice].orientation == UIDeviceOrientationFaceUp 
@@ -180,6 +181,8 @@
         
         for (UIView * view in self.bulletinBoardViews){
             
+           /* CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.31;
+            CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.25;**/
             CGFloat bulletinBoardWidth = self.mainView.bounds.size.width * 0.26;
             CGFloat bulletinBoardHeight = self.mainView.bounds.size.height * 0.20;
             
@@ -209,7 +212,6 @@
             CGFloat middleX = view.bounds.size.width/2 + view.bounds.origin.x;
             CGFloat middleY = view.bounds.size.height/2 + view.bounds.origin.y;
             [[view.subviews lastObject] setFrame:CGRectMake(middleX * 0.4, middleY * 0.85, view.bounds.size.width/2, 0.1* view.bounds.size.height)];
-            
             
             rowCount++;
             if ( rowCount <= PORTRAIT_ROW_COUNT - 1 ) {

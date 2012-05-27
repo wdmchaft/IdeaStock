@@ -49,6 +49,7 @@
 @synthesize delegate = _delegate;
 @synthesize ID = _ID;
 
+
 -(void) setDelegate:(id<NoteViewDelegate>) delegate{
     _delegate = delegate;
 }
@@ -173,6 +174,15 @@
 
 -(void) scale:(CGFloat) scaleFactor{
     
+    
+    if ( self.frame.size.width * scaleFactor > self.originalFrame.size.width * 2||
+        self.frame.size.height * scaleFactor > self.originalFrame.size.height * 2){
+        return;
+    }
+    if ( self.frame.size.width * scaleFactor < self.originalFrame.size.width * 0.9 ||
+        self.frame.size.height * scaleFactor < self.originalFrame.size.height * 0.9){
+        return;
+    }
     self.frame = CGRectMake(self.frame.origin.x,
                             self.frame.origin.y, 
                             self.frame.size.width * scaleFactor,

@@ -22,7 +22,7 @@
 
 
 /*-----------------------------------------------------------
-                        UI Properties
+ UI Properties
  -----------------------------------------------------------*/
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *label;
 @property (weak, nonatomic) IBOutlet UIScrollView *bulletinboardView;
@@ -31,11 +31,11 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 
 /*-----------------------------------------------------------
-                            Model
+ Model
  -----------------------------------------------------------*/
 @property int noteCount;
 /*-----------------------------------------------------------
-                        Modal Properties
+ Modal Properties
  -----------------------------------------------------------*/
 @property (strong, nonatomic) NSArray * intersectingViews;
 @property (weak, nonatomic) UIView<BulletinBoardObject> * highlightedView;
@@ -53,7 +53,7 @@
 @implementation BulletinBoardViewController
 
 /*-----------------------------------------------------------
-                    Synthesizers
+ Synthesizers
  -----------------------------------------------------------*/
 @synthesize label = _label;
 @synthesize bulletinboardView = _bulletinboardView; 
@@ -86,7 +86,7 @@
 /*========================================================================*/
 
 /*-----------------------------------------------------------
-                    Initializers
+ Initializers
  -----------------------------------------------------------*/
 
 - (id)initWithNibName:(NSString *) nibNameOrNil bundle:(NSBundle *) nibBundleOrNil
@@ -99,7 +99,7 @@
 }
 
 /*-----------------------------------------------------------
-                        UI Action Helper
+ UI Action Helper
  -----------------------------------------------------------*/
 
 -(void) removeContextualToolbarItems:(UIView *) contextView{
@@ -124,7 +124,7 @@
 }
 
 #define STACKING_SCALING_WIDTH 1.1
-#define STACKING_SCALING_HEIGHT 1.2
+#define STACKING_SCALING_HEIGHT 1.05
 
 /*
  If ID is nil the methods will create a unique UUID itself and will also write
@@ -166,7 +166,7 @@
                                      
                                      if (!ID){
                                          stackingID = [self normalizeStackingWithItems: (NSArray *)items 
-                                                                                  andMainView: (UIView *) mainView];
+                                                                           andMainView: (UIView *) mainView];
                                      }
                                      else{
                                          stackingID = ID;
@@ -213,7 +213,7 @@
 }
 
 /*-----------------------------------------------------------
-                        Model Manipulation
+ Model Manipulation
  -----------------------------------------------------------*/
 
 #define POSITION_X_TYPE @"positionX"
@@ -252,7 +252,7 @@
     NSDictionary * position = [[NSDictionary alloc] initWithObjectsAndKeys:
                                positionXArr, POSITION_X_TYPE,
                                positionYArr, POSITION_Y_TYPE, nil];
-
+    
     NSDictionary * newProperties = [[NSDictionary alloc] initWithObjectsAndKeys:position,POSITION_TYPE, nil];
     
     [self.board updateNoteProperties:noteID withProperties:newProperties]; 
@@ -292,12 +292,12 @@
         
         [self.board addNoteWithID:noteID toBulletinBoardAttribute:stackingID forAttributeType:STACKING_TYPE];
     }
-
+    
     return stackingID;
 }
 
 /*-----------------------------------------------------------
-                            Notification
+ Notification
  -----------------------------------------------------------*/
 
 -(void) loadSavedNotes: (NSNotification *) notificatoin{
@@ -305,7 +305,7 @@
 }
 
 /*-----------------------------------------------------------
-                        Layout Methods
+ Layout Methods
  -----------------------------------------------------------*/
 
 -(void) layoutNotes{
@@ -329,8 +329,8 @@
             positionY = self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.height - NOTE_HEIGHT;
         }
         if (positionX <  self.bulletinboardView.frame.origin.x){
-             positionX = self.bulletinboardView.frame.origin.x;
-         }
+            positionX = self.bulletinboardView.frame.origin.x;
+        }
         if (positionY < self.bulletinboardView.frame.origin.y){
             positionY = self.bulletinboardView.frame.origin.y;
         }
@@ -357,8 +357,8 @@
         [note addGestureRecognizer:lpgr];
         [note addGestureRecognizer:gr];
         [note addGestureRecognizer:pgr];
-
-
+        
+        
     }
     
     [self layoutStackings];
@@ -383,9 +383,9 @@
                 }
             }
         }
-
         
-
+        
+        
         [self stackNotes:views into:mainView withID:stackingID];
     }
 }
@@ -457,7 +457,7 @@
     else {
         startY = stackMiddleY - rectSize.height/2;
     }
-
+    
     return CGRectMake(startX, startY, rectSize.width, rectSize.height);
 }
 
@@ -544,7 +544,7 @@
                         [self updateNoteLocation:stackNoteView];
                     }
                 }
-
+                
             }
         }
     }
@@ -558,7 +558,7 @@
     [((NoteView *) [items lastObject]) resetSize];
     float noteWidth = ((NoteView *)[items lastObject]).frame.size.width  ;
     float noteHeight = ((NoteView *)[items lastObject]).frame.size.height;
-
+    
     //remove all existing gesture recognizers and add the new ones. 
     //finally position all the notes in the center of the stackView
     for (NoteView * view in items){
@@ -573,14 +573,14 @@
         [view addGestureRecognizer:gr];
         [view addGestureRecognizer:pgr];
         
-         view.delegate = self;
+        view.delegate = self;
         [view resetSize];
         [view removeFromSuperview];
         [self.bulletinboardView addSubview:view];
         CGRect viewTempFrame = CGRectMake(stack.frame.origin.x, stack.frame.origin.y, view.frame.size.width, view.frame.size.height);
         view.frame = viewTempFrame;
         
-
+        
     }
     
     //now remove the stack itself
@@ -632,7 +632,7 @@
 }
 
 /*-----------------------------------------------------------
-                        Gesture Events
+ Gesture Events
  -----------------------------------------------------------*/
 
 -(void) screenTapped: (UITapGestureRecognizer *) sender{
@@ -651,10 +651,10 @@
             }
         }
         self.highlightedView = nil;
-
+        
     }
     
-
+    
     [self resignFirstResponders];
 }
 
@@ -735,7 +735,7 @@
 
 #define CHECK_TIME 0
 -(void) objectPanned: (UIPanGestureRecognizer *) sender{
-
+    
     if( sender.state == UIGestureRecognizerStateChanged ||
        sender.state == UIGestureRecognizerStateEnded){
         CGPoint translation = [sender translationInView:self.bulletinboardView];
@@ -766,14 +766,43 @@
         }
     }
     
-
+    
     if (sender.state == UIGestureRecognizerStateEnded){
+        BOOL frameChanged = NO;
+        CGFloat newOriginX = sender.view.frame.origin.x;
+        CGFloat newOriginY = sender.view.frame.origin.y;
+        
+        if (sender.view.frame.origin.x < self.bulletinboardView.frame.origin.x){
+            frameChanged = YES;
+            newOriginX = self.bulletinboardView.frame.origin.x;
+        }
+        if (sender.view.frame.origin.y < self.bulletinboardView.frame.origin.y){
+            frameChanged = YES;
+            newOriginY = self.bulletinboardView.frame.origin.y;
+        }
+        if (sender.view.frame.origin.x + sender.view.frame.size.width > 
+            self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.width){
+            frameChanged = YES;
+            newOriginX = self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.width - sender.view.frame.size.width;
+        }
+        if (sender.view.frame.origin.y + sender.view.frame.size.height > 
+            self.bulletinboardView.frame.origin.y + self.bulletinboardView.frame.size.height){
+            frameChanged = YES;
+            newOriginY = self.bulletinboardView.frame.origin.y + self.bulletinboardView.frame.size.height - sender.view.frame.size.height - 50;
+        }
+        
+        if (frameChanged){
+            [UIView animateWithDuration:0.1 animations:^{
+                sender.view.frame = CGRectMake(newOriginX, newOriginY, sender.view.frame.size.width, sender.view.frame.size.height);
+            }];
+        }
+        
         
         
         for (UIView * view in self.intersectingViews){
             view.alpha = 1;
-        }
-
+        } 
+        
         if ([self.intersectingViews count] > 1 ){
             [self stackNotes:self.intersectingViews into:sender.view withID:nil];
         }
@@ -788,7 +817,7 @@
                 [self updateNoteLocation:stackNoteView];
             }
         }
-
+        
         return;
     }
     
@@ -818,12 +847,12 @@
 }
 
 /*-----------------------------------------------------------
-                         UI Events
+ UI Events
  -----------------------------------------------------------*/
 
 -(void) viewWillAppear:(BOOL)animated{
-  /*  UIImage * image = [UIImage imageNamed:@"greenchalkboard.jpg"];
-    UIColor * color = [UIColor colorWithPatternImage:image];*/
+    /*  UIImage * image = [UIImage imageNamed:@"greenchalkboard.jpg"];
+     UIColor * color = [UIColor colorWithPatternImage:image];*/
     [self.bulletinboardView setBackgroundColor:[UIColor clearColor]];
 }
 -(void) viewDidLoad
@@ -875,7 +904,7 @@
     [self.board removeBulletinBoardAttribute:((StackView *)self.highlightedView).ID ofType:STACKING_TYPE];
     self.highlightedView = nil;
     self.editMode = NO;
-
+    
     
 }
 
@@ -913,7 +942,7 @@
             self.highlightedView = nil;
         }];
     }
-
+    
     
     
 }
@@ -925,7 +954,7 @@
     
     [DropBoxAssociativeBulletinBoard saveBulletinBoard:self.board];
     [self.parent finishedWorkingWithBulletinBoard];
-
+    
 }
 
 -(void) viewDidUnload
@@ -975,10 +1004,10 @@
             view.frame = CGRectMake(positionX, positionY, view.frame.size.width, view.frame.size.height);
         }
     }
-
+    
 }
 /*-----------------------------------------------------------
-                        Stack Delegate Protocol
+ Stack Delegate Protocol
  -----------------------------------------------------------*/
 
 -(void) returnedstackViewController:(StackViewController *)sender{
@@ -988,7 +1017,7 @@
 -(void) unstackItem:(UIView *) item
            fromView: (UIView *) stackView 
       withPastCount: (int) count{
-
+    
     if ( [item isKindOfClass:[NoteView class]]){
         NoteView * noteItem = (NoteView *) item;
         
@@ -998,18 +1027,18 @@
         for (UIGestureRecognizer * gr in noteItem.gestureRecognizers){
             [noteItem removeGestureRecognizer:gr];
         }
-    
+        
         UIPanGestureRecognizer * gr = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(objectPanned:)];
         UIPinchGestureRecognizer * pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(objectPinched:)];
         UILongPressGestureRecognizer * lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(objectPressed:)];
-    
+        
         [noteItem addGestureRecognizer:lpgr];
         [noteItem addGestureRecognizer:gr];
         [noteItem addGestureRecognizer:pgr];
-    
+        
         noteItem.delegate = self;
         [noteItem resetSize];
-
+        
         [noteItem resetSize];
         float offset = SEPERATOR_RATIO * noteItem.frame.size.width;
         CGRect tempRect = CGRectMake (self.bulletinboardView.frame.origin.x + offset,
@@ -1033,11 +1062,11 @@
 }
 
 /*-----------------------------------------------------------
-                        Note Delegate Protocol
+ Note Delegate Protocol
  -----------------------------------------------------------*/
 
 - (void) note: (id)note changedTextTo: (NSString *) text{
-
+    
     NoteView * noteView = (NoteView *)note;
     NSString * noteId = noteView.ID;
     BulletinBoardNote * newNoteObj = [[BulletinBoardNote alloc] initWithText:text];

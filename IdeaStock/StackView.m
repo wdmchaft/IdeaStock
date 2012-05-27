@@ -21,6 +21,7 @@
 
 @property (strong,nonatomic) UIImage * normalImage;
 @property (strong, nonatomic) UIImage * highlightedImage;
+@property CGRect originalFrame;
 
 @end
 
@@ -41,15 +42,17 @@
 @synthesize normalImage = _normalImage;
 @synthesize highlightedImage = _highlightedImage;
 @synthesize ID = _ID;
+@synthesize originalFrame = _originalFrame;
+
 
 #define STARTING_POS_OFFSET_X 0.10
 #define STARTING_POS_OFFSET_Y 0.2
 #define TEXT_WIDHT_RATIO 0.7
-#define TEXT_HEIGHT_RATIO 0.60
+#define TEXT_HEIGHT_RATIO 0.70
 
 -(UIImage *) normalImage{
     if (!_normalImage){
-        _normalImage = [UIImage imageNamed:@"stack.png"];
+        _normalImage = [UIImage imageNamed:@"stacknoshadow.png"];
     }
     return _normalImage;
 }
@@ -121,6 +124,7 @@ return _highlightedImage;
         [self addSubview:imageView];
         [self addSubview:textView];
         self.text= mainView.text;
+        self.originalFrame = self.frame;
     }
     return self;    
     
@@ -132,10 +136,20 @@ return _highlightedImage;
 
 -(void) scale:(CGFloat) scaleFactor{
     
+    if ( self.frame.size.width * scaleFactor > self.originalFrame.size.width * 2||
+        self.frame.size.height * scaleFactor > self.originalFrame.size.height * 2){
+        return;
+    }
+    if ( self.frame.size.width * scaleFactor < self.originalFrame.size.width * 0.9||
+        self.frame.size.height * scaleFactor < self.originalFrame.size.height * 0.9){
+        return;
+    }
     self.frame = CGRectMake(self.frame.origin.x,
                             self.frame.origin.y, 
                             self.frame.size.width * scaleFactor,
                             self.frame.size.height * scaleFactor);
+    
+    
     for (UIView * subView in self.subviews){
         if ([subView isKindOfClass:[UIImageView class]]){
             subView.frame = CGRectMake(subView.frame.origin.x, subView.frame.origin.y, subView.frame.size.width * scaleFactor, subView.frame.size.height * scaleFactor);
@@ -160,6 +174,7 @@ return _highlightedImage;
 
     
 }
+
 
 -(void) setNextMainView{
     [self.views removeObject:self.mainView];
