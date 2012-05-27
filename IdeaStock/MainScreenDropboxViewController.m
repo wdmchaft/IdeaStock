@@ -112,12 +112,12 @@
     UIImage * image;
     
     if ( self.colorOrder == 0 ) {
-        image  = [UIImage imageNamed:@"green board.png"];
+        image  = [UIImage imageNamed:@"red board.png"];
         self.colorOrder++;
         
     }
     else if ( self.colorOrder == 1){
-        image =[UIImage imageNamed:@"red board.png"];
+        image =[UIImage imageNamed:@"green board.png"];
         self.colorOrder++;
     }
     else {

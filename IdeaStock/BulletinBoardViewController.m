@@ -664,6 +664,47 @@
     
     CGPoint location = [sender locationOfTouch:0 inView:self.bulletinboardView];
     CGRect frame = CGRectMake(location.x, location.y, NOTE_WIDTH, NOTE_HEIGHT);
+    
+    
+    BOOL frameChanged = NO;
+    CGFloat newOriginX = frame.origin.x;
+    CGFloat newOriginY = frame.origin.y;
+    
+    
+    if (frame.origin.x < self.bulletinboardView.frame.origin.x){
+        frameChanged = YES;
+        newOriginX = self.bulletinboardView.frame.origin.x;
+    }
+    if (frame.origin.y < self.bulletinboardView.frame.origin.y){
+        frameChanged = YES;
+        newOriginY = self.bulletinboardView.frame.origin.y;
+    }
+    if (frame.origin.x + frame.size.width > 
+        self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.width){
+        frameChanged = YES;
+        newOriginX = self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.width - frame.size.width;
+    }
+    if (frame.origin.y + frame.size.height > 
+        self.bulletinboardView.frame.origin.y + self.bulletinboardView.frame.size.height){
+        frameChanged = YES;
+        newOriginY = self.bulletinboardView.frame.origin.y + self.bulletinboardView.frame.size.height - frame.size.height - 50;
+    }
+    
+    if (sender.view.frame.origin.x + sender.view.frame.size.width > 
+        self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.width){
+        frameChanged = YES;
+        newOriginX = self.bulletinboardView.frame.origin.x + self.bulletinboardView.frame.size.width - sender.view.frame.size.width;
+    }
+    if (sender.view.frame.origin.y + sender.view.frame.size.height > 
+        self.bulletinboardView.frame.origin.y + self.bulletinboardView.frame.size.height){
+        frameChanged = YES;
+        newOriginY = self.bulletinboardView.frame.origin.y + self.bulletinboardView.frame.size.height - sender.view.frame.size.height - 50;
+    }
+    if (frameChanged){
+            frame = CGRectMake(newOriginX, newOriginY,frame.size.width, frame.size.height);
+
+    }
+    
     NoteView * note = [[NoteView alloc] initWithFrame:frame];
     note.transform = CGAffineTransformScale(note.transform, 10, 10);
     note.alpha = 0;
@@ -862,7 +903,7 @@
     self.deleteButton = [[self.toolbar items] objectAtIndex:len - 1];
     self.expandButton = [[self.toolbar items] objectAtIndex:len - 2];
     NSMutableArray * toolBarItems = [[NSMutableArray alloc] init];
-    for ( int i = 0 ; i < 4 ; i++){
+    for ( int i = 0 ; i < 5 ; i++){
         [toolBarItems addObject:[[self.toolbar items] objectAtIndex:i]];
     }
     self.toolbar.items = [toolBarItems copy];

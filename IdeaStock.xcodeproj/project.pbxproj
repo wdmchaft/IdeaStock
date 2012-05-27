@@ -62,6 +62,7 @@
 		D7DD09D31571B47100918BDF /* stacknoshadow.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DD09D11571B47000918BDF /* stacknoshadow.png */; };
 		D7DD09D41571B47100918BDF /* notenoshadow.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DD09D21571B47000918BDF /* notenoshadow.png */; };
 		D7DD09DA1571CBE300918BDF /* light grey.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DD09D91571CBE200918BDF /* light grey.png */; };
+		D7DD09DE1571CE2800918BDF /* notelight.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DD09DD1571CE2700918BDF /* notelight.png */; };
 		D7DEF2C41530D37800D13CF4 /* FileSystemHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D7DEF2C31530D37800D13CF4 /* FileSystemHelper.m */; };
 		D7E44BEE15643AA90080EF71 /* StackView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E44BED15643AA90080EF71 /* StackView.m */; };
 		D7E44C03156573800080EF71 /* StackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E44C02156573800080EF71 /* StackViewController.m */; };
@@ -171,6 +172,7 @@
 		D7DD09D11571B47000918BDF /* stacknoshadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stacknoshadow.png; sourceTree = "<group>"; };
 		D7DD09D21571B47000918BDF /* notenoshadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notenoshadow.png; sourceTree = "<group>"; };
 		D7DD09D91571CBE200918BDF /* light grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "light grey.png"; sourceTree = "<group>"; };
+		D7DD09DD1571CE2700918BDF /* notelight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notelight.png; sourceTree = "<group>"; };
 		D7DEF2C21530D37800D13CF4 /* FileSystemHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileSystemHelper.h; sourceTree = "<group>"; };
 		D7DEF2C31530D37800D13CF4 /* FileSystemHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileSystemHelper.m; sourceTree = "<group>"; };
 		D7E44BEC15643AA90080EF71 /* StackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackView.h; sourceTree = "<group>"; };
@@ -350,6 +352,7 @@
 		D7A53CF71522F39500183CB6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D7DD09DD1571CE2700918BDF /* notelight.png */,
 				D7DD09D91571CBE200918BDF /* light grey.png */,
 				D7DD09D11571B47000918BDF /* stacknoshadow.png */,
 				D7DD09D21571B47000918BDF /* notenoshadow.png */,
@@ -534,6 +537,7 @@
 				D7DD09D31571B47100918BDF /* stacknoshadow.png in Resources */,
 				D7DD09D41571B47100918BDF /* notenoshadow.png in Resources */,
 				D7DD09DA1571CBE300918BDF /* light grey.png in Resources */,
+				D7DD09DE1571CE2800918BDF /* notelight.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
