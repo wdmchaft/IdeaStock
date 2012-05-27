@@ -15,7 +15,7 @@
 #import "XoomlAttributeHelper.h"
 
 
-#define SYNCHRONIZATION_PERIOD 15
+#define SYNCHRONIZATION_PERIOD 5
 @interface DropBoxAssociativeBulletinBoard()
 
 /*--------------------------------------------------
