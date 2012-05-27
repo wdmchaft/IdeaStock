@@ -45,9 +45,9 @@
 @synthesize originalFrame = _originalFrame;
 
 
-#define STARTING_POS_OFFSET_X 0.10
+#define STARTING_POS_OFFSET_X 0.05
 #define STARTING_POS_OFFSET_Y 0.2
-#define TEXT_WIDHT_RATIO 0.7
+#define TEXT_WIDHT_RATIO 0.8
 #define TEXT_HEIGHT_RATIO 0.70
 
 -(UIImage *) normalImage{
