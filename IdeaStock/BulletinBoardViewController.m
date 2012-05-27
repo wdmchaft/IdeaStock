@@ -301,6 +301,8 @@
  -----------------------------------------------------------*/
 
 -(void) loadSavedNotes: (NSNotification *) notificatoin{
+    
+    NSLog(@"Here");
     [self layoutNotes];
 }
 
@@ -1011,6 +1013,13 @@
     // Release any retained subviews of the main view.
 }
 
+- (IBAction)refreshPressed:(id)sender {
+    self.board = [[DropBoxAssociativeBulletinBoard alloc] initBulletinBoardFromXoomlWithName:self.bulletinBoardName];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loadSavedNotes:)
+                                                 name:@"BulletinBoardLoaded" 
+                                               object:self.board];
+}
 
 -(BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

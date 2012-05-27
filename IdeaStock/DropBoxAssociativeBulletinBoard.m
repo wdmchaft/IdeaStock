@@ -225,6 +225,7 @@
     //send notification to the notification objects 
     //so interested objects can see that the bulletinboard is loaded
     
+    NSLog(@"Notification starts");
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BulletinBoardLoaded"
                                                         object:self];
     
